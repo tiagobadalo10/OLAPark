@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.olapark.databinding.FragmentPaymentsBinding;
-import com.example.olapark.ui.parks.ParksViewModel;
 
 public class PaymentsFragment extends Fragment {
 
@@ -19,8 +18,7 @@ public class PaymentsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        PaymentsViewModel paymentsViewModel =
-                new ViewModelProvider(this).get(PaymentsViewModel.class);
+
 
         binding = FragmentPaymentsBinding.inflate(inflater, container, false);
 
