@@ -1,14 +1,15 @@
 package com.example.olapark;
 
-import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -35,16 +36,6 @@ public class MainMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        navigationView.setNavigationItemSelectedListener(item -> {
-            switch(item.getItemId()){
-                case R.id.nav_logout:
-                    Intent i = new Intent(this, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-            }
-            return true;
-        });
     }
 
     @Override
