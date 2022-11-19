@@ -1,6 +1,4 @@
-package com.example.olapark.ui.settings;
-
-import androidx.lifecycle.ViewModelProvider;
+package com.example.olapark.nav.settings;
 
 import android.os.Bundle;
 
@@ -27,6 +25,7 @@ public class SettingsFragment extends Fragment {
 
         View view = binding.getRoot();
 
+        // Fill spinner with options
         Spinner spinner = (Spinner) view.findViewById(R.id.languages);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.languages, android.R.layout.simple_spinner_item);

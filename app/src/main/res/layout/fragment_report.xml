@@ -1,13 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.report.ReportFragment">
+    tools:context=".ReportFragment">
+
+    <EditText
+        android:id="@+id/report_description_box"
+        android:layout_width="318dp"
+        android:layout_height="286dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/back"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_description" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:id="@+id/report_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/report_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_options" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/report_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="68dp"
+        android:text="@string/report_question"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/report_options"
+        android:layout_width="209dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_question" />
+
+    <ImageButton
+        android:id="@+id/report_camera"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="52dp"
+        android:background="@color/white"
+        android:src="@drawable/camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_description_box" />
+
+    <ImageView
+        android:id="@+id/report_picture"
+        android:layout_width="71dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="44dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/report_camera"
+        app:layout_constraintTop_toBottomOf="@+id/report_description_box" />
+
+    <ImageView
+        android:id="@+id/report_submit"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="48dp"
+        android:src="@drawable/submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_description_box" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

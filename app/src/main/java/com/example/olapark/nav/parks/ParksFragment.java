@@ -1,4 +1,4 @@
-package com.example.olapark.ui.parks;
+package com.example.olapark.nav.parks;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

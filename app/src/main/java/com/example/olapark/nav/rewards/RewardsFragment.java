@@ -1,6 +1,4 @@
-package com.example.olapark.ui.rewards;
-
-import androidx.lifecycle.ViewModelProvider;
+package com.example.olapark.nav.rewards;
 
 import android.os.Bundle;
 
@@ -9,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.olapark.databinding.FragmentRewardsBinding;
 
 
