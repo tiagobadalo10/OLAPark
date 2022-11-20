@@ -1,34 +1,22 @@
 package com.example.olapark.ui.parks;
 
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ListAdapter;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentParksBinding;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ParksFragment extends Fragment {
 
     private FragmentParksBinding binding;
+    private View root;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,15 +25,35 @@ public class ParksFragment extends Fragment {
         //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         binding = FragmentParksBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
+
+        configureImageButton();
 
         return root;
+    }
+
+    private void configureImageButton() {
+        ImageButton btn = (ImageButton) root.findViewById(R.id.filter_button);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "You Clicked the button!", Toast.LENGTH_LONG).show();
+                openDialog();
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void openDialog() {
+        FilterDialog dialog = FilterDialog.newInstance("Filter");
+        dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
 }

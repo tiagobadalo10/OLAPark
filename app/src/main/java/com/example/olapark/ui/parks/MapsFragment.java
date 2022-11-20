@@ -137,10 +137,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         }
         mMap.setMyLocationEnabled(true);
 
-        List<Park> parks = new ArrayList<>();
+        ParkCatalog parks = new ParkCatalog();
 
-        parks.add(new Park(new LatLng(38.69770840269444, -9.2930477191839),
-                "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW));
+        parks.addPark(new Park(new LatLng(38.69770840269444, -9.2930477191839),
+                "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW,
+                2.0));
+        parks.addPark(new Park(new LatLng(38.75073524758464, -9.154801959985548),
+                "Estacionamento Cidade Universitária - EMEL", Occupation.HIGH,
+                3.0));
+        parks.addPark(new Park(new LatLng(38.75762912547855, -9.155196744003156),
+                "Estacionamento Campo Grande - EMEL", Occupation.HIGH,
+                0.40));
+        parks.addPark(new Park(new LatLng(38.76234930369637, -9.161149889720422),
+                "Estacionamento Alvalade XXI Entrada Norte", Occupation.MEDIUM,
+                0.89));
+
 
         for (Park park : parks) {
             mMap.addMarker(new MarkerOptions()
@@ -149,6 +160,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                     .snippet("Occupation level: " + park.getOccupation())
                     .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
         }
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                // on marker click we are getting the title of our marker
+                // which is clicked and displaying it in a toast message.
+                String markerName = marker.getTitle();
+                Toast.makeText(getContext(), "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
 
