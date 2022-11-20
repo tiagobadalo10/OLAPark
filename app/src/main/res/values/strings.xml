@@ -23,6 +23,14 @@
     <string name="report_question">What are you reporting?</string>
     <string name="report_description">Description</string>
 
+    <string name="logout_question">Do you want to leave OLAPark?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="number_OLAParkCoins">0</string>
+    <string name="OLAParkCoins">OLAParkCoins</string>
+
+
         <string-array name="languages">
             <item>English</item>
             <item>Deutsch</item>
