@@ -15,13 +15,12 @@ import com.example.olapark.databinding.ActivityMainMenuBinding;
 public class MainMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainMenuBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainMenuBinding.inflate(getLayoutInflater());
+        ActivityMainMenuBinding binding = ActivityMainMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMainMenu.toolbar);

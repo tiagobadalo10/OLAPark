@@ -18,13 +18,6 @@
         tools:layout="@layout/fragment_payments" />
 
     <fragment
-        android:id="@+id/nav_report"
-        android:name="com.example.olapark.nav.report.ReportFragment"
-        android:label="Report"
-        tools:layout="@layout/fragment_report"
-        />
-
-    <fragment
         android:id="@+id/nav_rewards"
         android:name="com.example.olapark.nav.rewards.RewardsFragment"
         android:label="Rewards"
