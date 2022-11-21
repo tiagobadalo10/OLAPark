@@ -21,27 +21,27 @@
         android:id="@+id/searchView"
         android:layout_width="224dp"
         android:layout_height="47dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="7dp"
         android:background="@drawable/searchview_background"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Park"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.652"
+        app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fragmentContainerView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/filter_button"
         android:layout_width="60dp"
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="7dp"
         android:background="@drawable/searchview_background"
         android:src="@drawable/ic_baseline_sort_24"
         app:layout_constraintEnd_toStartOf="@+id/searchView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fragmentContainerView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

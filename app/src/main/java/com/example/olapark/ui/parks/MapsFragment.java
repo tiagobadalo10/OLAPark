@@ -164,13 +164,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                // on marker click we are getting the title of our marker
-                // which is clicked and displaying it in a toast message.
                 String markerName = marker.getTitle();
-                Toast.makeText(getContext(), "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
+                openDialog(parks.findParkByLocation(marker.getPosition()));
                 return false;
             }
         });
+    }
+
+    private void openDialog(Park park) {
+        InfoParkDialog dialog = InfoParkDialog.newInstance("Info");
+        dialog.setPark(park);
+        dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
 
