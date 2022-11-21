@@ -1,4 +1,4 @@
-package com.example.olapark.ui.settings;
+package com.example.olapark.nav.settings;
 
 import androidx.lifecycle.ViewModel;
 

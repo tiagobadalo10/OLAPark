@@ -1,4 +1,4 @@
-package com.example.olapark.ui.logout;
+package com.example.olapark.nav.logout;
 
 import androidx.lifecycle.ViewModel;
 

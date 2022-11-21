@@ -1,4 +1,4 @@
-package com.example.olapark.ui.payments;
+package com.example.olapark.nav.payments;
 
 import androidx.lifecycle.ViewModel;
 

@@ -1,4 +1,4 @@
-package com.example.olapark.ui.parks;
+package com.example.olapark.nav.parks;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;

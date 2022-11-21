@@ -1,4 +1,4 @@
-package com.example.olapark.ui.report;
+package com.example.olapark.nav.report;
 
 import androidx.lifecycle.ViewModel;
 

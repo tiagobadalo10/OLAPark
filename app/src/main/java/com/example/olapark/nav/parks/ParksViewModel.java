@@ -1,4 +1,4 @@
-package com.example.olapark.ui.parks;
+package com.example.olapark.nav.parks;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package com.example.olapark.ui.parks;
+package com.example.olapark.nav.parks;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

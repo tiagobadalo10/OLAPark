@@ -1,4 +1,4 @@
-package com.example.olapark.ui.rewards;
+package com.example.olapark.nav.rewards;
 
 import androidx.lifecycle.ViewModel;
 

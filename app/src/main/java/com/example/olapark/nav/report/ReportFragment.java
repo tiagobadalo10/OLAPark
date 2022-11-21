@@ -1,4 +1,4 @@
-package com.example.olapark.ui.report;
+package com.example.olapark.nav.report;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -8,10 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.olapark.databinding.FragmentReportBinding;
-import com.example.olapark.ui.parks.ParksViewModel;
-import com.example.olapark.ui.payments.PaymentsFragment;
-import com.example.olapark.ui.payments.PaymentsViewModel;
 
 public class ReportFragment extends Fragment {
 
