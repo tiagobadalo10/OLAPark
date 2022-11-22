@@ -5,9 +5,117 @@
     android:layout_height="match_parent"
     tools:context=".nav.payments.PaymentsFragment">
 
-    <TextView
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+        <TableRow
+            android:background="@color/orange">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/payments_col_park"
+                android:padding="10sp"
+                android:textSize="12sp"
+                android:layout_weight="4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/payments_col_date"
+                android:padding="10sp"
+                android:textSize="12sp"
+                android:layout_weight="4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/payments_col_value"
+                android:padding="10sp"
+                android:textSize="12sp"
+                android:layout_weight="4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/payments_col_method"
+                android:padding="10sp"
+                android:textSize="12sp"
+                android:layout_weight="4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Park Demo 1"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="22/11/2022 22:10"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="3,53€"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Paypal"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Park Demo 2"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="25/11/2022 11:04"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="6,21€"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:padding="10sp"
+                android:textSize="8sp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal"/>
+        </TableRow>
+    </TableLayout>
 
 </FrameLayout>

@@ -30,6 +30,11 @@
     <string name="number_OLAParkCoins">0</string>
     <string name="OLAParkCoins">OLAParkCoins</string>
 
+    <string name="payments_col_park">Park</string>
+    <string name="payments_col_date">Date</string>
+    <string name="payments_col_value">Value</string>
+    <string name="payments_col_method">Method</string>
+
 
         <string-array name="languages">
             <item>English</item>
