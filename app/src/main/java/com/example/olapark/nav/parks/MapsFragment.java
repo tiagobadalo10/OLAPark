@@ -160,14 +160,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                     .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
         }
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                String markerName = marker.getTitle();
-                Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
-                openDialog(parks.findParkByLocation(marker.getPosition()));
-                return false;
+        mMap.setOnMarkerClickListener(marker -> {
+            if(marker == null){
+                return true;
             }
+            String markerName = marker.getTitle();
+            Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
+            openDialog(parks.findParkByLocation(marker.getPosition()));
+            return false;
         });
     }
 

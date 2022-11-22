@@ -51,5 +51,5 @@ public class Park {
 }
 
 enum Occupation{
-    LOW, MEDIUM, HIGH;
+    LOW, MEDIUM, HIGH
 }

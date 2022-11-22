@@ -53,7 +53,7 @@ public class InfoParkDialog extends DialogFragment {
 
 
         occupation.setText(park.getOccupation().toString());
-        pricePerHour.setText(Double.toString(park.getPricePerHour()) + "€");
+        pricePerHour.setText(park.getPricePerHour() + "€");
         name.setText(park.getName());
     }
 
