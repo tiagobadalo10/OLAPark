@@ -1,6 +1,10 @@
 package com.example.olapark;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
+import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -10,7 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.olapark.databinding.ActivityMainMenuBinding;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -27,8 +31,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_parks)
                 .setOpenableLayout(drawer)
@@ -36,6 +39,13 @@ public class MainMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View view = navigationView.getHeaderView(0);
+        CircleImageView nav_user = view.findViewById(R.id.person);
+        nav_user.setOnClickListener(v -> {
+            Intent i = new Intent(this, Profile.class);
+            startActivity(i);
+        });
     }
 
     @Override

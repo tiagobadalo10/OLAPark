@@ -14,28 +14,21 @@
     <fragment
         android:id="@+id/nav_payments"
         android:name="com.example.olapark.nav.payments.PaymentsFragment"
-        android:label="Payments"
+        android:label="@string/menu_payments"
         tools:layout="@layout/fragment_payments" />
 
     <fragment
         android:id="@+id/nav_rewards"
         android:name="com.example.olapark.nav.rewards.RewardsFragment"
-        android:label="Rewards"
+        android:label="@string/menu_rewards"
         tools:layout="@layout/fragment_rewards"
         />
 
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.olapark.nav.settings.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings"
-        />
-
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.example.olapark.nav.profile.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile"
         />
 
     <fragment
