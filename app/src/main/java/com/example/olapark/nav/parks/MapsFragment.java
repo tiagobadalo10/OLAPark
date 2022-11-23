@@ -98,17 +98,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             });
             AlertDialog alert = alertDialog.create();
             alert.show();
-        } else {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-            alertDialog.setTitle("Confirm Location");
-            alertDialog.setMessage("Your Location is enabled, please enjoy");
-            alertDialog.setNegativeButton("Back to interface", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = alertDialog.create();
-            alert.show();
         }
     }
 
