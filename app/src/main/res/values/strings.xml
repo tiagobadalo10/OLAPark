@@ -31,6 +31,7 @@
 
     <string name="number_OLAParkCoins">0</string>
     <string name="OLAParkCoins">OLAParkCoins</string>
+    <string name="claim">Claim</string>
 
     <string name="payments_col_park">Park</string>
     <string name="payments_col_date">Date</string>
