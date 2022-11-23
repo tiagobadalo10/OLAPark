@@ -29,9 +29,8 @@
 
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/settings"
-            android:title="Profile"
-            />
+            android:icon="@drawable/profile"
+            android:title="Profile" />
 
         <item
             android:id="@+id/nav_logout"
