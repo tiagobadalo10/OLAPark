@@ -14,10 +14,5 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent setIntent = new Intent(this, MainMenuActivity.class);
-        startActivity(setIntent);
-    }
+    
 }
