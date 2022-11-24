@@ -3,10 +3,8 @@ package com.example.olapark;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -40,12 +38,7 @@ public class MainMenuActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        View view = navigationView.getHeaderView(0);
-        CircleImageView nav_user = view.findViewById(R.id.person);
-        nav_user.setOnClickListener(v -> {
-            Intent i = new Intent(this, Profile.class);
-            startActivity(i);
-        });
+        changeToProfile(navigationView);
     }
 
     @Override
@@ -53,5 +46,14 @@ public class MainMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void changeToProfile(NavigationView navigationView){
+        View view = navigationView.getHeaderView(0);
+        CircleImageView nav_user = view.findViewById(R.id.person);
+        nav_user.setOnClickListener(v -> {
+            Intent i = new Intent(this, Profile.class);
+            startActivity(i);
+        });
     }
 }

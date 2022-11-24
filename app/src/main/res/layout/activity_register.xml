@@ -85,7 +85,8 @@
       android:autofillHints=""
       android:ems="10"
       android:inputType="textPersonName"
-      android:text="@string/username"
+      android:hint="@string/username"
+      android:textColorHint="@color/black"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.504"
       app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +110,7 @@
       app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
   <Button
-      android:id="@+id/button2"
+      android:id="@+id/new_register"
       android:layout_width="295dp"
       android:layout_height="48dp"
       android:layout_marginTop="40dp"
