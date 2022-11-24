@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
                         .addOnCompleteListener(RegisterActivity.this, task -> {
 
                             if(!task.isSuccessful()){
-                                Toast.makeText(RegisterActivity.this, "Authentication failed. " + task.getException(), Toast.LENGTH_LONG);
+                                Toast.makeText(RegisterActivity.this, "Registration failed. " + task.getException(), Toast.LENGTH_LONG);
                             }
                             else{
                                 Intent intent;
