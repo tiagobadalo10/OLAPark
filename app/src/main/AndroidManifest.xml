@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -19,12 +21,20 @@
         android:theme="@style/Theme.OLAPark"
         tools:targetApi="31">
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD9IDna_PEV4Da9yTlRZiYzuvcBu-Zz6aQ" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.OLAPark.NoActionBar">
+
+        </activity>
 
         <activity
             android:name=".Profile"
@@ -34,21 +44,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainMenuActivity" />
         </activity>
-
         <activity
             android:name=".MainMenuActivity"
             android:exported="true"
             android:label="@string/title_activity_main_menu"
-            android:theme="@style/Theme.OLAPark.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.OLAPark.NoActionBar"></activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:theme="@style/Theme.OLAPark.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -65,6 +70,7 @@
             android:theme="@style/Theme.OLAPark.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 

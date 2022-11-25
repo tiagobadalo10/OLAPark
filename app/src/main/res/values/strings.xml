@@ -11,6 +11,7 @@
     <string name="title_activity_main_menu">MainMenuActivity</string>
     <string name="change_password">Change Password</string>
     <string name="change_email">Change Email</string>
+    <string name="reset_password">Reset Password</string>
 
     <string name="language">Language</string>
     <string name="automatic_payment">Automatic Payment</string>
@@ -63,6 +64,7 @@
         <item>Accident</item>
         <item>Beggars</item>
     </string-array>
+
     <string name="title_activity_profile">Profile</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

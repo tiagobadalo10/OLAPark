@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
                         .addOnCompleteListener(RegisterActivity.this, task -> {
 
                             if(!task.isSuccessful()){
-                                Toast.makeText(RegisterActivity.this, "Registration failed. " + task.getException(), Toast.LENGTH_LONG);
+                                Toast.makeText(RegisterActivity.this, "Registration failed. " + task.getException(), Toast.LENGTH_LONG).show();
                             }
                             else{
                                 saveUserDataDB(finalEmail, finalUsername, Integer.parseInt(finalPhoneNumber));
@@ -91,5 +91,14 @@ public class RegisterActivity extends AppCompatActivity {
         editor.putString("username", username);
 
         editor.commit();
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 }

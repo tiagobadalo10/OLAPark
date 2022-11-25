@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         // When register button is clicked
         userRegister();
 
+        // When reset password is clicked
+        userResetPassword();
+
     }
 
     public void userLogin(){
@@ -53,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Authentication failed. " + task.getException(), Toast.LENGTH_LONG);
+                        Toast.makeText(LoginActivity.this, "Authentication failed. " + task.getException(), Toast.LENGTH_LONG).show();
                     } else {
                         afterAuthentication(finalEmail);
                     }
@@ -69,7 +73,16 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent;
             intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-            finish();
+        });
+    }
+
+    public void userResetPassword(){
+        TextView resetPassword = findViewById(R.id.forget_password);
+        resetPassword.setOnClickListener(v -> {
+
+            Intent intent;
+            intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+            startActivity(intent);
         });
     }
 
