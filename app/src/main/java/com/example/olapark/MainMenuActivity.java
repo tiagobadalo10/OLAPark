@@ -1,6 +1,7 @@
 package com.example.olapark;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,9 @@ public class MainMenuActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            String username = extras.getString("username");
-            updateUsername(navigationView, username);
-        }
+        sp = getSharedPreferences("auto-login", MODE_PRIVATE);
+        if(sp.contains("username"))
+            updateUsername(navigationView, (String) sp.getAll().get("username"));
 
         changeToProfile(navigationView);
     }
