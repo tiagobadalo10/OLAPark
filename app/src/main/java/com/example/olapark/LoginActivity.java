@@ -7,15 +7,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore db;
+    private static String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        db = FirebaseFirestore.getInstance();
 
         // When login button is clicked
         userLogin();
@@ -38,14 +45,14 @@ public class LoginActivity extends AppCompatActivity {
             password = String.valueOf(passwordForm.getText());
 
             if(email.length() != 0 && password.length() != 0) {
+
+                String finalEmail = email;
+
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
                         Toast.makeText(LoginActivity.this, "Authentication failed. " + task.getException(), Toast.LENGTH_LONG);
                     } else {
-                        Intent intent;
-                        intent = new Intent(LoginActivity.this, MainMenuActivity.class);
-                        startActivity(intent);
-                        finish();
+                        afterAuthentication(finalEmail);
                     }
                 });
             }
@@ -61,5 +68,33 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    public void afterAuthentication(String email){
+
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        for(QueryDocumentSnapshot document: task.getResult()){
+
+                            this.username = document.getId();
+
+                            Intent intent;
+                            intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                            intent.putExtra("username", username);
+
+                            startActivity(intent);
+                            finish();
+
+                            break;
+                        }
+                    }
+                });
+
+
+
+
     }
 }

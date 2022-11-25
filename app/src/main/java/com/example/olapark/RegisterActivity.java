@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 Intent intent;
                                 intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
+                                intent.putExtra("username", finalUsername);
+
                                 startActivity(intent);
                                 finish();
                             }
@@ -73,10 +75,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void saveUserData(String email, String username, int phoneNumber){
         Map<String, Object> user = new HashMap<>();
-        user.put("username", username);
+        user.put("email", email);
         user.put("phone-number", phoneNumber);
 
-        db.collection("users").document(email)
+        db.collection("users").document(username)
                 .set(user);
     }
 }

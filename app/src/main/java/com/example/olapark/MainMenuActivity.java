@@ -38,6 +38,11 @@ public class MainMenuActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            System.out.println(extras.getString("username"));
+        }
+
         changeToProfile(navigationView);
     }
 
