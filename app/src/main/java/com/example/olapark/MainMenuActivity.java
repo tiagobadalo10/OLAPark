@@ -3,6 +3,8 @@ package com.example.olapark;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -11,6 +13,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,7 +44,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            System.out.println(extras.getString("username"));
+            String username = extras.getString("username");
+            updateUsername(navigationView, username);
         }
 
         changeToProfile(navigationView);
@@ -60,5 +65,11 @@ public class MainMenuActivity extends AppCompatActivity {
             Intent i = new Intent(this, Profile.class);
             startActivity(i);
         });
+    }
+
+    public void updateUsername(NavigationView navigationView, String username){
+        View view = navigationView.getHeaderView(0);
+        TextView nav_username = view.findViewById(R.id.app_username);
+        nav_username.setText(username);
     }
 }
