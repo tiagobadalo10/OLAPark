@@ -1,6 +1,7 @@
 package com.example.olapark.nav.logout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,13 @@ import com.example.olapark.databinding.FragmentLogoutBinding;
 public class LogoutFragment extends DialogFragment {
 
     private FragmentLogoutBinding binding;
+    private SharedPreferences sp;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentLogoutBinding.inflate(inflater, container, false);
+        sp = getActivity().getSharedPreferences("auto-login", getContext().MODE_PRIVATE);
 
         View v = binding.getRoot();
 
@@ -37,6 +40,9 @@ public class LogoutFragment extends DialogFragment {
 
         // If user clicks on button yes
         yesButton.setOnClickListener(view -> {
+
+            cleanSP();
+
             Intent i = new Intent(getContext(), LoginActivity.class);
             startActivity(i);
         });
@@ -48,4 +54,7 @@ public class LogoutFragment extends DialogFragment {
         });
     }
 
+    public void cleanSP(){
+        
+    }
 }

@@ -2,6 +2,7 @@ package com.example.olapark;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db;
+    private SharedPreferences sp;
     private static String username;
 
     @Override
@@ -23,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         db = FirebaseFirestore.getInstance();
+        sp = getSharedPreferences("auto-login", MODE_PRIVATE);
 
         // When login button is clicked
         userLogin();
@@ -81,6 +84,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             this.username = document.getId();
 
+                            saveUserDataSP(username);
+
                             Intent intent;
                             intent = new Intent(LoginActivity.this, MainMenuActivity.class);
                             intent.putExtra("username", username);
@@ -93,8 +98,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+    }
 
+    public void saveUserDataSP(String username){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", username);
 
-
+        editor.commit();
     }
 }

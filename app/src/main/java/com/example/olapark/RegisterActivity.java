@@ -2,6 +2,7 @@ package com.example.olapark;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         db = FirebaseFirestore.getInstance();
+        sp = getSharedPreferences("auto-login", MODE_PRIVATE);
 
         userRegister();
     }
@@ -59,7 +62,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this, "Registration failed. " + task.getException(), Toast.LENGTH_LONG);
                             }
                             else{
-                                saveUserData(finalEmail, finalUsername, Integer.parseInt(finalPhoneNumber));
+                                saveUserDataDB(finalEmail, finalUsername, Integer.parseInt(finalPhoneNumber));
+                                saveUserDataSP(finalUsername);
 
                                 Intent intent;
                                 intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
@@ -73,12 +77,19 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void saveUserData(String email, String username, int phoneNumber){
+    public void saveUserDataDB(String email, String username, int phoneNumber){
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("phone-number", phoneNumber);
 
         db.collection("users").document(username)
                 .set(user);
+    }
+
+    public void saveUserDataSP(String username){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", username);
+
+        editor.commit();
     }
 }
