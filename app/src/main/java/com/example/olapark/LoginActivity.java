@@ -3,9 +3,12 @@ package com.example.olapark;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private SharedPreferences sp;
     private static String username;
+    private ProgressBar progressBar;
+    private TextView loginWarning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         sp = getSharedPreferences("auto-login", MODE_PRIVATE);
+
+        progressBar = findViewById(R.id.progressBar);
+        loginWarning = findViewById(R.id.loginWarning);
 
         // When login button is clicked
         userLogin();
@@ -40,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void userLogin(){
+
         Button login = findViewById(R.id.login);
         login.setOnClickListener(v -> {
 
@@ -53,11 +62,18 @@ public class LoginActivity extends AppCompatActivity {
 
             if(email.length() != 0 && password.length() != 0) {
 
+                //enable progress bar
+                progressBar.setVisibility(View.VISIBLE);
+                login.setEnabled(false);
+
                 String finalEmail = email;
 
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
                         Toast.makeText(LoginActivity.this, "Authentication failed. " + task.getException(), Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+                        login.setEnabled(true);
+                        loginWarning.setVisibility(View.VISIBLE);
                     } else {
                         afterAuthentication(finalEmail);
                     }

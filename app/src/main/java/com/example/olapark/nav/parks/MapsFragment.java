@@ -19,9 +19,12 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.Toast;
 
 import com.example.olapark.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     Context mContext;
     private ArrayList<LatLng> latLngList = new ArrayList<>();
     private GoogleMapOptions options;
+    private FilterOptions filterOptions;
+    private ParkCatalog parks;
 
     @Nullable
     @Override
@@ -66,6 +72,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        //initialize parks
+        parks = new ParkCatalog();
+        setParksCatalog();
 
         this.subscribeListener();
 
@@ -125,22 +135,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         }
         mMap.setMyLocationEnabled(true);
 
-        ParkCatalog parks = new ParkCatalog();
+        setParkMarkers(parks);
 
-        parks.addPark(new Park(new LatLng(38.69770840269444, -9.2930477191839),
-                "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW,
-                2.0));
-        parks.addPark(new Park(new LatLng(38.75073524758464, -9.154801959985548),
-                "Estacionamento Cidade Universitária - EMEL", Occupation.HIGH,
-                3.0));
-        parks.addPark(new Park(new LatLng(38.75762912547855, -9.155196744003156),
-                "Estacionamento Campo Grande - EMEL", Occupation.HIGH,
-                0.40));
-        parks.addPark(new Park(new LatLng(38.76234930369637, -9.161149889720422),
-                "Estacionamento Alvalade XXI Entrada Norte", Occupation.MEDIUM,
-                0.89));
+        mMap.setOnMarkerClickListener(marker -> {
+            if (marker == null) {
+                return true;
+            }
+            String markerName = marker.getTitle();
+            Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
+            openDialog(parks.findParkByLocation(marker.getPosition()));
+            return false;
+        });
+    }
 
-
+    public void setParkMarkers(ParkCatalog parks) {
         for (Park park : parks) {
             mMap.addMarker(new MarkerOptions()
                     .position(park.getLocation())
@@ -148,15 +156,37 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                     .snippet("Occupation level: " + park.getOccupation())
                     .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
         }
+    }
 
-        mMap.setOnMarkerClickListener(marker -> {
-            if(marker == null){
-                return true;
+    public void setParksMarkersWithFilter(FilterOptions filterOptions) {
+        Toast.makeText(getContext(), "mapsFragement", Toast.LENGTH_SHORT).show();
+
+        mMap.clear();
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                LatLng currPosition = new LatLng(location.getLatitude(), location.getLongitude());
+
+                for (Park park : parks.filterParks(filterOptions, currPosition)) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(park.getLocation())
+                            .title(park.getName())
+                            .snippet("Occupation level: " + park.getOccupation())
+                            .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
+                }
             }
-            String markerName = marker.getTitle();
-            Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
-            openDialog(parks.findParkByLocation(marker.getPosition()));
-            return false;
         });
     }
 
@@ -219,4 +249,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                 20, this);
         isLocationEnabled();
     }
+
+    private void setParksCatalog(){
+
+        parks.addPark(new Park(new LatLng(38.69770840269444, -9.2930477191839),
+                "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW,
+                2.0));
+        parks.addPark(new Park(new LatLng(38.75073524758464, -9.154801959985548),
+                "Estacionamento Cidade Universitária - EMEL", Occupation.HIGH,
+                3.0));
+        parks.addPark(new Park(new LatLng(38.75762912547855, -9.155196744003156),
+                "Estacionamento Campo Grande - EMEL", Occupation.HIGH,
+                0.40));
+        parks.addPark(new Park(new LatLng(38.76234930369637, -9.161149889720422),
+                "Estacionamento Alvalade XXI Entrada Norte", Occupation.MEDIUM,
+                0.89));
+    }
+
 }

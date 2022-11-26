@@ -1,5 +1,6 @@
 package com.example.olapark.nav.parks;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +17,12 @@ import androidx.fragment.app.DialogFragment;
 import com.example.olapark.R;
 import com.google.android.material.slider.Slider;
 
+import java.util.Locale;
+
 public class FilterDialog extends DialogFragment {
 
     private View view;
+    private MyDialogListener listener;
 
     public static FilterDialog newInstance(String title) {
         FilterDialog yourDialogFragment = new FilterDialog();
@@ -56,6 +61,15 @@ public class FilterDialog extends DialogFragment {
 
             @Override
             public void onClick(View v) {
+                String spinnerValue = spinner.getSelectedItem().toString().toUpperCase();
+                Occupation occupation = null;
+
+                if (!spinnerValue.equals("ALL")) {
+                    occupation = Occupation.valueOf(spinnerValue);
+                }
+
+                FilterOptions filterOptions = new FilterOptions(slider.getValue(), occupation);
+                listener.setFiter(filterOptions);
                 dismiss();
             }
         });
@@ -67,6 +81,14 @@ public class FilterDialog extends DialogFragment {
                 dismiss();
             }
         });
+    }
+
+    public void setListener(MyDialogListener listener) {
+        this.listener = listener;
+    }
+
+    public interface MyDialogListener{
+        void setFiter(FilterOptions filterOptions);
     }
 
 }

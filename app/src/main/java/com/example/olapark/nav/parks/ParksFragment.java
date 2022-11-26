@@ -9,14 +9,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentParksBinding;
 
-public class ParksFragment extends Fragment {
+public class ParksFragment extends Fragment implements FilterDialog.MyDialogListener {
 
     private FragmentParksBinding binding;
     private View root;
+    private MapsFragment mapsFragment;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -26,6 +28,9 @@ public class ParksFragment extends Fragment {
 
         binding = FragmentParksBinding.inflate(inflater, container, false);
         root = binding.getRoot();
+
+        FragmentManager fm = getChildFragmentManager();
+        mapsFragment = (MapsFragment) fm.findFragmentById(R.id.fragmentContainerView);
 
         configureImageButton();
 
@@ -53,7 +58,13 @@ public class ParksFragment extends Fragment {
 
     private void openDialog() {
         FilterDialog dialog = FilterDialog.newInstance("Filter");
+        dialog.setListener(this);
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
+    @Override
+    public void setFiter(FilterOptions filterOptions) {
+        Toast.makeText(getContext(), "parksFragment", Toast.LENGTH_SHORT).show();
+        mapsFragment.setParksMarkersWithFilter(filterOptions);
+    }
 }
