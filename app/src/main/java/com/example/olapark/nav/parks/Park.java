@@ -31,7 +31,9 @@ public class Park {
 
     public float getMarkerColor() {
         float result;
-        if (occupation == Occupation.HIGH) {
+        if (occupation == Occupation.UNKNOWN) {
+            result = BitmapDescriptorFactory.HUE_BLUE;
+        } else if (occupation == Occupation.HIGH) {
             result = BitmapDescriptorFactory.HUE_RED;
         } else if (occupation == Occupation.MEDIUM) {
             result = BitmapDescriptorFactory.HUE_YELLOW;
@@ -51,5 +53,5 @@ public class Park {
 }
 
 enum Occupation{
-    LOW, MEDIUM, HIGH
+    UNKNOWN, LOW, MEDIUM, HIGH
 }
