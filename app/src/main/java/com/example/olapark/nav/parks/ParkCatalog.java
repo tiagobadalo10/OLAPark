@@ -20,6 +20,22 @@ public class ParkCatalog implements Iterable<Park>{
         listSize = 0;
     }
 
+    public void setParksCatalog(){
+
+        this.addPark(new Park(new LatLng(38.69770840269444, -9.2930477191839),
+                "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW,
+                2.0));
+        this.addPark(new Park(new LatLng(38.75073524758464, -9.154801959985548),
+                "Estacionamento Cidade Universitária - EMEL", Occupation.HIGH,
+                3.0));
+        this.addPark(new Park(new LatLng(38.75762912547855, -9.155196744003156),
+                "Estacionamento Campo Grande - EMEL", Occupation.HIGH,
+                0.40));
+        this.addPark(new Park(new LatLng(38.76234930369637, -9.161149889720422),
+                "Estacionamento Alvalade XXI Entrada Norte", Occupation.MEDIUM,
+                0.89));
+    }
+
     public void addPark(Park park) {
         parks.add(park);
         listSize++;

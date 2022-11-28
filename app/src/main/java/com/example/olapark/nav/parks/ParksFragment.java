@@ -20,6 +20,7 @@ import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentParksBinding;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ParksFragment extends Fragment implements FilterDialog.MyDialogListener {
 
@@ -31,6 +32,8 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
 
     private ArrayList<String> listItems = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
+
+    private ParkCatalog parks = new ParkCatalog();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,6 +53,13 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
 
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parks = mapsFragment.getParkCatalog();
+            }
+        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -59,7 +69,6 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
             @Override
             public boolean onQueryTextChange(String newText) {
                 listView.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), newText, Toast.LENGTH_SHORT).show();
                 addItems(newText);
                 return false;
             }
@@ -81,8 +90,14 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
 
     public void addItems(String text) {
         listItems.clear();
-        listItems.add("Clicked");
-        //TODO adicionar apenas os parques que contêm no nome text
+
+        for (Park park : parks) {
+            String name = park.getName();
+            if(name.toLowerCase().contains(text.toLowerCase())) {
+                listItems.add(name);
+            }
+        }
+
         adapter.notifyDataSetChanged();
     }
 
