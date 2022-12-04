@@ -33,7 +33,7 @@
     <ImageButton
         android:id="@+id/filter_button"
         android:layout_width="60dp"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="7dp"
         android:background="@drawable/searchview_background"

@@ -16,14 +16,19 @@ import com.example.olapark.databinding.FragmentLogoutBinding;
 
 public class LogoutFragment extends DialogFragment {
 
-    private FragmentLogoutBinding binding;
     private SharedPreferences sp;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentLogoutBinding.inflate(inflater, container, false);
-        sp = getActivity().getSharedPreferences("auto-login", getContext().MODE_PRIVATE);
+        FragmentLogoutBinding binding = FragmentLogoutBinding.inflate(inflater, container, false);
+        try{
+            sp = getActivity().getSharedPreferences("auto-login", getContext().MODE_PRIVATE);
+        }
+        catch(NullPointerException e){
+
+        }
+
 
         View v = binding.getRoot();
 

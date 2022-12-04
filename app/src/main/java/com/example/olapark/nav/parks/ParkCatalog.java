@@ -2,10 +2,7 @@ package com.example.olapark.nav.parks;
 
 import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -100,12 +97,7 @@ public class ParkCatalog implements Iterable<Park>{
         return res;
     }
 
-    /**
-     *
-     * @param p1
-     * @param p2
-     * @return distance between p1 and p2 in meters
-     */
+
     private float distance(LatLng p1, LatLng p2) {
         float res[] = new float[1];
         Location.distanceBetween(p1.latitude, p1.longitude, p2.latitude, p2.longitude, res);

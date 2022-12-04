@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         Button register = findViewById(R.id.new_register);
         register.setOnClickListener(v -> {
 
-            String email = "", password = "", username = "", phoneNumber = "", confirmPassword = "";
+            String email, password, username, phoneNumber, confirmPassword;
 
             EditText emailForm = findViewById(R.id.new_email);
             EditText usernameForm = findViewById(R.id.new_username);

@@ -1,7 +1,5 @@
 package com.example.olapark.nav.parks;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +9,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentParksBinding;
-
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class ParksFragment extends Fragment implements FilterDialog.MyDialogListener {
 
@@ -28,9 +22,8 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
     private View root;
     private MapsFragment mapsFragment;
     private ListView listView;
-    private SearchView searchView;
 
-    private ArrayList<String> listItems = new ArrayList<String>();
+    private ArrayList<String> listItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
     private ParkCatalog parks = new ParkCatalog();
@@ -48,17 +41,12 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
         mapsFragment = (MapsFragment) fm.findFragmentById(R.id.fragmentContainerView);
 
         listView = binding.getRoot().findViewById(R.id.list_view);
-        searchView = binding.getRoot().findViewById(R.id.searchView);
+        SearchView searchView = binding.getRoot().findViewById(R.id.searchView);
 
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItems);
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parks = mapsFragment.getParkCatalog();
-            }
-        });
+        searchView.setOnSearchClickListener(v -> parks = mapsFragment.getParkCatalog());
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -74,12 +62,9 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
             }
         });
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                listView.setVisibility(View.GONE);
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            listView.setVisibility(View.GONE);
+            return false;
         });
 
 
@@ -104,13 +89,9 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
     private void configureImageButton() {
         ImageButton btn = (ImageButton) root.findViewById(R.id.filter_button);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "You Clicked the button!", Toast.LENGTH_LONG).show();
-                openDialog();
-            }
+        btn.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "You Clicked the button!", Toast.LENGTH_LONG).show();
+            openDialog();
         });
     }
 

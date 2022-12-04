@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -19,9 +17,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.Toast;
-
 import com.example.olapark.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -32,10 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,17 +88,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
             alertDialog.setTitle("Enable Location");
             alertDialog.setMessage("Your locations setting is not enabled. Please enabled it in settings menu.");
-            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                }
+            alertDialog.setPositiveButton("Location Settings", (dialog, which) -> {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
             });
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+            alertDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
             AlertDialog alert = alertDialog.create();
             alert.show();
         }
@@ -174,18 +161,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                LatLng currPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            LatLng currPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
-                for (Park park : parks.filterParks(filterOptions, currPosition)) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(park.getLocation())
-                            .title(park.getName())
-                            .snippet("Occupation level: " + park.getOccupation())
-                            .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
-                }
+            for (Park park : parks.filterParks(filterOptions, currPosition)) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(park.getLocation())
+                        .title(park.getName())
+                        .snippet("Occupation level: " + park.getOccupation())
+                        .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
             }
         });
     }

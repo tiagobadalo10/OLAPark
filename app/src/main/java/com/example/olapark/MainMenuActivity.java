@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -15,14 +14,12 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,7 @@ public class MainMenuActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        sp = getSharedPreferences("auto-login", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("auto-login", MODE_PRIVATE);
         if(sp.contains("username"))
             updateUsername(navigationView, (String) sp.getAll().get("username"));
 

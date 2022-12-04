@@ -1,6 +1,5 @@
 package com.example.olapark.nav.parks;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.example.olapark.R;
 import com.google.android.material.slider.Slider;
-
-import java.util.Locale;
 
 public class FilterDialog extends DialogFragment {
 
@@ -54,33 +48,23 @@ public class FilterDialog extends DialogFragment {
         //Drop-down List
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         String[] items = new String[]{"All", "Low", "Medium", "High"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);
 
-        btn_apply.setOnClickListener(new View.OnClickListener() {
+        btn_apply.setOnClickListener(v -> {
+            String spinnerValue = spinner.getSelectedItem().toString().toUpperCase();
+            Occupation occupation = null;
 
-            @Override
-            public void onClick(View v) {
-                String spinnerValue = spinner.getSelectedItem().toString().toUpperCase();
-                Occupation occupation = null;
-
-                if (!spinnerValue.equals("ALL")) {
-                    occupation = Occupation.valueOf(spinnerValue);
-                }
-
-                FilterOptions filterOptions = new FilterOptions(slider.getValue(), occupation);
-                listener.setFiter(filterOptions);
-                dismiss();
+            if (!spinnerValue.equals("ALL")) {
+                occupation = Occupation.valueOf(spinnerValue);
             }
+
+            FilterOptions filterOptions = new FilterOptions(slider.getValue(), occupation);
+            listener.setFiter(filterOptions);
+            dismiss();
         });
 
-        btn_clear.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        btn_clear.setOnClickListener(v -> dismiss());
     }
 
     public void setListener(MyDialogListener listener) {

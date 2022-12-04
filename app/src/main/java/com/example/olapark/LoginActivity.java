@@ -3,7 +3,6 @@ package com.example.olapark;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.login);
         login.setOnClickListener(v -> {
 
-            String email = "", password = "";
+            String email, password;
 
             EditText emailForm = findViewById(R.id.email);
             EditText passwordForm = findViewById(R.id.password);
@@ -97,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         resetPassword.setOnClickListener(v -> {
 
             Intent intent;
-            intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+            intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
             startActivity(intent);
         });
     }

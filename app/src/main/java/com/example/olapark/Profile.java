@@ -1,20 +1,8 @@
 package com.example.olapark;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.media.ExifInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,15 +12,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.olapark.api.WebRequest;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.vansuita.pickimage.bean.PickResult;
@@ -40,23 +22,17 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.enums.EPickType;
 import com.vansuita.pickimage.listeners.IPickResult;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
 import cz.msebera.android.httpclient.Header;
 
 public class Profile extends AppCompatActivity implements IPickResult {
@@ -101,12 +77,7 @@ public class Profile extends AppCompatActivity implements IPickResult {
         df = new SimpleDateFormat("MM/dd/");
         df.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
 
-        addCar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PickImageDialog.build(setup).show(Profile.this);
-            }
-        });
+        addCar.setOnClickListener(v -> PickImageDialog.build(setup).show(Profile.this));
 
         setProfileInfo();
         createTableCars();
@@ -151,13 +122,10 @@ public class Profile extends AppCompatActivity implements IPickResult {
     }
 
     private void createTableCars() {
-        db.collection("users").document(username).collection("cars").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        createRowTableCars(document.getString("plate"), document.getString("type"));
-                    }
+        db.collection("users").document(username).collection("cars").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    createRowTableCars(document.getString("plate"), document.getString("type"));
                 }
             }
         });
@@ -165,18 +133,15 @@ public class Profile extends AppCompatActivity implements IPickResult {
 
     private void setProfileInfo() {
         db.collection("users").document(username).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            String email = documentSnapshot.getString("email");
-                            Long phoneNumber = documentSnapshot.getLong("phone-number");
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String email = documentSnapshot.getString("email");
+                        Long phoneNumber = documentSnapshot.getLong("phone-number");
 
-                            //set values
-                            usernameTextView.setText(username);
-                            emailTextView.setText(email);
-                            phoneNumberTextView.setText(String.valueOf(phoneNumber));
-                        }
+                        //set values
+                        usernameTextView.setText(username);
+                        emailTextView.setText(email);
+                        phoneNumberTextView.setText(String.valueOf(phoneNumber));
                     }
                 });
 
