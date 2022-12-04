@@ -39,9 +39,14 @@
     <string name="payments_col_value">Value</string>
     <string name="payments_col_method">Method</string>
 
-    <string name="profile_col_car_registration">Car Registration</string>
+    <string name="profile_col_car_plate">Plate</string>
     <string name="profile_col_car">Car</string>
 
+    <string name="modal_add_card_choose">Choose</string>
+    <string name="modal_add_card_cancel">Cancel</string>
+    <string name="modal_add_card_loading_image">Loading Image</string>
+    <string name="modal_add_card_camera">Camera</string>
+    <string name="modal_add_card_gallery">Gallery</string>
 
     <string-array name="languages">
         <item>English</item>

@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Profile">
 
+    <ProgressBar
+        android:id="@+id/progressBarCar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:indeterminateTint="@color/orange"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tableCards"
+        app:layout_constraintEnd_toStartOf="@+id/report_car" />
+
     <TextView
         android:id="@+id/username"
         android:layout_width="100dp"
@@ -90,14 +101,15 @@
         android:layout_width="37dp"
         android:layout_height="35dp"
         android:background="@color/white"
-        android:src="@drawable/camera"
+        android:src="@android:drawable/ic_input_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/change_email" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/report_car">
+        app:layout_constraintTop_toBottomOf="@+id/report_car"
+        android:id="@+id/tableCards">
         <TableRow
             android:background="@color/orange">
 
@@ -107,7 +119,7 @@
                 android:layout_weight="4"
                 android:gravity="center_horizontal"
                 android:padding="10sp"
-                android:text="@string/profile_col_car_registration"
+                android:text="@string/profile_col_car_plate"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -122,26 +134,6 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-        </TableRow>
-        <TableRow>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="33-AA-33"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="Opel Corsa"
-                android:textSize="16sp" />
         </TableRow>
     </TableLayout>
 
