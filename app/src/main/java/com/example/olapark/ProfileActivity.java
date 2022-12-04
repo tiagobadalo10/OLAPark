@@ -1,10 +1,14 @@
 package com.example.olapark;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -13,6 +17,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.olapark.api.WebRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -35,14 +41,14 @@ import java.util.Map;
 import java.util.TimeZone;
 import cz.msebera.android.httpclient.Header;
 
-public class Profile extends AppCompatActivity implements IPickResult {
+public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private String username;
     private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String choose, cancel, camera, gallery, loadingImage;
     private SharedPreferences sharedPreferences;
     private String SHARED_PREF_NAME ="user_pref";
-
     private TextView usernameTextView;
     private TextView emailTextView;
     private TextView phoneNumberTextView;
@@ -61,7 +67,6 @@ public class Profile extends AppCompatActivity implements IPickResult {
 
         username = sh.getString("username", null);
         db = FirebaseFirestore.getInstance();
-
         usernameTextView = (TextView) findViewById(R.id.username_txt);
         emailTextView = (TextView) findViewById(R.id.email_txt);
         phoneNumberTextView = (TextView) findViewById(R.id.phone_number_txt);
@@ -77,8 +82,9 @@ public class Profile extends AppCompatActivity implements IPickResult {
         df = new SimpleDateFormat("MM/dd/");
         df.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
 
-        addCar.setOnClickListener(v -> PickImageDialog.build(setup).show(Profile.this));
+        addCar.setOnClickListener(v -> PickImageDialog.build(setup).show(ProfileActivity.this));
 
+        editProfile();
         setProfileInfo();
         createTableCars();
     }
@@ -101,15 +107,15 @@ public class Profile extends AppCompatActivity implements IPickResult {
             .setCameraIcon(R.drawable.cam);
 
     private void createRowTableCars(String plate, String type) {
-        TableRow row = new TableRow(Profile.this);
+        TableRow row = new TableRow(ProfileActivity.this);
         TableRow.LayoutParams paramsExample = new TableRow.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT,0.4f);
 
-        TextView plateView = new TextView(Profile.this);
+        TextView plateView = new TextView(ProfileActivity.this);
         plateView.setText(plate);
         plateView.setTextSize(16);
         plateView.setLayoutParams(paramsExample);
 
-        TextView carView = new TextView(Profile.this);
+        TextView carView = new TextView(ProfileActivity.this);
         carView.setText(type);
         carView.setTextSize(16);
         carView.setLayoutParams(paramsExample);
@@ -145,6 +151,16 @@ public class Profile extends AppCompatActivity implements IPickResult {
                     }
                 });
 
+    }
+
+    private void editProfile(){
+        Button change_password = findViewById(R.id.edit_profile);
+        change_password.setOnClickListener(v -> {
+
+            Intent i = new Intent(this, EditProfileActivity.class);
+            startActivity(i);
+            finish();
+        });
     }
 
     @Override
@@ -201,11 +217,11 @@ public class Profile extends AppCompatActivity implements IPickResult {
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(Profile.this, "Some errors occurs while getting data from the car, try again!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProfileActivity.this, "Some errors occurs while getting data from the car, try again!", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
-            Toast.makeText(Profile.this, "Error uploading this image, try again!", Toast.LENGTH_LONG).show();
+            Toast.makeText(ProfileActivity.this, "Error uploading this image, try again!", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -59,7 +59,7 @@ public class MainMenuActivity extends AppCompatActivity {
         View view = navigationView.getHeaderView(0);
         CircleImageView nav_user = view.findViewById(R.id.person);
         nav_user.setOnClickListener(v -> {
-            Intent i = new Intent(this, Profile.class);
+            Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);
         });
     }

@@ -30,14 +30,19 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:label="Edit Profile">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ResetPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.OLAPark.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/Theme.OLAPark.NoActionBar"></activity>
         <activity
-            android:name=".Profile"
+            android:name=".ProfileActivity"
             android:exported="true"
             android:label="@string/title_activity_profile">
             <meta-data
@@ -48,13 +53,11 @@
             android:name=".MainMenuActivity"
             android:exported="true"
             android:label="@string/title_activity_main_menu"
-            android:theme="@style/Theme.OLAPark.NoActionBar"></activity>
+            android:theme="@style/Theme.OLAPark.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.OLAPark.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.OLAPark.NoActionBar"></activity>
         <activity
             android:name=".LoginActivity"
             android:exported="false"
