@@ -43,12 +43,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
-    private String username;
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String choose, cancel, camera, gallery, loadingImage;
     private SharedPreferences sharedPreferences;
-    private String SHARED_PREF_NAME ="user_pref";
+    private String SHARED_PREF_NAME = "user_pref";
     private TextView usernameTextView;
     private TextView emailTextView;
     private TextView phoneNumberTextView;
@@ -57,6 +56,9 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private ProgressBar progressBar;
     private DateFormat df;
     private Date date;
+    private String username;
+    private String email;
+    private Long phone_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +86,11 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
         addCar.setOnClickListener(v -> PickImageDialog.build(setup).show(ProfileActivity.this));
 
-        editProfile();
         setProfileInfo();
+
         createTableCars();
+
+        editProfile();
     }
 
     PickSetup setup = new PickSetup()
@@ -141,13 +145,13 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         db.collection("users").document(username).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        String email = documentSnapshot.getString("email");
-                        Long phoneNumber = documentSnapshot.getLong("phone-number");
+                        email = documentSnapshot.getString("email");
+                        phone_number = documentSnapshot.getLong("phone-number");
 
-                        //set values
+                        // Set values
                         usernameTextView.setText(username);
                         emailTextView.setText(email);
-                        phoneNumberTextView.setText(String.valueOf(phoneNumber));
+                        phoneNumberTextView.setText(String.valueOf(phone_number));
                     }
                 });
 
@@ -158,6 +162,11 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         change_password.setOnClickListener(v -> {
 
             Intent i = new Intent(this, EditProfileActivity.class);
+
+            i.putExtra("username", username);
+            i.putExtra("phone_number", phone_number);
+            i.putExtra("email", email);
+
             startActivity(i);
             finish();
         });

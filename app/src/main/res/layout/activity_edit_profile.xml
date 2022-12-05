@@ -34,11 +34,23 @@
         android:layout_width="103dp"
         android:layout_height="25dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="140dp"
         android:text="@string/username"
         android:textColor="#DD2C00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_username"
+        android:layout_width="335dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_username" />
 
     <TextView
         android:id="@+id/app_phone_number"
@@ -62,18 +74,6 @@
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_phone_number" />
-
-    <EditText
-        android:id="@+id/edit_username"
-        android:layout_width="335dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_username" />
 
     <Button
         android:id="@+id/edit_cancel"
