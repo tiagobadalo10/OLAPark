@@ -122,7 +122,11 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", current_username);
 
+        editor.commit();
+        
     }
 
 

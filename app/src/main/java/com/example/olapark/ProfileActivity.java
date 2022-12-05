@@ -232,4 +232,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
             Toast.makeText(ProfileActivity.this, "Error uploading this image, try again!", Toast.LENGTH_LONG).show();
         }
     }
+
+
 }
