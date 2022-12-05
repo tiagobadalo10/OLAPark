@@ -1,21 +1,35 @@
 package com.example.olapark;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private String username;
     private String email;
     private Long phone_number;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        db = FirebaseFirestore.getInstance();
 
         Bundle user_info = getIntent().getExtras();
         username = user_info.getString("username");
@@ -40,49 +54,76 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void cancelEdition(){
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
-        finish();
+
+        Button cancel = findViewById(R.id.edit_cancel);
+        cancel.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
+            finish();
+        });
     }
 
     private void saveEdition(){
 
-        String current_username, current_email;
-        Long current_phone_number;
+        Button save = findViewById(R.id.edit_save);
+        save.setOnClickListener(v -> {
 
-        EditText username_field = findViewById(R.id.edit_username);
-        EditText phone_number_field = findViewById(R.id.edit_phone_number);
-        EditText email_field = findViewById(R.id.edit_email_address);
+            String current_username, current_email;
+            Long current_phone_number;
 
-        current_username = String.valueOf(username_field.getText());
-        current_phone_number = Long.getLong(String.valueOf(phone_number_field.getText()));
-        current_email = String.valueOf(email_field.getText());
+            EditText username_field = findViewById(R.id.edit_username);
+            EditText phone_number_field = findViewById(R.id.edit_phone_number);
+            EditText email_field = findViewById(R.id.edit_email_address);
 
-        if(current_username != username){
-            changeUsername(current_username);
-        }
+            current_username = String.valueOf(username_field.getText());
+            current_phone_number = Long.getLong(String.valueOf(phone_number_field.getText()));
+            current_email = String.valueOf(email_field.getText());
 
-        if(current_phone_number != phone_number){
-            changePhoneNumber(current_phone_number);
-        }
+            if(current_username != username){
+                changeUsername(username, current_username);
+            }
 
-        if(current_email != email){
-            changeEmail();
-        }
+            if(current_phone_number != phone_number){
+                changePhoneNumber(username, current_phone_number);
+            }
+
+            if(current_email != email){
+                changeEmail();
+            }
+
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
+            finish();
+        });
+    }
+
+    // Database
+    private void changeUsername(String username, String current_username) {
+        db.collection("users").document(username).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                Map<String, Object> data = document.getData();
+
+                db.collection("users").document(current_username)
+                        .set(data).addOnCompleteListener(task1 -> {
+                            if(task.isSuccessful()){
+                                db.collection("users").document(username).delete();
+                            }
+                        });
+            }
+        });
 
 
     }
 
     // Database
-    private void changeUsername(String current_username) {
-    }
+    private void changePhoneNumber(String username, Long current_phone_number) {
 
-    // Database
-    private void changePhoneNumber(Long current_phone_number) {
     }
 
     // Auth and Database
     private void changeEmail() {
+        // get current user in FirebaseAuth
     }
 
 
