@@ -63,6 +63,7 @@ public class LogoutFragment extends DialogFragment {
     public void cleanSP(){
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("username");
+        editor.remove("password");
         editor.apply();
     }
 }

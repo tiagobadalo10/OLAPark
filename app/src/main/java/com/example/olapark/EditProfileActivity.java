@@ -26,7 +26,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private String username;
     private String email;
-    private String password;
     private Long phone_number;
     private FirebaseFirestore db;
     private SharedPreferences sp;
@@ -126,7 +125,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editor.putString("username", current_username);
 
         editor.commit();
-        
+
     }
 
 
@@ -141,7 +140,6 @@ public class EditProfileActivity extends AppCompatActivity {
         db.collection("users").document(username).update("email", current_email);
 
         String password = sp.getString("password", "");
-        System.out.println("PASSWORD - "+ password);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
