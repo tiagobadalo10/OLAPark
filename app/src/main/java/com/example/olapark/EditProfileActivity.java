@@ -4,12 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -21,8 +26,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private String username;
     private String email;
+    private String password;
     private Long phone_number;
     private FirebaseFirestore db;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         db = FirebaseFirestore.getInstance();
+        sp = getSharedPreferences("auto-login", MODE_PRIVATE);
 
         Bundle user_info = getIntent().getExtras();
         username = user_info.getString("username");
@@ -76,19 +84,21 @@ public class EditProfileActivity extends AppCompatActivity {
             EditText email_field = findViewById(R.id.edit_email_address);
 
             current_username = String.valueOf(username_field.getText());
-            current_phone_number = Long.getLong(String.valueOf(phone_number_field.getText()));
+            current_phone_number = Long.valueOf(String.valueOf(phone_number_field.getText()));
             current_email = String.valueOf(email_field.getText());
 
-            if(current_username != username){
+            if(!current_username.equals(username)){
+
                 changeUsername(username, current_username);
+                username = current_username;
             }
 
             if(current_phone_number != phone_number){
                 changePhoneNumber(username, current_phone_number);
             }
 
-            if(current_email != email){
-                changeEmail();
+            if(!current_email.equals(email)){
+                changeEmail(username, current_email);
             }
 
             Intent i = new Intent(this, ProfileActivity.class);
@@ -97,7 +107,6 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    // Database
     private void changeUsername(String username, String current_username) {
         db.collection("users").document(username).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
@@ -116,14 +125,27 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    // Database
+
     private void changePhoneNumber(String username, Long current_phone_number) {
+
+        db.collection("users").document(username).update("phone-number", current_phone_number);
 
     }
 
-    // Auth and Database
-    private void changeEmail() {
-        // get current user in FirebaseAuth
+    private void changeEmail(String username, String current_email) {
+
+        db.collection("users").document(username).update("email", current_email);
+
+        String password = sp.getString("password", "");
+        System.out.println("PASSWORD - "+ password);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        user.reauthenticate(credential).addOnCompleteListener(task -> {
+            FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+            user1.updateEmail(current_email);
+
+        });
     }
 
 

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
@@ -53,16 +53,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String finalEmail = email;
                 String finalUsername = username;
                 String finalPhoneNumber = phoneNumber;
+                String finalPassword = password;
 
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterActivity.this, task -> {
 
-                            if(!task.isSuccessful()){
-                                Toast.makeText(RegisterActivity.this, "Registration failed. " + task.getException(), Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                saveUserDataDB(finalEmail, finalUsername, Integer.parseInt(finalPhoneNumber));
-                                saveUserDataSP(finalUsername);
+                            if(task.isSuccessful()){
+                                saveUserDataDB(finalEmail, finalUsername, Long.parseLong(finalPhoneNumber));
+                                saveUserDataSP(finalUsername, finalPassword);
 
                                 Intent intent;
                                 intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
@@ -76,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void saveUserDataDB(String email, String username, int phoneNumber){
+    public void saveUserDataDB(String email, String username, Long phoneNumber){
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("phone-number", phoneNumber);
@@ -85,9 +83,10 @@ public class RegisterActivity extends AppCompatActivity {
                 .set(user);
     }
 
-    public void saveUserDataSP(String username){
+    public void saveUserDataSP(String username, String password){
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("username", username);
+        editor.putString("password", password);
 
         editor.commit();
     }

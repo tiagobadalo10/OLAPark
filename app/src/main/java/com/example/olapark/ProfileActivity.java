@@ -148,7 +148,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                         email = documentSnapshot.getString("email");
                         phone_number = documentSnapshot.getLong("phone-number");
 
-                        // Set values
                         usernameTextView.setText(username);
                         emailTextView.setText(email);
                         phoneNumberTextView.setText(String.valueOf(phone_number));

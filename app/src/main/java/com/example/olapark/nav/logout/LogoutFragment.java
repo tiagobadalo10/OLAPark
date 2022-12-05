@@ -13,6 +13,7 @@ import com.example.olapark.LoginActivity;
 import com.example.olapark.MainMenuActivity;
 import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentLogoutBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutFragment extends DialogFragment {
 
