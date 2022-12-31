@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="false"
-        android:indeterminateTint="@color/orange"
+        android:indeterminateTint="?attr/colorPrimary"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tableCards"
         app:layout_constraintEnd_toStartOf="@+id/report_car" />
@@ -24,7 +24,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
         android:text="@string/username"
-        android:textColor="@color/orange"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +43,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
         android:text="@string/mail"
-        android:textColor="@color/orange"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/username" />
 
@@ -62,7 +62,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
         android:text="@string/phone_number"
-        android:textColor="@color/orange"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/email" />
 
@@ -80,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:text="@string/edit_profile"
+        android:backgroundTint="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="25dp"
         app:layout_constraintTop_toBottomOf="@+id/phone_number" />
@@ -100,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@+id/report_car"
         android:id="@+id/tableCards">
         <TableRow
-            android:background="@color/orange">
+            android:background="?attr/colorPrimary">
 
             <TextView
                 android:layout_width="0dp"

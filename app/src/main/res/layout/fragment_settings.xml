@@ -6,27 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".nav.settings.SettingsFragment">
 
-    <Switch
-        android:id="@+id/night_mode_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="48dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/automatic_payment_switch" />
-
-    <TextView
-        android:id="@+id/night_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="68dp"
-        android:text="@string/night_mode"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/automatic_payment" />
-
     <TextView
         android:id="@+id/automatic_payment"
         android:layout_width="wrap_content"
@@ -45,18 +24,5 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="164dp" />
-
-    <TextView
-        android:id="@+id/delete_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="52dp"
-        android:text="@string/delete_account"
-        android:textColor="@color/orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
