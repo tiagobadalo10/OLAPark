@@ -32,43 +32,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="68dp"
         android:text="@string/automatic_payment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/language" />
+        tools:layout_editor_absoluteY="176dp" />
 
     <Switch
         android:id="@+id/automatic_payment_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="48dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/languages" />
-
-    <TextView
-        android:id="@+id/language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="88dp"
-        android:text="@string/language"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/languages"
-        android:layout_width="138dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="36dp"
-        android:contentDescription="@string/language"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/language"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="164dp" />
 
     <TextView
         android:id="@+id/delete_account"

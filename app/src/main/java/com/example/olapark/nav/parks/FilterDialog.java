@@ -21,7 +21,6 @@ public class FilterDialog extends DialogFragment {
     public static FilterDialog newInstance(String title) {
         FilterDialog yourDialogFragment = new FilterDialog();
 
-        //example of passing args
         Bundle args = new Bundle();
         args.putString("title", title);
         yourDialogFragment.setArguments(args);
@@ -40,8 +39,8 @@ public class FilterDialog extends DialogFragment {
     }
 
     private void configureImageButton() {
-        Button btn_apply = (Button) view.findViewById(R.id.apply_button);
-        Button btn_clear = (Button) view.findViewById(R.id.clear_button);
+        Button btn_apply = (Button) view.findViewById(R.id.directions_button);
+        Button btn_clear = (Button) view.findViewById(R.id.reserve_button);
 
         Slider slider = (Slider) view.findViewById(R.id.slider);
 

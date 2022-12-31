@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/slider" />
 
     <Button
-        android:id="@+id/apply_button"
+        android:id="@+id/directions_button"
         android:layout_width="81dp"
         android:layout_height="46dp"
         android:layout_marginTop="80dp"
@@ -69,11 +69,11 @@
         android:textColor="#D75413"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/clear_button"
+        app:layout_constraintStart_toEndOf="@+id/reserve_button"
         app:layout_constraintTop_toTopOf="@+id/spinner" />
 
     <Button
-        android:id="@+id/clear_button"
+        android:id="@+id/reserve_button"
         android:layout_width="238dp"
         android:layout_height="46dp"
         android:layout_marginTop="80dp"
@@ -82,7 +82,7 @@
         android:gravity="left"
         android:text="Clear filter options"
         android:textColor="#D75413"
-        app:layout_constraintEnd_toStartOf="@+id/apply_button"
+        app:layout_constraintEnd_toStartOf="@+id/directions_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/spinner" />

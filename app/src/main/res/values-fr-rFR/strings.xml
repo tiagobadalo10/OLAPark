@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">OLAPark</string>
+    <string name="mail">Adresse e-mail</string>
+    <string name="password">Mot de passe</string>
+    <string name="login">Connexion</string>
+    <string name="or">ou alors</string>
+    <string name="register">Enregistrer</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="confirm_password">Confirmez le mot de passe</string>
+    <string name="title_activity_main_menu">Activité du menu principal</string>
+    <string name="edit_profile">Editer le profil</string>
+    <string name="change_email">Changer l\'e-mail</string>
+    <string name="reset_password">Réinitialiser le mot de passe</string>
+    <string name="cancel_edit_profile">Annuler</string>
+    <string name="save_edit_profile">Sauver</string>
+    <string name="delete_account">Supprimer le compte</string>
+
+    <string name="automatic_payment">Paiement automatique</string>
+    <string name="night_mode">Mode nuit</string>
+
+    <string name="menu_parks">Parcs</string>
+    <string name="menu_payments">Paiements</string>
+    <string name="menu_report">Rapport</string>
+    <string name="menu_rewards">Récompenses</string>
+    <string name="menu_settings">Réglages</string>
+
+    <string name="report_question">Que signalez-vous?</string>
+    <string name="report_description">Description</string>
+
+    <string name="logout_question">Vous souhaitez quitter OLAPark?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+
+    <string name="number_OLAParkCoins">0</string>
+    <string name="OLAParkCoins">OLAParkCoins</string>
+    <string name="claim">Prétendre</string>
+
+    <string name="payments_col_park">Parc</string>
+    <string name="payments_col_date">Date</string>
+    <string name="payments_col_value">Évaluer</string>
+    <string name="payments_col_method">Méthode</string>
+
+    <string name="profile_col_car_plate">Plaque</string>
+    <string name="profile_col_car">AutoChoisir</string>
+
+    <string name="modal_add_card_choose">Choisir</string>
+    <string name="modal_add_card_cancel">Annuler</string>
+    <string name="modal_add_card_loading_image">Chargement de l\'image</string>
+    <string name="modal_add_card_camera">Caméra</string>
+    <string name="modal_add_card_gallery">Galerie</string>
+
+    <string-array name="report_options">
+        <item>Mauvais Stationnement</item>
+        <item>Vol</item>
+        <item>Accident</item>
+        <item>Mendiants</item>
+    </string-array>
+
+    <string name="title_activity_profile">Le Profil</string>
+    <string name="first_fragment_label">Premier Fragment</string>
+    <string name="second_fragment_label">Deuxième Fragment</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Précédent</string>
+
+    <string name="hello_first_fragment">Bonjour premier fragment</string>
+    <string name="hello_second_fragment">Bonjour deuxième fragment. Arg: %1$s</string>
+
+
+</resources>

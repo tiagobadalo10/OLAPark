@@ -30,7 +30,6 @@ public class LogoutFragment extends DialogFragment {
 
         }
 
-
         View v = binding.getRoot();
 
         // Handling of logout buttons

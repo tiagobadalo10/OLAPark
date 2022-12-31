@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">OLAPark</string>
+    <string name="mail">Indirizzo e-mail</string>
+    <string name="password">Parola d\'ordine</string>
+    <string name="login">Accesso</string>
+    <string name="or">o</string>
+    <string name="register">Registrati</string>
+    <string name="username">Nome utente</string>
+    <string name="phone_number">Numero di telefono</string>
+    <string name="confirm_password">Conferma password</string>
+    <string name="title_activity_main_menu">MainMenuAttività</string>
+    <string name="edit_profile">Modifica Profilo</string>
+    <string name="change_email">Cambia email</string>
+    <string name="reset_password">Resetta la password</string>
+    <string name="cancel_edit_profile">Annulla</string>
+    <string name="save_edit_profile">Salva</string>
+    <string name="delete_account">Eliminare l\'account</string>
+
+    <string name="automatic_payment">Pagamento automatico</string>
+    <string name="night_mode">Modalità notturna</string>
+
+    <string name="menu_parks">Parchi</string>
+    <string name="menu_payments">Pagamenti</string>
+    <string name="menu_report">Rapporto</string>
+    <string name="menu_rewards">Premi</string>
+    <string name="menu_settings">Impostazioni</string>
+
+    <string name="report_question">Cosa stai segnalando?</string>
+    <string name="report_description">Descrizione</string>
+
+    <string name="logout_question">Vuoi lasciare OLAPark?</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+
+    <string name="number_OLAParkCoins">0</string>
+    <string name="OLAParkCoins">OLAParkCoins</string>
+    <string name="claim">Reclamo</string>
+
+    <string name="payments_col_park">Parco</string>
+    <string name="payments_col_date">Data</string>
+    <string name="payments_col_value">Valore</string>
+    <string name="payments_col_method">Metodo</string>
+
+    <string name="profile_col_car_plate">Targa</string>
+    <string name="profile_col_car">Macchina</string>
+
+    <string name="modal_add_card_choose">Scegliere</string>
+    <string name="modal_add_card_cancel">Annulla</string>
+    <string name="modal_add_card_loading_image">Immagine in caricamento</string>
+    <string name="modal_add_card_camera">Telecamera</string>
+    <string name="modal_add_card_gallery">Galleria</string>
+
+    <string-array name="report_options">
+        <item>Parcheggio pessimo</item>
+        <item>Furto</item>
+        <item>Incidente</item>
+        <item>Mendicanti</item>
+    </string-array>
+
+    <string name="title_activity_profile">Profilo</string>
+    <string name="first_fragment_label">Primo Frammento</string>
+    <string name="second_fragment_label">Secondo Frammento</string>
+    <string name="next">Prossimo</string>
+    <string name="previous">Precedente</string>
+
+    <string name="hello_first_fragment">Ciao Primo Frammento</string>
+    <string name="hello_second_fragment">Ciao Secondo Frammento. Arg: %1$s</string>
+
+</resources>

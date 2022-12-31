@@ -84,8 +84,6 @@ public class ParkCatalog implements Iterable<Park>{
     public ArrayList<Park> filterParks(FilterOptions filterOptions, LatLng currLocation) {
         ArrayList<Park> res = new ArrayList<>();
 
-        Log.d("distances", filterOptions.toString());
-
         for (Park park : parks) {
             if (park.getOccupation() == filterOptions.occupation || filterOptions.occupation == null) {
                 if ((distance(park.getLocation(), currLocation) / 1000) <= filterOptions.range || filterOptions.range == 0) {

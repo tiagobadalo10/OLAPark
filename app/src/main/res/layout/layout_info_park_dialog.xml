@@ -32,33 +32,33 @@
         tools:layout_editor_absoluteY="128dp" />
 
     <Button
-        android:id="@+id/clear_button"
+        android:id="@+id/reserve_button"
         android:layout_width="110dp"
         android:layout_height="46dp"
         android:layout_marginTop="28dp"
         android:background="@android:color/transparent"
         android:text="Reserve"
         android:textColor="#D75413"
-        app:layout_constraintEnd_toStartOf="@+id/apply_button"
+        app:layout_constraintEnd_toStartOf="@+id/directions_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pricePerHour" />
 
     <Button
-        android:id="@+id/apply_button"
+        android:id="@+id/directions_button"
         android:layout_width="129dp"
         android:layout_height="46dp"
         android:layout_marginTop="28dp"
         android:background="@android:color/transparent"
         android:text="Directions"
         android:textColor="#D75413"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/report_button"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/clear_button"
+        app:layout_constraintStart_toEndOf="@+id/reserve_button"
         app:layout_constraintTop_toBottomOf="@+id/pricePerHour" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/report_button"
         android:layout_width="wrap_content"
         android:layout_height="46dp"
         android:layout_marginTop="28dp"
@@ -67,7 +67,7 @@
         android:textColor="#D75413"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/apply_button"
+        app:layout_constraintStart_toEndOf="@+id/directions_button"
         app:layout_constraintTop_toBottomOf="@+id/pricePerHour" />
 
     <TextView

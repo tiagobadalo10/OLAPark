@@ -16,7 +16,6 @@
     <string name="save_edit_profile">Save</string>
     <string name="delete_account">Delete Account</string>
 
-    <string name="language">Language</string>
     <string name="automatic_payment">Automatic Payment</string>
     <string name="night_mode">Night Mode</string>
 
@@ -50,21 +49,6 @@
     <string name="modal_add_card_loading_image">Loading Image</string>
     <string name="modal_add_card_camera">Camera</string>
     <string name="modal_add_card_gallery">Gallery</string>
-
-    <string-array name="languages">
-        <item>English</item>
-        <item>Deutsch</item>
-        <item>Français</item>
-        <item>Español</item>
-        <item>Italiano</item>
-        <item>Português</item>
-        <item>Русский</item>
-        <item>Dansk</item>
-        <item>Nederlands</item>
-        <item>Norsk</item>
-        <item>Polski</item>
-        <item>Svenska</item>
-    </string-array>
 
     <string-array name="report_options">
         <item>Bad Parking</item>

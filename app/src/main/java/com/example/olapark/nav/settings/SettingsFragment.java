@@ -38,13 +38,6 @@ public class SettingsFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         sp = getActivity().getSharedPreferences("auto-login", MODE_PRIVATE);
 
-        // Fill spinner with options
-        Spinner spinner = (Spinner) view.findViewById(R.id.languages);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.languages, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
         deleteAccount();
 
         return view;
