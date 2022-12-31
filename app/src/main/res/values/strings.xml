@@ -15,6 +15,7 @@
     <string name="cancel_edit_profile">Cancel</string>
     <string name="save_edit_profile">Save</string>
     <string name="delete_account">Delete Account</string>
+    <string name="forgetten_password">Forgotten password?</string>
 
     <string name="automatic_payment">Automatic Payment</string>
     <string name="night_mode">Night Mode</string>

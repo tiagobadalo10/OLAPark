@@ -55,9 +55,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+
     public void changeToProfile(NavigationView navigationView){
         View view = navigationView.getHeaderView(0);
-        CircleImageView nav_user = view.findViewById(R.id.person);
+        CircleImageView nav_user = view.findViewById(R.id.profile_picture);
         nav_user.setOnClickListener(v -> {
             Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);
