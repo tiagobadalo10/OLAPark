@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -58,7 +60,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void changeToProfile(NavigationView navigationView){
         View view = navigationView.getHeaderView(0);
-        CircleImageView nav_user = view.findViewById(R.id.profile_picture);
+        AppCompatImageView nav_user = view.findViewById(R.id.profile_picture);
         nav_user.setOnClickListener(v -> {
             Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);
