@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,6 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.olapark.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,8 +36,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
@@ -41,12 +53,19 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     private GoogleMapOptions options;
     private FilterOptions filterOptions;
     private ParkCatalog parks;
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private String url = "https://api.openweathermap.org/data/2.5/weather";
+    private String appid = "8ff90c2810d99aea0486ad49724d792a";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -125,6 +144,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
     private void checkRaining() {
 
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+
+            String tempUrl = url + "?lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&appid=" + appid;
+            System.out.println(tempUrl);
+            new StringRequest(Request.Method.POST, tempUrl,
+                    response -> System.out.println(response),
+                    error -> System.out.println("error")
+
+            );
+
+        });
+
 
 
     }
@@ -143,7 +177,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         Toast.makeText(getContext(), "mapsFragement", Toast.LENGTH_SHORT).show();
 
         mMap.clear();
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
