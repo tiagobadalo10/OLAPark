@@ -110,7 +110,7 @@
         app:srcCompat="@drawable/edit_profile_box_style" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/add"
         android:layout_width="61dp"
         android:layout_height="122dp"
         android:layout_marginTop="52dp"

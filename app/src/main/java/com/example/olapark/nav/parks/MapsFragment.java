@@ -34,7 +34,6 @@ import java.util.List;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
-
     private GoogleMap mMap;
     LocationManager locationManager;
     Context mContext;
@@ -109,6 +108,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         }
         mMap.setMyLocationEnabled(true);
 
+        checkRaining();
+
         setParkMarkers(parks);
 
         mMap.setOnMarkerClickListener(marker -> {
@@ -120,6 +121,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             openDialog(parks.findParkByLocation(marker.getPosition()));
             return false;
         });
+    }
+
+    private void checkRaining() {
+
+
+
     }
 
     public void setParkMarkers(ParkCatalog parks) {

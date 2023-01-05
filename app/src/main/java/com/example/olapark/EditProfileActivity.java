@@ -3,11 +3,20 @@ package com.example.olapark;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,7 +27,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +45,11 @@ public class EditProfileActivity extends AppCompatActivity {
     private Long phone_number;
     private FirebaseFirestore db;
     private SharedPreferences sp;
+    private FirebaseStorage fs;
+    private StorageReference profileRef;
+    final long MEGA_BYTE = 1024*1024;
+
+    private final int CAMERA_REQ_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +58,75 @@ public class EditProfileActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         sp = getSharedPreferences("auto-login", MODE_PRIVATE);
+        fs = FirebaseStorage.getInstance();
 
         Bundle user_info = getIntent().getExtras();
         username = user_info.getString("username");
         phone_number = user_info.getLong("phone_number");
         email = user_info.getString("email");
 
+        profileRef = fs.getReference(username + "/profilepicture.jpeg");
+
+        loadProfilePicture();
+
+        addProfilePicture();
+
         loadCurrentInfo(username, phone_number, email);
 
         cancelEdition();
 
         saveEdition();
+    }
+
+    private void loadProfilePicture() {
+
+        profileRef.getBytes(MEGA_BYTE).addOnSuccessListener(bytes -> {
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+            ImageView profile_picture = findViewById(R.id.edit_profile_picture);
+            profile_picture.setImageBitmap(bitmap);
+        });
+
+    }
+
+    private void addProfilePicture() {
+
+        ImageView add = findViewById(R.id.add);
+        add.setOnClickListener(v -> {
+
+            Intent open_camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(open_camera, CAMERA_REQ_CODE);
+
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+
+            if(requestCode == CAMERA_REQ_CODE){
+
+                Bitmap img = (Bitmap)data.getExtras().get("data");
+                Bitmap resize_img = resizeBitmap(img, 100 ,100);
+
+                ImageView profile_picture = findViewById(R.id.edit_profile_picture);
+                profile_picture.setImageBitmap(resize_img);
+            }
+
+        }
+    }
+
+    public int convertDpToPixels(int dp){
+        return (int)(dp * Resources.getSystem().getDisplayMetrics().density);
+    }
+
+    public Bitmap resizeBitmap(Bitmap bitmap, int toWidth, int toHeight){
+        return Bitmap.createScaledBitmap(bitmap, convertDpToPixels(toWidth), convertDpToPixels(toHeight), false);
     }
 
     private void loadCurrentInfo(String username, Long phone_number, String email) {
@@ -100,10 +179,25 @@ public class EditProfileActivity extends AppCompatActivity {
                 changeEmail(username, current_email);
             }
 
+            savePictureInStorage();
+
             Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);
             finish();
         });
+    }
+
+    private void savePictureInStorage() {
+
+        ImageView profile_picture = findViewById(R.id.edit_profile_picture);
+        Bitmap bitmap = ((BitmapDrawable)profile_picture.getDrawable()).getBitmap();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = profileRef.putBytes(data);
+        uploadTask.addOnCompleteListener((Activity) this, task -> Log.i("MA", "Upload Task Complete"));
     }
 
     private void changeUsername(String username, String current_username) {
