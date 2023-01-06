@@ -1,6 +1,5 @@
 package com.example.olapark;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.olapark.api.WebRequest;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.loopj.android.http.JsonHttpResponseHandler;

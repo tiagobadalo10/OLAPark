@@ -87,7 +87,7 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
     }
 
     private void configureImageButton() {
-        ImageButton btn = (ImageButton) root.findViewById(R.id.filter_button);
+        ImageButton btn = root.findViewById(R.id.filter_button);
 
         btn.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "You Clicked the button!", Toast.LENGTH_LONG).show();
@@ -108,7 +108,7 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
     }
 
     @Override
-    public void setFiter(FilterOptions filterOptions) {
+    public void setFilter(FilterOptions filterOptions) {
         Toast.makeText(getContext(), "parksFragment", Toast.LENGTH_SHORT).show();
         mapsFragment.setParksMarkersWithFilter(filterOptions);
     }

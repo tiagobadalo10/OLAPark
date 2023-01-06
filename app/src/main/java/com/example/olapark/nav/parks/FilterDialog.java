@@ -59,7 +59,7 @@ public class FilterDialog extends DialogFragment {
             }
 
             FilterOptions filterOptions = new FilterOptions(slider.getValue(), occupation);
-            listener.setFiter(filterOptions);
+            listener.setFilter(filterOptions);
             dismiss();
         });
 
@@ -71,7 +71,7 @@ public class FilterDialog extends DialogFragment {
     }
 
     public interface MyDialogListener{
-        void setFiter(FilterOptions filterOptions);
+        void setFilter(FilterOptions filterOptions);
     }
 
 }

@@ -10,22 +10,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.olapark.LoginActivity;
 import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentSettingsBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class SettingsFragment extends Fragment {

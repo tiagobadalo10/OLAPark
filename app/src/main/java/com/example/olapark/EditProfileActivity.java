@@ -1,6 +1,5 @@
 package com.example.olapark;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -9,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,24 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.HashMap;
+
 import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -155,14 +148,14 @@ public class EditProfileActivity extends AppCompatActivity {
         save.setOnClickListener(v -> {
 
             String current_username, current_email;
-            Long current_phone_number;
+            long current_phone_number;
 
             EditText username_field = findViewById(R.id.edit_username);
             EditText phone_number_field = findViewById(R.id.edit_phone_number);
             EditText email_field = findViewById(R.id.edit_email_address);
 
             current_username = String.valueOf(username_field.getText());
-            current_phone_number = Long.valueOf(String.valueOf(phone_number_field.getText()));
+            current_phone_number = Long.parseLong(String.valueOf(phone_number_field.getText()));
             current_email = String.valueOf(email_field.getText());
 
             if(!current_username.equals(username)){
