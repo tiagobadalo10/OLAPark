@@ -1,8 +1,12 @@
 package com.example.olapark.nav.parks;
 
+import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,19 +24,23 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.olapark.ActivityTransitionReceiver;
 import com.example.olapark.R;
 import com.example.olapark.ReportActivity;
+import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.ActivityTransition;
+import com.google.android.gms.location.ActivityTransitionEvent;
+import com.google.android.gms.location.ActivityTransitionRequest;
+import com.google.android.gms.location.ActivityTransitionResult;
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.StyleSpan;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
 
 public class InfoParkDialog extends DialogFragment {
 
@@ -60,13 +68,14 @@ public class InfoParkDialog extends DialogFragment {
         view = inflater.inflate(R.layout.layout_info_park_dialog, container, false);
 
         configureImageButton();
-        report();
+        requestTransactionsUpdates();
+        createReport();
         getDirections();
 
         return view;
     }
 
-    private void report() {
+    private void createReport() {
 
         Button report = view.findViewById(R.id.report_button);
         report.setOnClickListener(v -> {
@@ -76,13 +85,14 @@ public class InfoParkDialog extends DialogFragment {
         });
     }
 
-    private void getDirections(){
+    private void getDirections() {
 
         Button directions = view.findViewById(R.id.directions_button);
         directions.setOnClickListener(v -> {
             // Testing purpose
-            String tempUrl = url + currentPosition.latitude + "%2C" + currentPosition.longitude + "%7C" + 38.87736239241292 + "%2C" + -7.168426187583643
-            + "%7C" + 38.883333 + "%2C" + -7.162912 + "&key=" + key;
+            String tempUrl = url + currentPosition.latitude + "%2C" + currentPosition.longitude +
+                    "%7C" + 38.87736239241292 + "%2C" + -7.168426187583643
+                    + "%7C" + 38.883333 + "%2C" + -7.162912 + "&key=" + key;
             System.out.println(tempUrl);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl,
                     response -> {
@@ -90,7 +100,7 @@ public class InfoParkDialog extends DialogFragment {
                             JSONObject jsonResponse = new JSONObject(response);
                             JSONArray jsonArray = jsonResponse.getJSONArray("snappedPoints");
                             ArrayList<LatLng> points = new ArrayList<>();
-                            for(int x = 0; x < jsonArray.length(); x++){
+                            for (int x = 0; x < jsonArray.length(); x++) {
                                 JSONObject jsonObjectLocation = jsonArray.getJSONObject(x);
                                 JSONObject jsonLocation = jsonObjectLocation.getJSONObject("location");
                                 points.add(new LatLng((Double) jsonLocation.get("latitude"), (Double) jsonLocation.get("longitude")));
@@ -116,6 +126,43 @@ public class InfoParkDialog extends DialogFragment {
 
         });
 
+
+    }
+
+    private void requestTransactionsUpdates() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACTIVITY_RECOGNITION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        ActivityTransitionRequest request = buildTransitionRequest();
+
+        Intent intent = new Intent(getContext(), ActivityTransitionReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        ActivityRecognition.getClient(getContext())
+                .requestActivityTransitionUpdates(request, pendingIntent);
+
+    }
+
+    private ActivityTransitionRequest buildTransitionRequest(){
+
+        List<ActivityTransition> transitions = new ArrayList<>();
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        return new ActivityTransitionRequest(transitions);
 
     }
 
@@ -146,4 +193,7 @@ public class InfoParkDialog extends DialogFragment {
         this.currentPosition = currentPosition;
 
     }
+
 }
+
+

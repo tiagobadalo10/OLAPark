@@ -225,7 +225,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
-
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
