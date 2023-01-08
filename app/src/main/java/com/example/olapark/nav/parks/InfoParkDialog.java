@@ -68,7 +68,6 @@ public class InfoParkDialog extends DialogFragment {
         view = inflater.inflate(R.layout.layout_info_park_dialog, container, false);
 
         configureImageButton();
-        requestTransactionsUpdates();
         createReport();
         getDirections();
 
@@ -126,43 +125,6 @@ public class InfoParkDialog extends DialogFragment {
 
         });
 
-
-    }
-
-    private void requestTransactionsUpdates() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACTIVITY_RECOGNITION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        ActivityTransitionRequest request = buildTransitionRequest();
-
-        Intent intent = new Intent(getContext(), ActivityTransitionReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        ActivityRecognition.getClient(getContext())
-                .requestActivityTransitionUpdates(request, pendingIntent);
-
-    }
-
-    private ActivityTransitionRequest buildTransitionRequest(){
-
-        List<ActivityTransition> transitions = new ArrayList<>();
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-
-        return new ActivityTransitionRequest(transitions);
 
     }
 
