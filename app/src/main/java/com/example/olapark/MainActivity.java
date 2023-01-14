@@ -42,14 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private FirebaseFirestore db;
 
-    private PendingIntent mPendingIntent;
-    private ActivityTransitionReceiver mTransitionsReceiver;
-
-    private PendingIntent pendingIntent;
-    private BroadcastReceiver broadcastReceiver;
-    private ActivityRecognitionClient activityRecognitionClient;
-    private boolean wasDriving = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         setSettings();
-
-        requestTransactionsUpdates();
 
         new Handler().postDelayed(() -> {
             Intent i;
@@ -80,133 +70,6 @@ public class MainActivity extends AppCompatActivity {
         }, 5000);
 
     }
-
-    private void requestTransactionsUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        List transitions = new ArrayList<>();
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-
-        ActivityTransitionRequest request = new ActivityTransitionRequest(transitions);
-
-        Intent intent = new Intent(ActivityTransitionReceiver.TRANSITION_ACTION_RECEIVER);
-        mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        mTransitionsReceiver = new ActivityTransitionReceiver();
-        registerReceiver(mTransitionsReceiver,
-                new IntentFilter(ActivityTransitionReceiver.TRANSITION_ACTION_RECEIVER));
-
-        Task<Void> task =
-                ActivityRecognition.getClient(this)
-                        .requestActivityTransitionUpdates(request, mPendingIntent);
-        task.addOnSuccessListener(
-                result -> {
-                    Log.d("ActivityRecognition", "Transitions Api registered with success");
-                });
-        task.addOnFailureListener(
-                e -> {
-                    Log.d("ActivityRecognition", "Transitions Api could NOT be registered ${e.localizedMessage}");
-                });
-
-    }
-
-
-    public void sendWarning() {
-
-        List<ActivityTransition> transitions = new ArrayList<>();
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-
-        ActivityTransitionRequest request = new ActivityTransitionRequest(transitions);
-
-        Intent intent = new Intent(this, TransitionsReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Task<Void> task = activityRecognitionClient.requestActivityTransitionUpdates(request, pendingIntent);
-        task.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // Activity transition updates were successfully registered
-                Log.d("MainActivity", "Successfully registered for activity transitions");
-            }
-        });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                // Registration failed
-                Log.e("MainActivity", "Activity transition updates registration failed: " + e.getLocalizedMessage());
-            }
-        });
-
-        broadcastReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra("transitionType")) {
-                    int transitionType = intent.getIntExtra("transitionType", -1);
-                    if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER) {
-                        // Device has entered a vehicle
-                        wasDriving = true;
-                    } else if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        // Device has exited a vehicle
-                        if (wasDriving) {
-                            // Send event
-                            Log.d("MainActivity", "Stopped Driving");
-                            wasDriving = false;
-                        }
-                }
-            }
-        };
-
-        registerReceiver(broadcastReceiver, new IntentFilter("activity_transition"));
-    }
-
 
     private void setSettings() {
 
