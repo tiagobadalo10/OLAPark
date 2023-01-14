@@ -2,6 +2,8 @@ package com.example.olapark;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -19,9 +21,12 @@ import android.util.Log;
 
 
 import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionRequest;
 import com.google.android.gms.location.DetectedActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,13 +37,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     private FirebaseFirestore db;
 
     private PendingIntent mPendingIntent;
     private ActivityTransitionReceiver mTransitionsReceiver;
+
+    private PendingIntent pendingIntent;
+    private BroadcastReceiver broadcastReceiver;
+    private ActivityRecognitionClient activityRecognitionClient;
+    private boolean wasDriving = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +135,78 @@ public class MainActivity extends AppCompatActivity  {
                 });
 
     }
+
+
+    public void sendWarning() {
+
+        List<ActivityTransition> transitions = new ArrayList<>();
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        ActivityTransitionRequest request = new ActivityTransitionRequest(transitions);
+
+        Intent intent = new Intent(this, TransitionsReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Task<Void> task = activityRecognitionClient.requestActivityTransitionUpdates(request, pendingIntent);
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Activity transition updates were successfully registered
+                Log.d("MainActivity", "Successfully registered for activity transitions");
+            }
+        });
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                // Registration failed
+                Log.e("MainActivity", "Activity transition updates registration failed: " + e.getLocalizedMessage());
+            }
+        });
+
+        broadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.hasExtra("transitionType")) {
+                    int transitionType = intent.getIntExtra("transitionType", -1);
+                    if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER) {
+                        // Device has entered a vehicle
+                        wasDriving = true;
+                    } else if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        // Device has exited a vehicle
+                        if (wasDriving) {
+                            // Send event
+                            Log.d("MainActivity", "Stopped Driving");
+                            wasDriving = false;
+                        }
+                }
+            }
+        };
+
+        registerReceiver(broadcastReceiver, new IntentFilter("activity_transition"));
+    }
+
 
     private void setSettings() {
 
