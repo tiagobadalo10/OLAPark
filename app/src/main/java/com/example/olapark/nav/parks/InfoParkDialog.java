@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -34,6 +36,7 @@ import com.google.android.gms.location.ActivityTransitionRequest;
 import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
@@ -51,6 +54,7 @@ public class InfoParkDialog extends DialogFragment {
 
     private String url = "https://roads.googleapis.com/v1/snapToRoads?interpolate=true&path=";
     private String key = "AIzaSyBx64LbDqZGT7otVA_QFu_QHJAHeA7A8kQ";
+    private MapsFragment mapFragment;
 
     public static InfoParkDialog newInstance(String title) {
         InfoParkDialog yourDialogFragment = new InfoParkDialog();
@@ -88,40 +92,11 @@ public class InfoParkDialog extends DialogFragment {
 
         Button directions = view.findViewById(R.id.directions_button);
         directions.setOnClickListener(v -> {
-            // Testing purpose
-            String tempUrl = url + currentPosition.latitude + "%2C" + currentPosition.longitude +
-                    "%7C" + 38.87736239241292 + "%2C" + -7.168426187583643
-                    + "%7C" + 38.883333 + "%2C" + -7.162912 + "&key=" + key;
-            System.out.println(tempUrl);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl,
-                    response -> {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            JSONArray jsonArray = jsonResponse.getJSONArray("snappedPoints");
-                            ArrayList<LatLng> points = new ArrayList<>();
-                            for (int x = 0; x < jsonArray.length(); x++) {
-                                JSONObject jsonObjectLocation = jsonArray.getJSONObject(x);
-                                JSONObject jsonLocation = jsonObjectLocation.getJSONObject("location");
-                                points.add(new LatLng((Double) jsonLocation.get("latitude"), (Double) jsonLocation.get("longitude")));
-                            }
 
-                            PolylineOptions polylineOptions = new PolylineOptions();
-                            polylineOptions.addAll(points);
-                            map.addPolyline(polylineOptions.color(Color.BLUE));
+            Toast.makeText(getContext(), "helloooo", Toast.LENGTH_SHORT).show();
 
-                            FragmentManager manager = getFragmentManager();
-                            FragmentTransaction trans = manager.beginTransaction();
-                            trans.remove(this);
-                            trans.commit();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    },
-                    System.out::println);
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            requestQueue.add(stringRequest);
+            this.mapFragment.direction(this.park.getLocation());
+            dismiss();
 
         });
 
@@ -138,6 +113,8 @@ public class InfoParkDialog extends DialogFragment {
     public void setMap(GoogleMap mMap) {
         this.map = mMap;
     }
+
+    public void setMapFragment(MapsFragment fragment) {this.mapFragment = fragment;}
 
     private void configureImageButton() {
 
