@@ -28,7 +28,7 @@ public class TransitionsReceiver extends BroadcastReceiver {
                         " (" + toTransitionType(event.getTransitionType()) + ")" + "   " +
                         new SimpleDateFormat("HH:mm:ss", Locale.US).format(new Date());
 
-                Toast.makeText(context, info, Toast.LENGTH_LONG).show();
+                Log.d("transitions", info);
             }
         }
     }

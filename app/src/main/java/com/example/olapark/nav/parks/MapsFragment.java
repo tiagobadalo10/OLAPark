@@ -115,6 +115,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         options = new GoogleMapOptions();
         mapFragment.newInstance(options);
+
+        FragmentHelper.getInstance().setFragment(this);
     }
 
     private void isLocationEnabled() {
