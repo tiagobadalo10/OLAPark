@@ -67,5 +67,10 @@
     <string name="hello_first_fragment">Olá primeiro fragmento</string>
     <string name="hello_second_fragment">Olá segundo fragmento. Arg: %1$s</string>
 
+    <string name="euros"> € </string>
+    <string name="balance"> Saldo </string>
+    <string name="add_money">Depositar dinheiro</string>
+    <string name="raise_money"> Levantar dinheiro </string>
+    <string name="payment_history">Consultar histórico de pagamentos</string>
 
 </resources>

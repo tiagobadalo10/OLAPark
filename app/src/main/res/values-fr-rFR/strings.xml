@@ -67,5 +67,10 @@
     <string name="hello_first_fragment">Bonjour premier fragment</string>
     <string name="hello_second_fragment">Bonjour deuxième fragment. Arg: %1$s</string>
 
+    <string name="euros"> € </string>
+    <string name="balance"> Solde </string>
+    <string name="add_money">Dépôt en espèces</string>
+    <string name="raise_money"> Amasser de l\'argent </string>
+    <string name="payment_history">Vérifier l\'historique des paiements</string>
 
 </resources>

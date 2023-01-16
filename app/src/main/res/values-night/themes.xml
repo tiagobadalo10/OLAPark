@@ -9,6 +9,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+
+        <item name="colorFeature">@color/white</item>
+
     </style>
 
     <style name="Theme.OLAPark.NoActionBar">

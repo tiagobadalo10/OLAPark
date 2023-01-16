@@ -1,136 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".nav.payments.PaymentsFragment">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TableRow
-            android:background="?attr/colorPrimary">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="@string/payments_col_park"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/raise_money_form"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="84dp"
+        android:src="@drawable/payments_features_style"
+        app:layout_constraintEnd_toStartOf="@+id/check_payment_history_form"
+        app:layout_constraintStart_toEndOf="@+id/deposit_money_form"
+        app:layout_constraintTop_toBottomOf="@+id/balance_form" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="@string/payments_col_date"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/balance_form"
+        android:layout_width="307dp"
+        android:layout_height="235dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="52dp"
+        android:src="@drawable/payments_features_style"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="@string/payments_col_value"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/check_payment_history_form"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="28dp"
+        android:src="@drawable/payments_features_style"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/balance_form" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="@string/payments_col_method"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </TableRow>
-        <TableRow>
+    <ImageView
+        android:id="@+id/history_symbol"
+        android:layout_width="37dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_baseline_history_24"
+        app:layout_constraintEnd_toEndOf="@+id/check_payment_history_form"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="@+id/check_payment_history_form"
+        app:layout_constraintTop_toTopOf="@+id/check_payment_history_form" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="Park Demo 1"
-                android:textSize="16sp" />
+    <TextView
+        android:id="@+id/payment_history"
+        android:layout_width="92dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="@string/payment_history"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/check_payment_history_form"
+        app:layout_constraintStart_toStartOf="@+id/check_payment_history_form"
+        app:layout_constraintTop_toBottomOf="@+id/history_symbol" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="22/11/2022 22:10"
-                android:textSize="16sp" />
+    <ImageView
+        android:id="@+id/deposit_money_form"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="84dp"
+        android:src="@drawable/payments_features_style"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/balance_form" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="3,53€"
-                android:textSize="16sp" />
+    <TextView
+        android:id="@+id/balance_amount"
+        android:layout_width="142dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="68dp"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="@+id/balance_form"
+        app:layout_constraintTop_toBottomOf="@+id/balance" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="Paypal"
-                android:textSize="16sp" />
-        </TableRow>
-        <TableRow android:background="#d1d1d1">
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/balance"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/balance_form" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="Park Demo 2"
-                android:textSize="16sp" />
+    <TextView
+        android:id="@+id/euros"
+        android:layout_width="95dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/euros"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="@+id/balance_form"
+        app:layout_constraintTop_toBottomOf="@+id/balance" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="25/11/2022 11:04"
-                android:textSize="16sp" />
+    <TextView
+        android:id="@+id/add_money"
+        android:layout_width="85dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="@string/add_money"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/deposit_money_form"
+        app:layout_constraintStart_toStartOf="@+id/deposit_money_form"
+        app:layout_constraintTop_toBottomOf="@+id/cash_deposit_symbol" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="6,21€"
-                android:textSize="16sp" />
+    <ImageView
+        android:id="@+id/cash_deposit_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/deposit_money"
+        app:layout_constraintEnd_toEndOf="@+id/deposit_money_form"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="@+id/deposit_money_form"
+        app:layout_constraintTop_toTopOf="@+id/deposit_money_form" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="Balance"
-                android:textSize="16sp" />
-        </TableRow>
-    </TableLayout>
+    <ImageView
+        android:id="@+id/cash_raise_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/raise_money"
+        app:layout_constraintEnd_toEndOf="@+id/raise_money_form"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="@+id/raise_money_form"
+        app:layout_constraintTop_toTopOf="@+id/raise_money_form" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/raise_money"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/raise_money"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/raise_money_form"
+        app:layout_constraintStart_toStartOf="@+id/raise_money_form"
+        app:layout_constraintTop_toBottomOf="@+id/cash_raise_symbol" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
