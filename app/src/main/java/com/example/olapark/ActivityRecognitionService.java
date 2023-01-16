@@ -26,17 +26,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.olapark.nav.parks.FragmentHelper;
-import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
+import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionRequest;
+import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ActivityRecognitionService extends Service {
 
@@ -66,6 +70,8 @@ public class ActivityRecognitionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
 
+        ActivityRecognitionService service = this;
+
         new Thread(
                 new Runnable() {
                     @Override
@@ -94,14 +100,15 @@ public class ActivityRecognitionService extends Service {
                                 .build());
 
                         // TODO: Initialize PendingIntent that will be triggered when a activity transition occurs.
-                        Intent intentTransitions = new Intent(TRANSITIONS_RECEIVER_ACTION);
+                        Intent intent = new Intent(TRANSITIONS_RECEIVER_ACTION);
                         mActivityTransitionsPendingIntent =
-                                PendingIntent.getBroadcast(getApplicationContext(), 0, intentTransitions, 0);
+                                PendingIntent.getBroadcast(getApplicationContext(), 0, intent
+                                        , 0);
 
                         // TODO: Create a BroadcastReceiver to listen for activity transitions.
                         // The receiver listens for the PendingIntent above that is triggered by the system when an
                         // activity transition occurs.
-                        mTransitionsReceiver = new TransitionsReceiver();
+                        mTransitionsReceiver = new TransitionsReceiver(service);
 
                         // TODO: Enable/Disable activity tracking and ask for permissions if needed.
                         if (activityRecognitionPermissionApproved()) {
@@ -115,8 +122,7 @@ public class ActivityRecognitionService extends Service {
                         while (true) {
                             Log.e("Service", "Service is running");
 
-                            MapsFragment mapsFragment = FragmentHelper.getInstance().getFragment();
-                            if (mapsFragment != null && mapsFragment.isVisible()) {
+                            if (FragmentHelper.getInstance().getFragment().isVisible()) {
                                 Log.e("Service", "Fragment is visible");
                             }
 
@@ -152,22 +158,6 @@ public class ActivityRecognitionService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void startForeground() {
-        Intent notificationIntent = new Intent(this, MainMenuActivity.class);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
-
-        startForeground(NOTIF_ID, new NotificationCompat.Builder(this,
-                CHANNEL_ID) // don't forget create a notification channel first
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.logo)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Service is running background")
-                .setContentIntent(pendingIntent)
-                .build());
-    }
-
     private void disableActivityTransitions() {
         // TODO: Stop listening for activity changes.
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
@@ -185,17 +175,20 @@ public class ActivityRecognitionService extends Service {
                     @Override
                     public void onSuccess(Void aVoid) {
                         activityTrackingEnabled = false;
-                        Log.d("Service", "Transitions successfully unregistered.");
+                        Toast.makeText(getApplicationContext(),
+                                "Transitions successfully unregistered.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("Service", "Transitions could not be unregistered.");
+                        Toast.makeText(getApplicationContext(),
+                                "Transitions could not be unregistered.",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
-
 
     /**
      * Registers callbacks for {@link ActivityTransition} events via a custom
@@ -224,8 +217,9 @@ public class ActivityRecognitionService extends Service {
                     @Override
                     public void onSuccess(Void result) {
                         activityTrackingEnabled = true;
+                        Toast.makeText(getApplicationContext(), "Transitions Api was successfully registered."
+                                , Toast.LENGTH_SHORT).show();
                         Log.d("Service", "Transitions Api was successfully registered.");
-
                     }
                 });
 
@@ -233,7 +227,9 @@ public class ActivityRecognitionService extends Service {
                 new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("Service", "Transitions Api could NOT be registered.");
+                        Toast.makeText(getApplicationContext(),
+                                "Transitions Api could NOT be registered."
+                                , Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -251,4 +247,25 @@ public class ActivityRecognitionService extends Service {
             return true;
         }
     }
+
+    public void sendNotificationTransitions(String info) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_LOW
+            );
+            getSystemService(NotificationManager.class).createNotificationChannel(channel);
+
+            Intent notificationIntent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+            Notification.Builder notification = new Notification.Builder(this, CHANNEL_ID)
+                    .setContentText(info)
+                    .setContentTitle("Transitions")
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.drawable.logo);
+
+            startForeground(NOTIF_ID, notification.build());
+        }
+    }
+
 }

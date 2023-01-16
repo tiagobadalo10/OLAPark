@@ -148,7 +148,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // Permissão já concedida
-            //startActivityRecognitionService();
         } else {
             EasyPermissions.requestPermissions(this, "A permissão é necessária para rastrear sua atividade física",
                     REQUEST_ACTIVITY_RECOGNITION, perms);

@@ -172,9 +172,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         }
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             currPosition = new LatLng(location.getLatitude(), location.getLongitude());
-
         });
     }
+
+    public LatLng getCurrPosition() {
+        updateCurrentPosition();
+        return currPosition;
+    }
+
 
     private void checkRaining() {
 
@@ -411,8 +416,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         return decoded;
     }
-
-
 
 
 }

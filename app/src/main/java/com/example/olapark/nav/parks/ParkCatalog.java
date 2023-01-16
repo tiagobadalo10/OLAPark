@@ -94,6 +94,14 @@ public class ParkCatalog implements Iterable<Park>{
         return res;
     }
 
+    public List<LatLng> getAllLocations() {
+        List<LatLng> locations = new ArrayList<>();
+        for (Park park : parks) {
+            locations.add(park.getLocation());
+        }
+        return locations;
+    }
+
 
     private float distance(LatLng p1, LatLng p2) {
         float res[] = new float[1];
