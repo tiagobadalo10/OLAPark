@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        setSettings();
-
         new Handler().postDelayed(() -> {
             Intent i;
             sp = getSharedPreferences("auto-login", MODE_PRIVATE);
@@ -47,42 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         }, 5000);
 
-    }
-
-    private void setSettings() {
-
-        HashMap<String, Boolean> settings = new HashMap<>();
-
-        db.collection("settings").document("settings").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-
-                DocumentSnapshot document = task.getResult();
-                // existing settings
-                if (document.exists()) {
-                    settings.put("auto-payment", document.getBoolean("auto-payment"));
-                }
-                // default settings
-                else {
-                    settings.put("auto-payment", false);
-                }
-
-                saveSettingsSP(settings);
-            }
-        });
-
-
-    }
-
-    private void saveSettingsSP(HashMap<String, Boolean> settings) {
-
-        sp = getSharedPreferences("settings", MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sp.edit();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            settings.forEach(editor::putBoolean);
-        }
-
-        editor.commit();
     }
 
 }

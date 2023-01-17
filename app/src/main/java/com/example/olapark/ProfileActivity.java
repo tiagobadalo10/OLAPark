@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private TextView usernameTextView;
     private TextView emailTextView;
     private TextView phoneNumberTextView;
-    private ImageButton addCar;
+    private Button addCar;
     private String compressed;
     private ProgressBar progressBar;
     private DateFormat df;
@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         usernameTextView = findViewById(R.id.username_txt);
         emailTextView = findViewById(R.id.email_txt);
         phoneNumberTextView = findViewById(R.id.phone_number_txt);
-        addCar = findViewById(R.id.report_car);
+        addCar = findViewById(R.id.add_car);
         choose = getString(R.string.modal_add_card_choose);
         cancel = getString(R.string.modal_add_card_cancel);
         camera = getString(R.string.modal_add_card_camera);

@@ -6,164 +6,157 @@
     android:layout_height="match_parent"
     tools:context=".nav.rewards.RewardsFragment">
 
-    <TextView
-        android:id="@+id/OLAParkCoins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="96dp"
-        android:text="@string/OLAParkCoins"
-        app:layout_constraintStart_toEndOf="@+id/number_OLAParkCoins"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/number_OLAParkCoins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="96dp"
-        android:text="@string/number_OLAParkCoins"
+        android:id="@+id/third_reward_description"
+        android:layout_width="182dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:text="@string/third_reward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/second_reward_description" />
+
+    <TextView
+        android:id="@+id/second_reward_description"
+        android:layout_width="182dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="28dp"
+        android:gravity="center"
+        android:text="@string/second_reward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_reward_description" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="52dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toEndOf="@+id/coins5"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
+
+    <TextView
+        android:id="@+id/coins5"
+        android:layout_width="31dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="15"
+        android:gravity="right"
+        android:text="15"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        tools:text="15" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="52dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toEndOf="@+id/coins4"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/coins4"
+        android:layout_width="31dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="10"
+        android:gravity="right"
+        android:text="10"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/coins2"
+        android:layout_width="31dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="5"
+        android:gravity="right"
+        android:text="5"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:text="5" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="52dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toEndOf="@+id/coins2"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <TextView
+        android:id="@+id/coins"
+        android:layout_width="52dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="100dp"
+        android:gravity="right"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/reward1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/OLAParkCoins"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reward1_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward1 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward1"
-        app:layout_constraintStart_toEndOf="@+id/reward1"
-        android:layout_marginLeft="10dp"/>
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="52dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="92dp"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toEndOf="@+id/coins"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/reward2"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="84dp"
         android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/reward1"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reward2_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward2 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward2"
-        app:layout_constraintStart_toEndOf="@+id/reward2"
-        android:layout_marginLeft="10dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coins" />
 
     <Button
-        android:id="@+id/reward3"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="84dp"
         android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/reward2"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reward3_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward3 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward3"
-        app:layout_constraintStart_toEndOf="@+id/reward3"
-        android:layout_marginLeft="10dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <Button
-        android:id="@+id/reward4"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="84dp"
         android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/reward3"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
-        android:id="@+id/reward4_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward4 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward4"
-        app:layout_constraintStart_toEndOf="@+id/reward4"
-        android:layout_marginLeft="10dp"/>
-
-    <Button
-        android:id="@+id/reward5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/reward4"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reward5_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward5 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward5"
-        app:layout_constraintStart_toEndOf="@+id/reward5"
-        android:layout_marginLeft="10dp"/>
-
-    <Button
-        android:id="@+id/reward6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/reward5"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reward6_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward6 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward6"
-        app:layout_constraintStart_toEndOf="@+id/reward6"
-        android:layout_marginLeft="10dp"/>
-
-    <Button
-        android:id="@+id/reward7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/claim"
-        app:layout_constraintTop_toTopOf="@+id/reward6"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reward7_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reward7 Dummy"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reward7"
-        app:layout_constraintStart_toEndOf="@+id/reward7"
-        android:layout_marginLeft="10dp"/>
+        android:id="@+id/first_reward_description"
+        android:layout_width="182dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="28dp"
+        android:gravity="center"
+        android:text="@string/first_reward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

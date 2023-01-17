@@ -29,7 +29,7 @@ public class PaymentsFragment extends Fragment {
 
         SharedPreferences sp = this.getActivity().getSharedPreferences("auto-login", MODE_PRIVATE);
         if (sp.contains("balance")){
-            int balance = (int) sp.getAll().get("balance");
+            float balance = (float) sp.getFloat("balance", 0);
 
             TextView balance_amount = root.findViewById(R.id.balance_amount);
             balance_amount.setText(String.valueOf(balance));
