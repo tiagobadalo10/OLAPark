@@ -74,6 +74,13 @@
     <string name="payment_history">Controlla la cronologia dei pagamenti</string>
 
     <string name="deposit"> Depositare </string>
+    <string name="deposit_value"> Importo del Deposito</string>
+    <string name="deposit_warning"> Deposita un importo leggermente superiore a quello che intendi spendere </string>
+    <string name="deposit_error"> L\'importo deve essere superiore a 5 euro </string>
 
+    <string name="raise"> Aumentare </string>
+    <string name="raise_value"> Aumenta importo </string>
+    <string name="raise_warning"> Preleva denaro dal tuo saldo </string>
+    <string name="raise_error"> L\'importo deve essere inferiore o uguale al saldo attuale </string>
 
 </resources>

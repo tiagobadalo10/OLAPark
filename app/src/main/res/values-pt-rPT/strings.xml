@@ -74,6 +74,13 @@
     <string name="payment_history">Consultar histórico de pagamentos</string>
 
     <string name="deposit"> Depositar </string>
+    <string name="deposit_value"> Valor de Depósito </string>
+    <string name="deposit_warning"> Deposite um valor ligeiramente superior àquilo que você pensa gastar </string>
+    <string name="deposit_error"> O montante deve ser superior a 5 euros </string>
 
+    <string name="raise"> Levantar </string>
+    <string name="raise_value"> Levantar dinheiro </string>
+    <string name="raise_warning"> Apenas consegue levantar dinheiro do seu saldo </string>
+    <string name="raise_error"> O valor deve ser menor ou igual ao seu saldo atual </string>
 
 </resources>

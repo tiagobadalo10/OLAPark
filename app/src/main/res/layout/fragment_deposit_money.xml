@@ -4,11 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_deposit"
     tools:context=".nav.payments.DepositMoneyFragment">
 
 
+    <ImageView
+        android:id="@+id/deposit_form"
+        android:layout_width="309dp"
+        android:layout_height="293dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="52dp"
+        android:src="@drawable/payments_features_style"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/deposit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
@@ -20,41 +34,68 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/deposit_euros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="167dp"
-        android:text="TextView"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="88dp"
+        android:text="@string/euros"
         android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/deposit_form"
+        app:layout_constraintTop_toBottomOf="@+id/deposit_value" />
+
+    <TextView
+        android:id="@+id/deposit_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/deposit_value"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editTextNumber"
-        tools:layout_editor_absoluteY="161dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/deposit_warning"
+        android:layout_width="222dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:text="@string/deposit_warning"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deposit_amount" />
 
     <EditText
-        android:id="@+id/editTextNumber"
-        android:layout_width="65dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="72dp"
+        android:id="@+id/deposit_amount"
+        android:layout_width="111dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
+        android:gravity="right"
+        android:hint="0"
         android:inputType="number"
         android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="172dp" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/deposit_form"
+        app:layout_constraintTop_toBottomOf="@+id/deposit_value" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/deposit_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="96dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="240dp" />
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        android:text="@string/deposit_error"
+        app:layout_constraintBottom_toTopOf="@+id/deposit_warning"
+        app:layout_constraintEnd_toEndOf="@+id/deposit_form"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="@+id/deposit_form" />
 </androidx.constraintlayout.widget.ConstraintLayout>

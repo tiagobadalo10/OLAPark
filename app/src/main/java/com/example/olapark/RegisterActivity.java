@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("phone-number", phoneNumber);
-        user.put("balance", 0);
+        user.put("balance", 0.0);
 
         db.collection("users").document(username)
                 .set(user);
@@ -83,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("username", username);
         editor.putString("password", password);
-        editor.putInt("balance", 0);
+        editor.putFloat("balance", 0);
 
         editor.commit();
     }

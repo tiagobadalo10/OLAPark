@@ -74,6 +74,13 @@
     <string name="payment_history">Vérifier l\'historique des paiements</string>
 
     <string name="deposit"> Dépôt </string>
+    <string name="deposit_value"> Montant du Dépôt</string>
+    <string name="deposit_warning"> Déposez un montant légèrement supérieur à ce que vous prévoyez de dépenser </string>
+    <string name="deposit_error"> Le montant doit être supérieur à 5 euros </string>
 
+    <string name="raise"> Augmenter </string>
+    <string name="raise_value"> Augmenter le montant </string>
+    <string name="raise_warning"> Retirer de l\'argent de votre propre solde </string>
+    <string name="raise_error"> Le montant doit être inférieur ou égal à votre solde actuel </string>
 
 </resources>

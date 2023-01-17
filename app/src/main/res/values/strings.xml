@@ -74,6 +74,13 @@
     <string name="payment_history">Check Payment History</string>
 
     <string name="deposit"> Deposit </string>
+    <string name="deposit_value"> Deposit Amount</string>
+    <string name="deposit_warning"> Deposit an amount slightly higher than what you plan to spend </string>
+    <string name="deposit_error"> The amount must be more than 5 euros </string>
 
+    <string name="raise"> Raise </string>
+    <string name="raise_value"> Raise Amount </string>
+    <string name="raise_warning"> Withdraw money from your own balance </string>
+    <string name="raise_error"> The amount must be less or equal to your current balance </string>
 
 </resources>
