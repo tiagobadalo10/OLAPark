@@ -84,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         user.put("settings", settings);
 
-        // number, [data, local, value]
         Map<Integer, ArrayList<String>> payments = new HashMap<>();
         user.put("payments", payments);
 
