@@ -24,7 +24,16 @@
         android:theme="@style/Theme.OLAPark"
         tools:targetApi="31">
 
-        <service android:name=".ActivityRecognitionService" />
+        <service android:name=".ActivityRecognitionService"/>
+        <service
+            android:name=".GeofenceTransitionsIntentService"
+            android:exported="false" />
+
+
+        <!--android:name=".App",
+         <service android:name=".ActivityRecognitionService"/> and
+         <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+         so that the service can run-->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
