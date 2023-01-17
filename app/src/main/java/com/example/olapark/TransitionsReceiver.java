@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,12 +26,20 @@ import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 public class TransitionsReceiver extends BroadcastReceiver {
 
@@ -38,7 +47,7 @@ public class TransitionsReceiver extends BroadcastReceiver {
     private boolean isDriving = false;
     private boolean isParked = false;
 
-    private LocationManager locationManager;
+    private FusedLocationProviderClient fusedLocationClient;
     private Location currentLocation;
     private Context context;
 
@@ -60,50 +69,25 @@ public class TransitionsReceiver extends BroadcastReceiver {
                         " (" + toTransitionType(event.getTransitionType()) + ")" + "   " +
                         new SimpleDateFormat("HH:mm:ss", Locale.US).format(new Date());
 
+                service.sendNotificationTransitions(info);
                 Log.d("transitions", info);
                 Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
 
                 //TODO detetar que esta a conduzir e que esta parado num parque proximo
+
                 if (event.getTransitionType() == ActivityTransition.ACTIVITY_TRANSITION_ENTER) {
-                    if (event.getActivityType() == DetectedActivity.WALKING) {
+                    if (event.getActivityType() == DetectedActivity.WALKING || //TODO mudar para driving
+                            event.getActivityType() == DetectedActivity.UNKNOWN) {
                         isDriving = true;
                         Log.d("isDriving", "isDriving");
+                        Toast.makeText(context, "isDriving", Toast.LENGTH_SHORT).show();
                     }
                 }
 
-                if (event.getTransitionType() == ActivityTransition.ACTIVITY_TRANSITION_EXIT) {
-                    if (event.getActivityType() == DetectedActivity.WALKING) {
-                        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                                != PackageManager.PERMISSION_GRANTED &&
-                                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                                        != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        Log.d("currPos", currentLocation.toString());
-                        if (LocationUtils.isCloseToTheNearestPark(new LatLng(currentLocation.getLatitude(),
-                                        currentLocation.getLongitude()),
-                                2000.0)) {
-                            isParked = true;
-                            Log.d("isParked", "isParked");
-                        }
-                    }
-                }
-
-                if (isDriving && isParked) {
+                if (isDriving) {
                     isDriving = false;
-                    isParked = false;
-
-                    //Intent intentActivity = new Intent(context, MainMenuActivity.class);
-                    //intent.putExtra("openPaymentDialog", true);
-                    //context.startActivity(intentActivity);
-
-                    Toast.makeText(context, "You have parked", Toast.LENGTH_SHORT).show();
-                    Log.d("parked", "You have parked");
+                    service.isDriving();
                 }
-
-                service.sendNotificationTransitions(info);
             }
         }
     }
@@ -130,12 +114,6 @@ public class TransitionsReceiver extends BroadcastReceiver {
         }
     }
 
-    private boolean checkLocationPermissions() {
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED;
-    }
 }
 
 

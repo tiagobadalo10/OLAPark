@@ -25,6 +25,10 @@
         tools:targetApi="31">
 
         <service android:name=".ActivityRecognitionService"/>
+        <service
+            android:name=".GeofenceTransitionsIntentService"
+            android:exported="false" />
+
 
         <!--android:name=".App",
          <service android:name=".ActivityRecognitionService"/> and

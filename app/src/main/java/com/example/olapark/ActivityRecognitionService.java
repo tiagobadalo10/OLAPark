@@ -14,6 +14,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,12 +27,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.olapark.nav.parks.FragmentHelper;
+import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionRequest;
 import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -61,14 +67,25 @@ public class ActivityRecognitionService extends Service {
     private final String TRANSITIONS_RECEIVER_ACTION =
             BuildConfig.APPLICATION_ID + "TRANSITIONS_RECEIVER_ACTION";
 
+    private final IBinder mBinder = new LocalBinder();
+
+    private boolean enterInFence = false;
+    private boolean isDriving = false;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    public class LocalBinder extends Binder {
+        ActivityRecognitionService getService() {
+            return ActivityRecognitionService.this;
+        }
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         ActivityRecognitionService service = this;
 
@@ -82,6 +99,14 @@ public class ActivityRecognitionService extends Service {
                         activityTransitionList = new ArrayList<>();
 
                         // TODO: Add activity transitions to track.
+                        activityTransitionList.add(new ActivityTransition.Builder()
+                                .setActivityType(DetectedActivity.IN_VEHICLE)
+                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                                .build());
+                        activityTransitionList.add(new ActivityTransition.Builder()
+                                .setActivityType(DetectedActivity.IN_VEHICLE)
+                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                                .build());
                         activityTransitionList.add(new ActivityTransition.Builder()
                                 .setActivityType(DetectedActivity.WALKING)
                                 .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
@@ -118,11 +143,51 @@ public class ActivityRecognitionService extends Service {
                         // TODO: Register the BroadcastReceiver to listen for activity transitions.
                         registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
 
+
+                        GeofencingClient geofencingClient = LocationServices.getGeofencingClient(getApplicationContext());
+                        List<Geofence> geofenceList = new ArrayList<>();
+                        geofenceList.add(new Geofence.Builder()
+                                .setRequestId("area1")
+                                .setCircularRegion(38.697937447123465, -9.306405945317296, 2000)
+                                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                                .build());
+
+                        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
+                                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                                .addGeofences(geofenceList)
+                                .build();
+
+                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+
+                        geofencingClient.addGeofences(geofencingRequest, getGeofencePendingIntent())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Service", "Geofencing Api was successfully registered.");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
+                                    }
+                                });
+
+
                         //ciclo while
                         while (true) {
                             Log.e("Service", "Service is running");
-
-                            if (FragmentHelper.getInstance().getFragment().isVisible()) {
+                            if (mapsFragmentIsVisible()) {
                                 Log.e("Service", "Fragment is visible");
                             }
 
@@ -156,6 +221,11 @@ public class ActivityRecognitionService extends Service {
         }
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        Intent intent = new Intent(getApplicationContext(), GeofenceTransitionsIntentService.class);
+        return PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void disableActivityTransitions() {
@@ -238,7 +308,6 @@ public class ActivityRecognitionService extends Service {
 
         // TODO: Review permission check for 29+.
         if (runningQOrLater) {
-
             return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACTIVITY_RECOGNITION
@@ -268,4 +337,31 @@ public class ActivityRecognitionService extends Service {
         }
     }
 
+    public void enterInFence(){
+        this.enterInFence = true;
+        if (this.isDriving) {
+            parkingDetected();
+        }
+    }
+
+    public void isDriving() {
+        this.isDriving = true;
+        if (this.enterInFence) {
+            parkingDetected();
+        }
+    }
+
+    public void parkingDetected() {
+        this.sendNotificationTransitions("OK");
+        if (mapsFragmentIsVisible()) {
+            //TODO
+        } else {
+            //TODO
+        }
+    }
+
+    private boolean mapsFragmentIsVisible() {
+        MapsFragment maps = FragmentHelper.getInstance().getFragment();
+        return maps.isAdded() && maps.isResumed();
+    }
 }

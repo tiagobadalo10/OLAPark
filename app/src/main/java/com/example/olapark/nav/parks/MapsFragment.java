@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +39,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.olapark.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,6 +54,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.PlacesApi;
 import com.google.maps.model.Geometry;
 
@@ -63,7 +68,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     LocationManager locationManager;
@@ -73,6 +78,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     private FilterOptions filterOptions;
     private ParkCatalog parks;
     private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
     private LatLng currPosition;
     private Polyline polyline = null;
 
@@ -85,15 +91,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mContext = getContext();
-        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
@@ -103,7 +106,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         parks = new ParkCatalog();
         parks.setParksCatalog();
 
-        this.subscribeListener();
+        //this.subscribeListener();
 
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
@@ -119,8 +122,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         FragmentHelper.getInstance().setFragment(this);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     private void isLocationEnabled() {
 
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
             alertDialog.setTitle("Enable Location");
@@ -150,6 +165,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             return;
         }
         mMap.setMyLocationEnabled(true);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
+
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        //locationRequest.setSmallestDisplacement(10);
+        locationRequest.setInterval(10);
+        locationRequest.setFastestInterval(1000);
+
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // Handle new location
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                }
+            };
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
         checkRaining();
 
@@ -255,52 +294,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         dialog.setCurrentPosition(currPosition);
 
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        String msg = "New Latitude: " + latitude + "New Longitude: " + longitude;
-        Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-
-        LatLng curr = new LatLng(latitude, longitude);
-        this.latLngList.add(curr);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curr, 13));
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull List<Location> locations) {
-        LocationListener.super.onLocationChanged(locations);
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-        LocationListener.super.onProviderEnabled(provider);
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-        LocationListener.super.onProviderDisabled(provider);
-    }
-
-    public void unsubscribeListener() {
-
-        this.locationManager.removeUpdates(this);
-    }
-
-    public void subscribeListener() {
-
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(mContext, "ola", Toast.LENGTH_LONG).show();
-            return;
-        }
-        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                2000,
-                20, this);
-        isLocationEnabled();
     }
 
     public ParkCatalog getParkCatalog() {
@@ -417,5 +410,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         return decoded;
     }
 
-
+    @SuppressLint("RestrictedApi")
+    @Override
+    public void onPause() {
+        //Log.d("parou", String.valueOf(this.isAdded() && this.is));
+        super.onPause();
+    }
 }
