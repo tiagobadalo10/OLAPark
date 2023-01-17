@@ -17,7 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db;
     private SharedPreferences sp;
     private static String username;
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         for(QueryDocumentSnapshot document: task.getResult()){
 
-                            this.username = document.getId();
+                            username = document.getId();
 
                             saveUserDataSP(username);
 

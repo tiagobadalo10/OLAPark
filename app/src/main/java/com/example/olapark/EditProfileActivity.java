@@ -2,7 +2,6 @@ package com.example.olapark;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -190,7 +189,7 @@ public class EditProfileActivity extends AppCompatActivity {
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = profileRef.putBytes(data);
-        uploadTask.addOnCompleteListener((Activity) this, task -> Log.i("MA", "Upload Task Complete"));
+        uploadTask.addOnCompleteListener(this, task -> Log.i("MA", "Upload Task Complete"));
     }
 
     private void changeUsername(String username, String current_username) {

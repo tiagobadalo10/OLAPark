@@ -5,10 +5,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Park {
 
-    private LatLng location;
-    private String name;
-    private Occupation occupation;
-    private double pricePerHour;
+    private final LatLng location;
+    private final String name;
+    private final Occupation occupation;
+    private final double pricePerHour;
 
     public Park(LatLng location, String name, Occupation occupation, double pricePerHour) {
         this.location = location;

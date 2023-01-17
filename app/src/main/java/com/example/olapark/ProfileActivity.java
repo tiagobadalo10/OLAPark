@@ -42,10 +42,10 @@ import cz.msebera.android.httpclient.Header;
 public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private FirebaseFirestore db;
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String choose, cancel, camera, gallery, loadingImage;
     private SharedPreferences sharedPreferences;
-    private String SHARED_PREF_NAME = "user_pref";
+    private final String SHARED_PREF_NAME = "user_pref";
     private TextView usernameTextView;
     private TextView emailTextView;
     private TextView phoneNumberTextView;
@@ -67,10 +67,10 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
         username = sh.getString("username", null);
         db = FirebaseFirestore.getInstance();
-        usernameTextView = (TextView) findViewById(R.id.username_txt);
-        emailTextView = (TextView) findViewById(R.id.email_txt);
-        phoneNumberTextView = (TextView) findViewById(R.id.phone_number_txt);
-        addCar = (ImageButton) findViewById(R.id.report_car);
+        usernameTextView = findViewById(R.id.username_txt);
+        emailTextView = findViewById(R.id.email_txt);
+        phoneNumberTextView = findViewById(R.id.phone_number_txt);
+        addCar = findViewById(R.id.report_car);
         choose = getString(R.string.modal_add_card_choose);
         cancel = getString(R.string.modal_add_card_cancel);
         camera = getString(R.string.modal_add_card_camera);
@@ -125,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         row.addView(plateView);
         row.addView(carView);
 
-        TableLayout table = (TableLayout) findViewById(R.id.tableCards);
+        TableLayout table = findViewById(R.id.tableCards);
         table.addView(row);
     }
 

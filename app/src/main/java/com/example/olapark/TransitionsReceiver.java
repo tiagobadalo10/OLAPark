@@ -1,10 +1,6 @@
 package com.example.olapark;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.example.olapark.nav.parks.LocationUtils;
-import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionResult;
@@ -43,7 +36,7 @@ import java.util.concurrent.Executor;
 
 public class TransitionsReceiver extends BroadcastReceiver {
 
-    private ActivityRecognitionService service;
+    private final ActivityRecognitionService service;
     private boolean isDriving = false;
     private boolean isParked = false;
 
@@ -115,8 +108,3 @@ public class TransitionsReceiver extends BroadcastReceiver {
     }
 
 }
-
-
-
-
-

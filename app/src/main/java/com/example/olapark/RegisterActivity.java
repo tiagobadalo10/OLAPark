@@ -50,21 +50,16 @@ public class RegisterActivity extends AppCompatActivity {
 
             if(email.length() != 0 && password.length() != 0 && phoneNumber.length() == 9 && confirmPassword.length() != 0 && password.equals(confirmPassword)){
 
-                String finalEmail = email;
-                String finalUsername = username;
-                String finalPhoneNumber = phoneNumber;
-                String finalPassword = password;
-
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterActivity.this, task -> {
 
                             if(task.isSuccessful()){
-                                saveUserDataDB(finalEmail, finalUsername, Long.parseLong(finalPhoneNumber));
-                                saveUserDataSP(finalUsername, finalPassword);
+                                saveUserDataDB(email, username, Long.parseLong(phoneNumber));
+                                saveUserDataSP(username, password);
 
                                 Intent intent;
                                 intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
-                                intent.putExtra("username", finalUsername);
+                                intent.putExtra("username", username);
 
                                 startActivity(intent);
                                 finish();
@@ -78,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("phone-number", phoneNumber);
+        user.put("balance", 0);
 
         db.collection("users").document(username)
                 .set(user);
@@ -87,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("username", username);
         editor.putString("password", password);
+        editor.putInt("balance", 0);
 
         editor.commit();
     }

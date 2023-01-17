@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ParkCatalog implements Iterable<Park>{
 
-    private List<Park> parks;
+    private final List<Park> parks;
     private int listSize;
 
     public ParkCatalog() {
@@ -58,7 +58,7 @@ public class ParkCatalog implements Iterable<Park>{
     @Override
 
     public Iterator<Park> iterator() {
-        Iterator<Park> it = new Iterator<Park>() {
+        return new Iterator<Park>() {
 
             private int currentIndex = 0;
 
@@ -77,7 +77,6 @@ public class ParkCatalog implements Iterable<Park>{
                 throw new UnsupportedOperationException();
             }
         };
-        return it;
     }
 
     public ArrayList<Park> filterParks(FilterOptions filterOptions, LatLng currLocation) {
@@ -104,7 +103,7 @@ public class ParkCatalog implements Iterable<Park>{
 
 
     private float distance(LatLng p1, LatLng p2) {
-        float res[] = new float[1];
+        float[] res = new float[1];
         Location.distanceBetween(p1.latitude, p1.longitude, p2.latitude, p2.longitude, res);
         return res[0];
     }
