@@ -33,14 +33,12 @@
     <string name="yes">Sì</string>
     <string name="no">No</string>
 
-    <string name="number_OLAParkCoins">0</string>
-    <string name="OLAParkCoins">OLAParkCoins</string>
     <string name="claim">Reclamo</string>
 
+    <string name="payments_col_number">Numero</string>
     <string name="payments_col_park">Parco</string>
     <string name="payments_col_date">Data</string>
     <string name="payments_col_value">Valore</string>
-    <string name="payments_col_method">Metodo</string>
 
     <string name="profile_col_car_plate">Targa</string>
     <string name="profile_col_car">Macchina</string>
@@ -82,5 +80,17 @@
     <string name="raise_value"> Aumenta importo </string>
     <string name="raise_warning"> Preleva denaro dal tuo saldo </string>
     <string name="raise_error"> L\'importo deve essere inferiore o uguale al saldo attuale </string>
+
+    <string name="user_information"> Informazioni utente </string>
+    <string name="user_username">Nome utente:</string>
+    <string name="user_email">E-mail:</string>
+    <string name="user_phone">Telefono:</string>
+    <string name="user_payment_method"> Metodo di pagamento:</string>
+    <string name="add_payment_method"> Aggiungi metodo di pagamento</string>
+    <string name="add_car"> Aggiungi auto </string>
+
+    <string name="first_reward"> Sconto del 25% sul prossimo pagamento </string>
+    <string name="second_reward"> Sconto del 50% sul prossimo pagamento </string>
+    <string name="third_reward"> Parcheggio gratuito</string>
 
 </resources>

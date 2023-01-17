@@ -30,7 +30,9 @@ public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
     private View view;
     private FirebaseFirestore db;
-    private SharedPreferences sp;
+    private SharedPreferences sps;
+
+    private SharedPreferences spa;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +42,9 @@ public class SettingsFragment extends Fragment {
         view = binding.getRoot();
 
         db = FirebaseFirestore.getInstance();
+
+        sps = getActivity().getSharedPreferences("settings", MODE_PRIVATE);
+        spa = getActivity().getSharedPreferences("auto-login", MODE_PRIVATE);
 
         loadSettings();
         deleteAccount();
@@ -51,9 +56,7 @@ public class SettingsFragment extends Fragment {
 
         boolean auto_payment;
 
-        sp = getActivity().getSharedPreferences("settings", MODE_PRIVATE);
-
-        auto_payment = sp.getBoolean("auto-payment", false);
+        auto_payment = sps.getBoolean("auto-payment", false);
 
         Switch automatic_payment = view.findViewById(R.id.automatic_payment_switch);
         automatic_payment.setChecked(auto_payment);
@@ -65,11 +68,9 @@ public class SettingsFragment extends Fragment {
 
         delete_account.setOnClickListener(v -> {
 
-            sp = getActivity().getSharedPreferences("auto-login", MODE_PRIVATE);
-
             FirebaseAuth.getInstance().getCurrentUser().delete();
 
-            String username = sp.getString("username", "");
+            String username = spa.getString("username", "");
 
             db.collection("users").document(username).delete();
 
@@ -82,9 +83,12 @@ public class SettingsFragment extends Fragment {
     }
 
     public void cleanSP(){
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("username");
-        editor.remove("password");
+        SharedPreferences.Editor editor = sps.edit();
+        editor.clear();
+        editor.apply();
+
+        editor = spa.edit();
+        editor.clear();
         editor.apply();
     }
 
@@ -102,7 +106,7 @@ public class SettingsFragment extends Fragment {
 
         // save in Shared Preferences
 
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences.Editor editor = sps.edit();
         editor.remove("auto-payment");
         editor.putBoolean("auto-payment", automatic_payment.isChecked());
 
@@ -110,25 +114,12 @@ public class SettingsFragment extends Fragment {
 
         // save in Firestore Database
 
-        db.collection("settings").document("settings").get().addOnCompleteListener(task -> {
+        String username = spa.getString("username", "");
 
-            if (task.isSuccessful()) {
+        HashMap<String, Object> settings = new HashMap<>();
 
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    db.collection("settings").document("settings").update("auto-payment", automatic_payment.isChecked());
-                }
-                else {
-                    HashMap<String, Object> settings = new HashMap<>();
-                    settings.put("auto-payment", automatic_payment.isChecked());
-                    db.collection("settings").document("settings").set(settings);
-                }
+        settings.put("auto-payment", automatic_payment.isChecked());
 
-
-            }
-
-                });
-
-
+        db.collection("users").document(username).update("settings", settings);
     }
 }

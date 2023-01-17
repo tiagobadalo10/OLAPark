@@ -9,6 +9,9 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +77,16 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("email", email);
         user.put("phone-number", phoneNumber);
         user.put("balance", 0.0);
+        user.put("coins", 0);
+
+        Map<String, Boolean> settings = new HashMap<>();
+        settings.put("auto-payment", false);
+
+        user.put("settings", settings);
+
+        // number, [data, local, value]
+        Map<Integer, ArrayList<String>> payments = new HashMap<>();
+        user.put("payments", payments);
 
         db.collection("users").document(username)
                 .set(user);
@@ -84,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
         editor.putString("username", username);
         editor.putString("password", password);
         editor.putFloat("balance", 0);
+        editor.putInt("coins", 0);
 
         editor.commit();
     }

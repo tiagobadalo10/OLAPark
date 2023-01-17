@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_raise"
     tools:context=".nav.payments.RaiseMoneyFragment">
 
     <Button
@@ -85,15 +86,16 @@
 
     <TextView
         android:id="@+id/raise_error"
-        android:layout_width="293dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="225dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/raise_error"
         android:textStyle="bold"
+        android:gravity="center"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/raise_warning"
         app:layout_constraintEnd_toEndOf="@+id/raise_form"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="@+id/raise_form" />
 
 

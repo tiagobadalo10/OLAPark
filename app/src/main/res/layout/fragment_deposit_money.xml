@@ -93,6 +93,7 @@
         android:layout_marginBottom="20dp"
         android:visibility="invisible"
         android:textStyle="bold"
+        android:gravity="center"
         android:text="@string/deposit_error"
         app:layout_constraintBottom_toTopOf="@+id/deposit_warning"
         app:layout_constraintEnd_toEndOf="@+id/deposit_form"

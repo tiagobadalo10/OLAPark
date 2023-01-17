@@ -33,14 +33,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <string name="number_OLAParkCoins">0</string>
-    <string name="OLAParkCoins">OLAParkCoins</string>
     <string name="claim">Claim</string>
 
+    <string name="payments_col_number">Number</string>
     <string name="payments_col_park">Park</string>
     <string name="payments_col_date">Date</string>
     <string name="payments_col_value">Value</string>
-    <string name="payments_col_method">Method</string>
 
     <string name="profile_col_car_plate">Plate</string>
     <string name="profile_col_car">Car</string>
@@ -82,5 +80,17 @@
     <string name="raise_value"> Raise Amount </string>
     <string name="raise_warning"> Withdraw money from your own balance </string>
     <string name="raise_error"> The amount must be less or equal to your current balance </string>
+
+    <string name="user_information"> User Information </string>
+    <string name="user_username">Username:</string>
+    <string name="user_email">Email:</string>
+    <string name="user_phone">Phone:</string>
+    <string name="user_payment_method"> Payment Method:</string>
+    <string name="add_payment_method"> Add Payment Method</string>
+    <string name="add_car"> Add Car </string>
+
+    <string name="first_reward"> 25% discount in next payment </string>
+    <string name="second_reward"> 50% discount in next payment </string>
+    <string name="third_reward"> Free parking </string>
 
 </resources>

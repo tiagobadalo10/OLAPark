@@ -25,6 +25,8 @@ import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -37,6 +39,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -47,23 +50,15 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseStorage fs;
+
+    private FirebaseFirestore db;
+
+    private SharedPreferences sp;
     private StorageReference profileRef;
     private SensorManager sensorManager;
     final long MEGA_BYTE = 1024 * 1024;
-    private final boolean runningQOrLater =
-            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
-
-    private boolean activityTrackingEnabled;
-
-    private List<ActivityTransition> activityTransitionList;
-
-    private PendingIntent mActivityTransitionsPendingIntent;
-    private TransitionsReceiver mTransitionsReceiver;
     private static final int REQUEST_ACTIVITY_RECOGNITION = 45;
     private final int REQUEST_LOCATION_PERMISSION = 1;
-    private final String TRANSITIONS_RECEIVER_ACTION =
-            BuildConfig.APPLICATION_ID + "TRANSITIONS_RECEIVER_ACTION";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +81,26 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         NavigationUI.setupWithNavController(navigationView, navController);
 
         fs = FirebaseStorage.getInstance();
+        db = FirebaseFirestore.getInstance();
+        sp = getSharedPreferences("auto-login", MODE_PRIVATE);
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        SharedPreferences sp = getSharedPreferences("auto-login", MODE_PRIVATE);
-        if (sp.contains("username"))
-            updateUsername(navigationView, (String) sp.getAll().get("username"));
+        if (sp.contains("username")){
 
-        profileRef = fs.getReference(sp.getAll().get("username") + "/profilepicture.jpeg");
+            String username = (String) sp.getAll().get("username");
+
+            updateUsername(navigationView, username);
+
+            profileRef = fs.getReference(username + "/profilepicture.jpeg");
+
+            setSettings(username);
+
+        }
+
 
         loadProfilePicture();
+
 
         changeToProfile(navigationView);
 
@@ -103,6 +109,32 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         }
         requestLocationPermission();
 
+    }
+
+    private void setSettings(String username) {
+
+        db.collection("users").document(username).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+
+                DocumentSnapshot document = task.getResult();
+
+                saveSettingsSP((HashMap<String, Boolean>) document.get("settings"));
+            }
+        });
+
+
+    }
+
+    private void saveSettingsSP(HashMap<String, Boolean> settings) {
+
+        sp = getSharedPreferences("settings", MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sp.edit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            settings.forEach(editor::putBoolean);
+        }
+
+        editor.commit();
     }
 
     public void startActivityRecognitionService() {
@@ -242,8 +274,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         TextView nav_username = view.findViewById(R.id.app_username);
         nav_username.setText(username);
     }
-
-    //Check if is already a service running
     public boolean foregroundServiceRunning() {
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)){

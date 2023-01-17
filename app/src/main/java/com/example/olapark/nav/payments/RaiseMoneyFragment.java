@@ -41,7 +41,48 @@ public class RaiseMoneyFragment extends Fragment {
 
     private void withdrawMoney() {
 
+        Button raise_button = v.findViewById(R.id.raise_button);
 
+        raise_button.setOnClickListener(view -> {
+
+            EditText raise_amount = v.findViewById(R.id.raise_amount);
+
+            String amount = raise_amount.getText().toString();
+
+            if(amount.length() != 0){
+
+                int value = Integer.parseInt(amount);
+
+                // Check if the value is less or equal than balance
+
+                TextView raise_error = v.findViewById(R.id.raise_error);
+
+                float balance = (float) sp.getFloat("balance", 0);
+
+                if(balance < value){
+
+                    raise_error.setVisibility(View.VISIBLE);
+                }
+
+                else {
+
+                    String username = sp.getString("username" , "");
+
+                    updateBalanceSP(value, balance);
+
+                    updateBalanceDB(username, value, balance);
+
+                    raise_error.setVisibility(View.INVISIBLE);
+
+                    ConstraintLayout cl = v.findViewById(R.id.fragment_raise);
+                    cl.removeAllViewsInLayout();
+
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_raise, new PaymentsFragment(),"Payments").commit();
+                }
+
+            }
+
+        });
 
     }
 

@@ -24,11 +24,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Information"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:text="@string/user_information"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,19 +40,18 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username:"
-            android:textSize="16sp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:text="@string/user_username"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/username_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="JohnDoe123"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:textColor="?colorOnPrimary"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,19 +64,18 @@
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email:"
-            android:textSize="16sp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:text="@string/user_email"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/email_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="johndoe@example.com"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:textColor="?colorOnPrimary"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -90,18 +88,18 @@
             android:id="@+id/phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Phone:"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:text="@string/user_phone"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/phone_number_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+1234567890"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:textColor="?colorOnPrimary"
+            android:textSize="16sp" />
     </LinearLayout>
 
 
@@ -109,21 +107,19 @@
         android:id="@+id/edit_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Profile">
-    </Button>
+        android:text="@string/edit_profile"></Button>
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp"
-        android:text="Payment Methods:"
-        android:textSize="16sp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:paddingTop="25dp"
+        android:text="@string/user_payment_method"
+        android:textSize="16sp" />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -134,9 +130,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="16sp"
             android:drawableLeft="@drawable/ic_baseline_credit_card_24"
-            android:text=" **** 9342 (Tiago Pereira)"/>
+            android:text=" **** 9342"
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/edit_button"
@@ -148,67 +144,59 @@
 
     </LinearLayout>
 
-    <TextView
+    <Button
         android:id="@+id/add_payment_method"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add payment method"
-        android:textColor="@color/link_color"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:onClick="onAddPaymentMethodClicked"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:text="@string/add_payment_method"></Button>
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_width="374dp"
+        android:layout_height="215dp"
+        android:orientation="horizontal"
         android:paddingTop="10dp">
-    <ImageButton
-        android:id="@+id/report_car"
-        android:layout_width="37dp"
-        android:layout_height="35dp"
-        android:paddingTop="20dp"
-        android:background="@color/white"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile" />
+
+        <TableLayout
+            android:id="@+id/tableCards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/report_car">
+
+            <TableRow android:background="?attr/colorPrimary">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center_horizontal"
+                    android:padding="10sp"
+                    android:text="@string/profile_col_car_plate"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center_horizontal"
+                    android:padding="10sp"
+                    android:text="@string/profile_col_car"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp">
-    <TableLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/add_car"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/report_car"
-        android:id="@+id/tableCards">
-        <TableRow
-            android:background="?attr/colorPrimary">
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/add_car"></Button>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="@string/profile_col_car_plate"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="@string/profile_col_car"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </TableRow>
-    </TableLayout>
-    </LinearLayout>
 </LinearLayout>
