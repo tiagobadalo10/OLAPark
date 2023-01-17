@@ -39,13 +39,13 @@ public class FilterDialog extends DialogFragment {
     }
 
     private void configureImageButton() {
-        Button btn_apply = (Button) view.findViewById(R.id.directions_button);
-        Button btn_clear = (Button) view.findViewById(R.id.reserve_button);
+        Button btn_apply = view.findViewById(R.id.directions_button);
+        Button btn_clear = view.findViewById(R.id.reserve_button);
 
-        Slider slider = (Slider) view.findViewById(R.id.slider);
+        Slider slider = view.findViewById(R.id.slider);
 
         //Drop-down List
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        Spinner spinner = view.findViewById(R.id.spinner);
         String[] items = new String[]{"All", "Low", "Medium", "High"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);

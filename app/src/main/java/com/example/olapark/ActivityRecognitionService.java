@@ -1,16 +1,12 @@
 package com.example.olapark;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -21,33 +17,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import com.example.olapark.nav.parks.FragmentHelper;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
-import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionRequest;
-import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ActivityRecognitionService extends Service {
 
     private static final int NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "Activity Recognition Service ID";
 
-    private boolean runningQOrLater =
+    private final boolean runningQOrLater =
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
 
     private boolean activityTrackingEnabled;
@@ -73,64 +59,61 @@ public class ActivityRecognitionService extends Service {
         ActivityRecognitionService service = this;
 
         new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        activityTrackingEnabled = false;
+                () -> {
+                    activityTrackingEnabled = false;
 
-                        // List of activity transitions to track.
-                        activityTransitionList = new ArrayList<>();
+                    // List of activity transitions to track.
+                    activityTransitionList = new ArrayList<>();
 
-                        // TODO: Add activity transitions to track.
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.WALKING)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.WALKING)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.STILL)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.STILL)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                                .build());
+                    // TODO: Add activity transitions to track.
+                    activityTransitionList.add(new ActivityTransition.Builder()
+                            .setActivityType(DetectedActivity.WALKING)
+                            .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                            .build());
+                    activityTransitionList.add(new ActivityTransition.Builder()
+                            .setActivityType(DetectedActivity.WALKING)
+                            .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                            .build());
+                    activityTransitionList.add(new ActivityTransition.Builder()
+                            .setActivityType(DetectedActivity.STILL)
+                            .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                            .build());
+                    activityTransitionList.add(new ActivityTransition.Builder()
+                            .setActivityType(DetectedActivity.STILL)
+                            .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                            .build());
 
-                        // TODO: Initialize PendingIntent that will be triggered when a activity transition occurs.
-                        Intent intent = new Intent(TRANSITIONS_RECEIVER_ACTION);
-                        mActivityTransitionsPendingIntent =
-                                PendingIntent.getBroadcast(getApplicationContext(), 0, intent
-                                        , 0);
+                    // TODO: Initialize PendingIntent that will be triggered when a activity transition occurs.
+                    Intent intent1 = new Intent(TRANSITIONS_RECEIVER_ACTION);
+                    mActivityTransitionsPendingIntent =
+                            PendingIntent.getBroadcast(getApplicationContext(), 0, intent1
+                                    , 0);
 
-                        // TODO: Create a BroadcastReceiver to listen for activity transitions.
-                        // The receiver listens for the PendingIntent above that is triggered by the system when an
-                        // activity transition occurs.
-                        mTransitionsReceiver = new TransitionsReceiver(service);
+                    // TODO: Create a BroadcastReceiver to listen for activity transitions.
+                    // The receiver listens for the PendingIntent above that is triggered by the system when an
+                    // activity transition occurs.
+                    mTransitionsReceiver = new TransitionsReceiver(service);
 
-                        // TODO: Enable/Disable activity tracking and ask for permissions if needed.
-                        if (activityRecognitionPermissionApproved()) {
-                            enableActivityTransitions();
+                    // TODO: Enable/Disable activity tracking and ask for permissions if needed.
+                    if (activityRecognitionPermissionApproved()) {
+                        enableActivityTransitions();
+                    }
+
+                    // TODO: Register the BroadcastReceiver to listen for activity transitions.
+                    registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
+
+                    //ciclo while
+                    while (true) {
+                        Log.e("Service", "Service is running");
+
+                        if (FragmentHelper.getInstance().getFragment().isVisible()) {
+                            Log.e("Service", "Fragment is visible");
                         }
 
-                        // TODO: Register the BroadcastReceiver to listen for activity transitions.
-                        registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
-
-                        //ciclo while
-                        while (true) {
-                            Log.e("Service", "Service is running");
-
-                            if (FragmentHelper.getInstance().getFragment().isVisible()) {
-                                Log.e("Service", "Fragment is visible");
-                            }
-
-                            try {
-                                Thread.sleep(2000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -171,23 +154,15 @@ public class ActivityRecognitionService extends Service {
             return;
         }
         ActivityRecognition.getClient(this).removeActivityTransitionUpdates(mActivityTransitionsPendingIntent)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        activityTrackingEnabled = false;
-                        Toast.makeText(getApplicationContext(),
-                                "Transitions successfully unregistered.",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    activityTrackingEnabled = false;
+                    Toast.makeText(getApplicationContext(),
+                            "Transitions successfully unregistered.",
+                            Toast.LENGTH_SHORT).show();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),
-                                "Transitions could not be unregistered.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),
+                        "Transitions could not be unregistered.",
+                        Toast.LENGTH_LONG).show());
     }
 
     /**
@@ -213,25 +188,17 @@ public class ActivityRecognitionService extends Service {
                 .requestActivityTransitionUpdates(request, mActivityTransitionsPendingIntent);
 
         task.addOnSuccessListener(
-                new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        activityTrackingEnabled = true;
-                        Toast.makeText(getApplicationContext(), "Transitions Api was successfully registered."
-                                , Toast.LENGTH_SHORT).show();
-                        Log.d("Service", "Transitions Api was successfully registered.");
-                    }
+                result -> {
+                    activityTrackingEnabled = true;
+                    Toast.makeText(getApplicationContext(), "Transitions Api was successfully registered."
+                            , Toast.LENGTH_SHORT).show();
+                    Log.d("Service", "Transitions Api was successfully registered.");
                 });
 
         task.addOnFailureListener(
-                new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),
-                                "Transitions Api could NOT be registered."
-                                , Toast.LENGTH_SHORT).show();
-                    }
-                });
+                e -> Toast.makeText(getApplicationContext(),
+                        "Transitions Api could NOT be registered."
+                        , Toast.LENGTH_SHORT).show());
     }
 
     private boolean activityRecognitionPermissionApproved() {

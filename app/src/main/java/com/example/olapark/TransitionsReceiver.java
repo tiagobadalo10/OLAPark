@@ -1,10 +1,6 @@
 package com.example.olapark;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,17 +11,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.example.olapark.nav.parks.LocationUtils;
-import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +25,7 @@ import java.util.Locale;
 
 public class TransitionsReceiver extends BroadcastReceiver {
 
-    private ActivityRecognitionService service;
+    private final ActivityRecognitionService service;
     private boolean isDriving = false;
     private boolean isParked = false;
 

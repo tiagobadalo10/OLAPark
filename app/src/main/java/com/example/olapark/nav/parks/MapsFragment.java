@@ -12,8 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import android.graphics.Color;
-import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -46,20 +44,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.PlacesApi;
-import com.google.maps.model.Geometry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +61,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     private GoogleMap mMap;
     LocationManager locationManager;
     Context mContext;
-    private ArrayList<LatLng> latLngList = new ArrayList<>();
+    private final ArrayList<LatLng> latLngList = new ArrayList<>();
     private GoogleMapOptions options;
     private FilterOptions filterOptions;
     private ParkCatalog parks;
@@ -76,8 +69,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     private LatLng currPosition;
     private Polyline polyline = null;
 
-    private String url = "https://api.openweathermap.org/data/2.5/weather";
-    private String appid = "8ff90c2810d99aea0486ad49724d792a";
+    private final String url = "https://api.openweathermap.org/data/2.5/weather";
+    private final String appid = "8ff90c2810d99aea0486ad49724d792a";
 
     @Nullable
     @Override
@@ -114,7 +107,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         }
 
         options = new GoogleMapOptions();
-        mapFragment.newInstance(options);
+        SupportMapFragment.newInstance(options);
 
         FragmentHelper.getInstance().setFragment(this);
     }
@@ -170,9 +163,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            currPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        });
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> currPosition = new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     public LatLng getCurrPosition() {
@@ -329,51 +320,45 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         Log.d("coo", url);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String status = response.getString("status");
-                    if (status.equals("OK")) {
-                        JSONArray routes = response.getJSONArray("routes");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            try {
+                String status = response.getString("status");
+                if (status.equals("OK")) {
+                    JSONArray routes = response.getJSONArray("routes");
 
-                        ArrayList<LatLng> points;
-                        PolylineOptions polylineOptions = null;
+                    ArrayList<LatLng> points;
+                    PolylineOptions polylineOptions = null;
 
-                        for (int i=0;i<routes.length();i++){
-                            points = new ArrayList<>();
-                            polylineOptions = new PolylineOptions();
-                            JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
+                    for (int i=0;i<routes.length();i++){
+                        points = new ArrayList<>();
+                        polylineOptions = new PolylineOptions();
+                        JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
 
-                            for (int j=0;j<legs.length();j++){
-                                JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
+                        for (int j=0;j<legs.length();j++){
+                            JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
 
-                                for (int k=0;k<steps.length();k++){
-                                    String polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points");
-                                    List<LatLng> list = decodePoly(polyline);
+                            for (int k=0;k<steps.length();k++){
+                                String polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points");
+                                List<LatLng> list = decodePoly(polyline);
 
-                                    for (int l=0;l<list.size();l++){
-                                        LatLng position = new LatLng((list.get(l)).latitude, (list.get(l)).longitude);
-                                        points.add(position);
-                                    }
+                                for (int l=0;l<list.size();l++){
+                                    LatLng position = new LatLng((list.get(l)).latitude, (list.get(l)).longitude);
+                                    points.add(position);
                                 }
                             }
-                            polylineOptions.addAll(points);
-                            polylineOptions.width(10);
-                            polylineOptions.color(ContextCompat.getColor(getContext(), R.color.black));
-                            polylineOptions.geodesic(true);
                         }
-                        polyline = mMap.addPolyline(polylineOptions);
+                        polylineOptions.addAll(points);
+                        polylineOptions.width(10);
+                        polylineOptions.color(ContextCompat.getColor(getContext(), R.color.black));
+                        polylineOptions.geodesic(true);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    polyline = mMap.addPolyline(polylineOptions);
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-            }
         });
         RetryPolicy retryPolicy = new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsonObjectRequest.setRetryPolicy(retryPolicy);
@@ -383,7 +368,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     public static List<LatLng> decodePoly(final String polyline) {
         int len = polyline.length();
         int index = 0;
-        List<LatLng> decoded = new ArrayList<LatLng>();
+        List<LatLng> decoded = new ArrayList<>();
         int lat = 0;
         int lng = 0;
 

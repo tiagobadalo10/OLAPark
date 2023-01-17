@@ -1,41 +1,19 @@
 package com.example.olapark;
 
-import android.Manifest;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Handler;
-import android.util.Log;
 
 
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityRecognitionClient;
-import com.google.android.gms.location.ActivityTransition;
-import com.google.android.gms.location.ActivityTransitionRequest;
-import com.google.android.gms.location.DetectedActivity;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sp.edit();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            settings.forEach((key, value) -> {
-                editor.putBoolean(key, value);
-            });
+            settings.forEach(editor::putBoolean);
         }
 
         editor.commit();

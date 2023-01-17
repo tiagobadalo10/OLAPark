@@ -1,28 +1,19 @@
 package com.example.olapark;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,28 +23,12 @@ import android.widget.Toast;
 
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.example.olapark.nav.parks.MapsFragment;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.internal.ApiKey;
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.ActivityTransition;
-import com.google.android.gms.location.ActivityTransitionRequest;
-import com.google.android.gms.location.DetectedActivity;
-import com.google.android.gms.location.SleepSegmentRequest;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -62,8 +37,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -76,12 +49,8 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
     private FirebaseStorage fs;
     private StorageReference profileRef;
     private SensorManager sensorManager;
-
     final long MEGA_BYTE = 1024 * 1024;
-
-    //--------------Activity Recognition transitions--------------
-    // TODO: Review check for devices with Android 10 (29+).
-    private boolean runningQOrLater =
+    private final boolean runningQOrLater =
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
 
     private boolean activityTrackingEnabled;

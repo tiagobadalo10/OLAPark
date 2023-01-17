@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -24,12 +24,7 @@
         android:theme="@style/Theme.OLAPark"
         tools:targetApi="31">
 
-        <service android:name=".ActivityRecognitionService"/>
-
-        <!--android:name=".App",
-         <service android:name=".ActivityRecognitionService"/> and
-         <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-         so that the service can run-->
+        <service android:name=".ActivityRecognitionService" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -49,7 +44,7 @@
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.OLAPark.NoActionBar"></activity>
+            android:theme="@style/Theme.OLAPark.NoActionBar" />
         <activity
             android:name=".ProfileActivity"
             android:exported="true"
@@ -58,7 +53,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainMenuActivity" />
         </activity>
-        <activity android:name=".ReportActivity"
+        <activity
+            android:name=".ReportActivity"
             android:label="ReportActivity"
             android:theme="@style/Theme.OLAPark.NoActionBar" />
         <activity
@@ -69,7 +65,7 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.OLAPark.NoActionBar"></activity>
+            android:theme="@style/Theme.OLAPark.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:exported="false"
@@ -94,6 +90,8 @@
                 android:value="" />
         </activity>
 
+
+
         <provider
             android:name="com.vansuita.pickimage.provider.PickImageFileProvider"
             android:authorities="${applicationId}.com.vansuita.pickimage.provider"
@@ -105,10 +103,6 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <receiver android:name=".ActivityTransitionReceiver"
-            android:exported="false"
-            android:permission="android.permission.ACTIVITY_RECOGNITION">
-        </receiver>
 
     </application>
 

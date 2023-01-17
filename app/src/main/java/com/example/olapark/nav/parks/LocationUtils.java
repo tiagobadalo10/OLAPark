@@ -56,10 +56,7 @@ public class LocationUtils {
         parks.setParksCatalog();
         double closestDistance= getClosestDistance(parks.getAllLocations(), currLocation);
         Log.d("closestDistance", String.valueOf(closestDistance));
-        if (closestDistance <= minDistanceInMeters) {
-            return true;
-        }
-        return false;
+        return closestDistance <= minDistanceInMeters;
     }
 
 

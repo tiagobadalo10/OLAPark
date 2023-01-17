@@ -73,4 +73,7 @@
     <string name="raise_money"> Amasser de l\'argent </string>
     <string name="payment_history">Vérifier l\'historique des paiements</string>
 
+    <string name="deposit"> Dépôt </string>
+
+
 </resources>

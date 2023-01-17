@@ -22,8 +22,7 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
     private View root;
     private MapsFragment mapsFragment;
     private ListView listView;
-
-    private ArrayList<String> listItems = new ArrayList<>();
+    private final ArrayList<String> listItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
     private ParkCatalog parks = new ParkCatalog();

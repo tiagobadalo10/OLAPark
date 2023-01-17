@@ -73,4 +73,7 @@
     <string name="raise_money"> Raise Cash </string>
     <string name="payment_history">Check Payment History</string>
 
+    <string name="deposit"> Deposit </string>
+
+
 </resources>

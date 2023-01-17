@@ -1,12 +1,6 @@
 package com.example.olapark.nav.parks;
 
-import android.Manifest;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,33 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.olapark.ActivityTransitionReceiver;
 import com.example.olapark.R;
 import com.example.olapark.ReportActivity;
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityTransition;
-import com.google.android.gms.location.ActivityTransitionEvent;
-import com.google.android.gms.location.ActivityTransitionRequest;
-import com.google.android.gms.location.ActivityTransitionResult;
-import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InfoParkDialog extends DialogFragment {
 
@@ -52,8 +25,8 @@ public class InfoParkDialog extends DialogFragment {
     private GoogleMap map;
     private LatLng currentPosition;
 
-    private String url = "https://roads.googleapis.com/v1/snapToRoads?interpolate=true&path=";
-    private String key = "AIzaSyBx64LbDqZGT7otVA_QFu_QHJAHeA7A8kQ";
+    private final String url = "https://roads.googleapis.com/v1/snapToRoads?interpolate=true&path=";
+    private final String key = "AIzaSyBx64LbDqZGT7otVA_QFu_QHJAHeA7A8kQ";
     private MapsFragment mapFragment;
 
     public static InfoParkDialog newInstance(String title) {

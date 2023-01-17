@@ -1,5 +1,6 @@
 package com.example.olapark.nav.logout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class LogoutFragment extends DialogFragment {
 
         FragmentLogoutBinding binding = FragmentLogoutBinding.inflate(inflater, container, false);
         try{
-            sp = getActivity().getSharedPreferences("auto-login", getContext().MODE_PRIVATE);
+            sp = getActivity().getSharedPreferences("auto-login", Context.MODE_PRIVATE);
         }
         catch(NullPointerException e){
 

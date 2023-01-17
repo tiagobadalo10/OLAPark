@@ -73,4 +73,7 @@
     <string name="raise_money"> Raccogliere fondi </string>
     <string name="payment_history">Controlla la cronologia dei pagamenti</string>
 
+    <string name="deposit"> Depositare </string>
+
+
 </resources>

@@ -73,4 +73,7 @@
     <string name="raise_money"> Recaudar dinero </string>
     <string name="payment_history">Consultar historial de pagos</string>
 
+    <string name="deposit"> Depósito </string>
+
+
 </resources>
