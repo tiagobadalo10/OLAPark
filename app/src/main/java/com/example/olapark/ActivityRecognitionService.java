@@ -127,56 +127,45 @@ public class ActivityRecognitionService extends Service {
                     // TODO: Register the BroadcastReceiver to listen for activity transitions.
                     registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
 
-                    //ciclo while
-                    while (true) {
-                        Log.e("Service", "Service is running");
 
-                        if (FragmentHelper.getInstance().getFragment().isVisible()) {
-                            Log.e("Service", "Fragment is visible");
-                        }
+                    GeofencingClient geofencingClient = LocationServices.getGeofencingClient(getApplicationContext());
+                    List<Geofence> geofenceList = new ArrayList<>();
+                    geofenceList.add(new Geofence.Builder()
+                            .setRequestId("area1")
+                            .setCircularRegion(38.697937447123465, -9.306405945317296, 2000)
+                            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                            .build());
 
-                        // TODO: Register the BroadcastReceiver to listen for activity transitions.
-                        registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
+                    GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
+                            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                            .addGeofences(geofenceList)
+                            .build();
 
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
 
-                        GeofencingClient geofencingClient = LocationServices.getGeofencingClient(getApplicationContext());
-                        List<Geofence> geofenceList = new ArrayList<>();
-                        geofenceList.add(new Geofence.Builder()
-                                .setRequestId("area1")
-                                .setCircularRegion(38.697937447123465, -9.306405945317296, 2000)
-                                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                                .build());
-
-                        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
-                                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                                .addGeofences(geofenceList)
-                                .build();
-
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
-                        }
-
-                        geofencingClient.addGeofences(geofencingRequest, getGeofencePendingIntent())
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("Service", "Geofencing Api was successfully registered.");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
-                                    }
-                                });
+                    geofencingClient.addGeofences(geofencingRequest, getGeofencePendingIntent())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("Service", "Geofencing Api was successfully registered.");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
+                                }
+                            });
 
 
                         //ciclo while
@@ -193,7 +182,6 @@ public class ActivityRecognitionService extends Service {
                             }
                         }
                     }
-                }
         ).start();
 
 
@@ -333,7 +321,8 @@ public class ActivityRecognitionService extends Service {
     public void parkingDetected() {
         this.sendNotificationTransitions("OK");
         if (mapsFragmentIsVisible()) {
-            //TODO
+            MapsFragment maps = FragmentHelper.getInstance().getFragment();
+            maps.openOccupationDialog();
         } else {
             //TODO
         }

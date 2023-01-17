@@ -195,7 +195,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
             String markerName = marker.getTitle();
             Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
-            openDialog(parks.findParkByLocation(marker.getPosition()));
+            openInfoDialog(parks.findParkByLocation(marker.getPosition()));
             return false;
         });
     }
@@ -277,9 +277,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    private void openDialog(Park park) {
+    private void openInfoDialog(Park park) {
         InfoParkDialog dialog = InfoParkDialog.newInstance("Info");
         dialog.setPark(park);
+        dialog.setMap(mMap);
+        dialog.setMapFragment(this);
+
+        updateCurrentPosition();
+        dialog.setCurrentPosition(currPosition);
+
+        dialog.show(getFragmentManager().beginTransaction(), "dialog");
+    }
+
+    public void openOccupationDialog() {
+        OccupationParkDialog dialog = OccupationParkDialog.newInstance("Occupation");
         dialog.setMap(mMap);
         dialog.setMapFragment(this);
 
