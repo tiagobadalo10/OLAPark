@@ -7,6 +7,17 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/only_covered"
+        android:layout_width="129dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:text="Only Covered:" />
+
+    <TextView
         android:id="@+id/textView2"
         android:layout_width="101dp"
         android:layout_height="50dp"
@@ -59,33 +70,30 @@
         app:layout_constraintTop_toBottomOf="@+id/slider" />
 
     <Button
+        android:id="@+id/reserve_button"
+        android:layout_width="238dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="52dp"
+        android:background="@android:color/transparent"
+        android:gravity="left"
+        android:text="Clear filter options"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/only_covered" />
+
+    <Button
         android:id="@+id/directions_button"
         android:layout_width="81dp"
         android:layout_height="46dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="36dp"
         android:background="@android:color/transparent"
         android:gravity="right"
         android:text="Apply"
         android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/reserve_button"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
-
-    <Button
-        android:id="@+id/reserve_button"
-        android:layout_width="238dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="12dp"
-        android:background="@android:color/transparent"
-        android:gravity="left"
-        android:text="Clear filter options"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/directions_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/privacy_switch" />
 
     <TextView
         android:id="@+id/name"
@@ -98,5 +106,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/privacy_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toEndOf="@+id/only_covered"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

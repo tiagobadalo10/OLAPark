@@ -20,16 +20,16 @@ public class ParkCatalog implements Iterable<Park>{
 
         this.addPark(new Park(new LatLng(38.69770840269444, -9.2930477191839),
                 "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW,
-                2.0));
+                2.0, Coverage.NON_COVERED, 30));
         this.addPark(new Park(new LatLng(38.75073524758464, -9.154801959985548),
                 "Estacionamento Cidade Universitária - EMEL", Occupation.HIGH,
-                3.0));
+                3.0, Coverage.NON_COVERED, 70));
         this.addPark(new Park(new LatLng(38.75762912547855, -9.155196744003156),
                 "Estacionamento Campo Grande - EMEL", Occupation.HIGH,
-                0.40));
+                0.40, Coverage.NON_COVERED, 50));
         this.addPark(new Park(new LatLng(38.76234930369637, -9.161149889720422),
                 "Estacionamento Alvalade XXI Entrada Norte", Occupation.MEDIUM,
-                0.89));
+                0.89, Coverage.COVERED, 200));
     }
 
     public void addPark(Park park) {
@@ -79,11 +79,12 @@ public class ParkCatalog implements Iterable<Park>{
         };
     }
 
+    // Filter parks and return the list of parks
     public ArrayList<Park> filterParks(FilterOptions filterOptions, LatLng currLocation) {
         ArrayList<Park> res = new ArrayList<>();
 
         for (Park park : parks) {
-            if (park.getOccupation() == filterOptions.occupation || filterOptions.occupation == null) {
+            if (park.getOccupation() == filterOptions.occupation || filterOptions.occupation == null ) {
                 if ((distance(park.getLocation(), currLocation) / 1000) <= filterOptions.range || filterOptions.range == 0) {
                     res.add(park);
                 }

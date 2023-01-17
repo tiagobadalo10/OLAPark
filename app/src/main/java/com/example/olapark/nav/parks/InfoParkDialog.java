@@ -91,13 +91,16 @@ public class InfoParkDialog extends DialogFragment {
 
     private void configureImageButton() {
 
+        TextView name = view.findViewById(R.id.name);
         TextView occupation = view.findViewById(R.id.occupation);
         TextView pricePerHour = view.findViewById(R.id.pricePerHour);
-        TextView name = view.findViewById(R.id.name);
+        TextView coverage = view.findViewById(R.id.coverage);
 
+        name.setText(park.getName());
         occupation.setText(park.getOccupation().toString());
         pricePerHour.setText(park.getPricePerHour() + "€");
-        name.setText(park.getName());
+        coverage.setText(park.getCoverage().toString());
+
     }
 
     public void setCurrentPosition(LatLng currentPosition) {

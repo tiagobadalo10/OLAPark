@@ -400,7 +400,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @SuppressLint("RestrictedApi")
     @Override
     public void onPause() {
-        //Log.d("parou", String.valueOf(this.isAdded() && this.is));
+
         super.onPause();
     }
 }

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Switch;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -44,7 +46,6 @@ public class FilterDialog extends DialogFragment {
 
         Slider slider = view.findViewById(R.id.slider);
 
-        //Drop-down List
         Spinner spinner = view.findViewById(R.id.spinner);
         String[] items = new String[]{"All", "Low", "Medium", "High"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
@@ -58,7 +59,19 @@ public class FilterDialog extends DialogFragment {
                 occupation = Occupation.valueOf(spinnerValue);
             }
 
-            FilterOptions filterOptions = new FilterOptions(slider.getValue(), occupation);
+            Switch privacy_switch = view.findViewById(R.id.privacy_switch);
+
+            boolean coverage = privacy_switch.isChecked();
+
+            FilterOptions filterOptions;
+
+            if(coverage){
+                filterOptions = new FilterOptions(slider.getValue(), occupation, Coverage.COVERED);
+            }
+            else{
+                filterOptions = new FilterOptions(slider.getValue(), occupation, Coverage.NON_COVERED);
+            }
+
             listener.setFilter(filterOptions);
             dismiss();
         });

@@ -5,16 +5,23 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Park {
 
-    private final LatLng location;
     private final String name;
+    private final LatLng location;
     private final Occupation occupation;
     private final double pricePerHour;
 
-    public Park(LatLng location, String name, Occupation occupation, double pricePerHour) {
+    private final Coverage coverage;
+
+    private final int places;
+
+    public Park(LatLng location, String name, Occupation occupation, double pricePerHour, Coverage coverage,
+            int places) {
         this.location = location;
         this.name = name;
         this.occupation = occupation;
         this.pricePerHour = pricePerHour;
+        this.coverage = coverage;
+        this.places = places;
     }
 
     public String getName() {
@@ -28,7 +35,6 @@ public class Park {
     public Occupation getOccupation() {
         return occupation;
     }
-
     public float getMarkerColor() {
         float result;
         if (occupation == Occupation.UNKNOWN) {
@@ -46,12 +52,20 @@ public class Park {
     public double getPricePerHour() {
         return pricePerHour;
     }
-
-    public double getPrice(int hour) {
+    public double getTotalPrice(int hour) {
         return hour * pricePerHour;
     }
+
+    public Coverage getCoverage(){ return coverage;  }
+
+    public int getNumberPlaces(){ return places; }
 }
 
 enum Occupation{
     UNKNOWN, LOW, MEDIUM, HIGH
+}
+
+enum Coverage{
+
+    COVERED, NON_COVERED
 }
