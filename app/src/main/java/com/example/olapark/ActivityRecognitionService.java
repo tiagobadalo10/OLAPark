@@ -316,7 +316,13 @@ public class ActivityRecognitionService extends Service {
 
     public void enterInFence(double lat, double lng){
         this.enterInFence = true;
-        Log.d("lat", String.valueOf(lat) + " " + lng);
+        Log.d("location", lat + " " + lng);
+
+        SharedPreferences sh = getSharedPreferences("service", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sh.edit();
+        editor.putString("parkLocation", lat + " " + lng);
+        editor.apply();
+
         if (this.isDriving) {
             parkingDetected();
         }

@@ -59,7 +59,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             // processa as informações sobre as geofences acionadas aqui
             Toast.makeText(getApplicationContext(), "entrou", Toast.LENGTH_SHORT).show();
             service.sendNotificationTransitions("Entrou na fence");
-            service.enterInFence(triggeringGeofences.get(0).getLongitude(), triggeringGeofences.get(0).getLatitude());
+            service.enterInFence(triggeringGeofences.get(0).getLatitude(), triggeringGeofences.get(0).getLongitude());
         }
     }
 }

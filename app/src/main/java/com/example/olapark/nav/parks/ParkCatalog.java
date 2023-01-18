@@ -2,6 +2,7 @@ package com.example.olapark.nav.parks;
 
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,14 +65,9 @@ public class ParkCatalog implements Iterable<Park>{
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    //addPark(dc.getDocument().getId(), dc.getDocument().getData());
-                                    break;
+                                case REMOVED:
                                 case MODIFIED:
                                     setParksCatalog();
-                                    Log.d("parquesMod", dc.getDocument().getId());
-                                    break;
-                                case REMOVED:
-                                    //removePark(dc.getDocument().getId());
                                     break;
                             }
                         }
@@ -135,13 +136,14 @@ public class ParkCatalog implements Iterable<Park>{
                         Map<String, Object> map = document.getData();
 
                         LatLng location = new LatLng((double) map.get("lat"), (double) map.get("lng"));
-                        // Occupation occupation = Occupation.valueOf((String) map.get("occupation"));
+                        Map occupationMap = (Map) map.get("occupation");
+                        Occupation occupation = calculateOccupation(occupationMap);
                         double pricePerHour = (double) map.get("pricePerHour");
                         boolean coverage = (boolean) map.get("coverage");
                         long places = (long) map.get("places");
                         Park park = new Park(document.getId(),
                                 location,
-                                Occupation.HIGH,
+                                occupation,
                                 pricePerHour,
                                 coverage,
                                 (int) places);
@@ -160,6 +162,51 @@ public class ParkCatalog implements Iterable<Park>{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Occupation calculateOccupation(Map occupationMap) {
+
+        long res = 0;
+        int counter = 0;
+        Iterator<Map.Entry<String, Long>> itr = occupationMap.entrySet().iterator();
+
+        while(itr.hasNext()) {
+            Map.Entry<String, Long> entry = itr.next();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+                LocalDateTime dateTime = LocalDateTime.parse(entry.getKey(), formatter);
+                if (DateTimeUtils.isWithinLast30Minutes(dateTime)) {
+                    counter++;
+                    res += (long) entry.getValue();
+                }
+            }
+        }
+
+        if (res == 0) {
+            return Occupation.UNKNOWN;
+        }
+
+        Log.d("calculate", String.valueOf(res));
+        Log.d("calculate", String.valueOf(counter));
+
+        double avg = (double) res/counter;
+
+        Log.d("calculate", String.valueOf(avg));
+
+        int y = (int) Math.round(avg);
+
+        Log.d("calculate", "y == " + String.valueOf(y));
+
+        if (y == 1) {
+            return Occupation.LOW;
+        }
+        if (y == 2) {
+            return Occupation.MEDIUM;
+        }
+        if (y == 3) {
+            return Occupation.HIGH;
+        }
+        return Occupation.UNKNOWN;
     }
 
 

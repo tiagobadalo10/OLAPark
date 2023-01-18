@@ -262,6 +262,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void openOccupationDialog() {
         OccupationParkDialog dialog = OccupationParkDialog.newInstance("Occupation");
 
+        SharedPreferences sh = getActivity().getSharedPreferences("service", Context.MODE_PRIVATE);
+        String location = sh.getString("parkLocation", null);
+
+        if (location == null) {
+            return;
+        }
+
+        double lat = Double.valueOf(location.split(" ")[0]);
+        double lng = Double.valueOf(location.split(" ")[1]);
+
+        Park park = parks.findParkByLocation(new LatLng(lat, lng));
+        Log.d("park", new LatLng(lat, lng).toString());
+        dialog.setPark(park);
+
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
