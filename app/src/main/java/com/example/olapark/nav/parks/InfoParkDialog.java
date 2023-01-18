@@ -65,8 +65,6 @@ public class InfoParkDialog extends DialogFragment {
         Button directions = view.findViewById(R.id.directions_button);
         directions.setOnClickListener(v -> {
 
-            Toast.makeText(getContext(), "helloooo", Toast.LENGTH_SHORT).show();
-
             this.mapFragment.direction(this.park.getLocation());
             dismiss();
 

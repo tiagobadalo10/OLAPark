@@ -24,16 +24,10 @@
         android:theme="@style/Theme.OLAPark"
         tools:targetApi="31">
 
-        <service android:name=".ActivityRecognitionService"/>
+        <service android:name=".ActivityRecognitionService" />
         <service
             android:name=".GeofenceTransitionsIntentService"
             android:exported="false" />
-
-
-        <!--android:name=".App",
-         <service android:name=".ActivityRecognitionService"/> and
-         <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-         so that the service can run-->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -62,7 +56,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainMenuActivity" />
         </activity>
-
         <activity
             android:name=".MainMenuActivity"
             android:exported="true"
@@ -96,7 +89,16 @@
                 android:value="" />
         </activity>
 
+        <activity
+            android:name=".AddPaymentMethodActivity"
+            android:exported="false"
+            android:label="Payment Method"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ProfileActivity" />
 
+        </activity>
 
         <provider
             android:name="com.vansuita.pickimage.provider.PickImageFileProvider"
@@ -108,8 +110,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/picker_provider_paths" />
         </provider>
-
-
     </application>
 
 </manifest>
