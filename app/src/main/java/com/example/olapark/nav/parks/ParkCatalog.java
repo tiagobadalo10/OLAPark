@@ -135,13 +135,13 @@ public class ParkCatalog implements Iterable<Park>{
                         Map<String, Object> map = document.getData();
 
                         LatLng location = new LatLng((double) map.get("lat"), (double) map.get("lng"));
-                        Occupation occupation = Occupation.valueOf((String) map.get("occupation"));
+                        // Occupation occupation = Occupation.valueOf((String) map.get("occupation"));
                         double pricePerHour = (double) map.get("pricePerHour");
                         boolean coverage = (boolean) map.get("coverage");
                         long places = (long) map.get("places");
                         Park park = new Park(document.getId(),
                                 location,
-                                occupation,
+                                Occupation.HIGH,
                                 pricePerHour,
                                 coverage,
                                 (int) places);

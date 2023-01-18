@@ -47,9 +47,7 @@ public class AddPaymentMethodActivity extends AppCompatActivity {
             String date = card_date.getText().toString();
             String cvv = card_cvv.getText().toString();
 
-            if(number != "" && name != "" && date != "" && cvv != ""){
-
-                hideNumbers(number);
+            if(number.length() == 16 && name != "" && date.split("/").length == 2 && cvv.length() == 3){
 
                 String username = sp.getString("username", "");
 
@@ -60,28 +58,13 @@ public class AddPaymentMethodActivity extends AppCompatActivity {
                 paymentMethod.put("date", date);
                 paymentMethod.put("cvv", cvv);
 
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("card", number);
-                editor.commit();
-
                 db.collection("users").document(username).update("payment-method", paymentMethod);
+
+                finish();
 
             }
 
-            finish();
         });
-
-    }
-
-    private String hideNumbers(String number) {
-
-        char [] numbers = number.toCharArray();
-        for(int i = 0; i < numbers.length - 4; i++){
-            numbers[i] = '*';
-        }
-
-        return String.valueOf(numbers);
-
 
     }
 }

@@ -95,5 +95,13 @@
 
     <string name="raining_message"> ¡Parece que está lloviendo! ¿Solo quieres ver parques interiores? </string>
 
+    <string name="entry_date"> Fecha de entrada </string>
+    <string name="departure_date"> Fecha de salida </string>
+    <string name="day_date"> Día </string>
+    <string name="hour_date"> Hora </string>
+    <string name="total_price"> Precio total - </string>
+    <string name="submit"> Entregar </string>
+
+
 
 </resources>

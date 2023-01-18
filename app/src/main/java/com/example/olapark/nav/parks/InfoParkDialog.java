@@ -45,8 +45,23 @@ public class InfoParkDialog extends DialogFragment {
         configureImageButton();
         createReport();
         getDirections();
+        createReservation();
 
         return view;
+    }
+
+    private void createReservation() {
+
+        Button reserve = view.findViewById(R.id.reserve_button);
+
+        reserve.setOnClickListener(v -> {
+            dismiss();
+            ReservationFragment dialog = ReservationFragment.newInstance("Reservation");
+            dialog.setPark(park);
+            dialog.show(getFragmentManager().beginTransaction(), "dialog");
+
+        });
+
     }
 
     private void createReport() {

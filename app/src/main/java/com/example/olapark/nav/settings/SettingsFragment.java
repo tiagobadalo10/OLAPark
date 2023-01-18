@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -31,9 +32,13 @@ public class SettingsFragment extends Fragment {
     private View view;
     private FirebaseFirestore db;
     private SharedPreferences sps;
-
     private SharedPreferences spa;
 
+    private SharedPreferences spf;
+
+    private SharedPreferences spser;
+
+    private SharedPreferences spu;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -45,6 +50,10 @@ public class SettingsFragment extends Fragment {
 
         sps = getActivity().getSharedPreferences("settings", MODE_PRIVATE);
         spa = getActivity().getSharedPreferences("auto-login", MODE_PRIVATE);
+        spf = getActivity().getSharedPreferences("filters", MODE_PRIVATE);
+        spser = getActivity().getSharedPreferences("service", MODE_PRIVATE);
+        spu = getActivity().getSharedPreferences("user_pref", MODE_PRIVATE);
+
 
         loadSettings();
         deleteAccount();
@@ -83,13 +92,17 @@ public class SettingsFragment extends Fragment {
     }
 
     public void cleanSP(){
-        SharedPreferences.Editor editor = sps.edit();
-        editor.clear();
-        editor.apply();
 
-        editor = spa.edit();
-        editor.clear();
-        editor.apply();
+        SharedPreferences[] sh = new SharedPreferences[]{sps, spa, spf, spser, spu};
+
+        for(int i = 0; i < sh.length; i++){
+
+            SharedPreferences.Editor editor = sh[i].edit();
+            editor.clear();
+            editor.apply();
+
+        }
+
     }
 
     @Override
