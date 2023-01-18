@@ -59,7 +59,3 @@ public class Park {
 
     public int getNumberPlaces(){ return places; }
 }
-
-enum Occupation{
-    UNKNOWN, LOW, MEDIUM, HIGH
-}

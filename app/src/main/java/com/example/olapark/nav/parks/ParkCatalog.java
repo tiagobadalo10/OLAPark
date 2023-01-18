@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 public class ParkCatalog implements Iterable<Park>{
 
     private static ParkCatalog instance;
-    private final List<Park> parks;
+    private List<Park> parks;
     private int listSize;
     private FirebaseFirestore db;
     private MapsFragment mapsFragment;
@@ -46,7 +46,7 @@ public class ParkCatalog implements Iterable<Park>{
         listSize = 0;
         db = FirebaseFirestore.getInstance();
 
-        db.collection("collectionName")
+        db.collection("parks")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshots,
@@ -59,13 +59,14 @@ public class ParkCatalog implements Iterable<Park>{
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    addPark(dc.getDocument().getId(), dc.getDocument().getData());
+                                    //addPark(dc.getDocument().getId(), dc.getDocument().getData());
                                     break;
                                 case MODIFIED:
-                                    modifyPark(dc.getDocument().getId(), dc.getDocument().getData());
+                                    setParksCatalog();
+                                    Log.d("parquesMod", dc.getDocument().getId());
                                     break;
                                 case REMOVED:
-                                    removePark(dc.getDocument().getId());
+                                    //removePark(dc.getDocument().getId());
                                     break;
                             }
                         }
@@ -73,7 +74,7 @@ public class ParkCatalog implements Iterable<Park>{
                 });
     }
 
-    public void removePark(String name) {
+    public synchronized void removePark(String name) {
         for (Park park : parks) {
             if (park.getName().equals(name)){
                 parks.remove(park);
@@ -82,28 +83,30 @@ public class ParkCatalog implements Iterable<Park>{
         listSize--;
     }
 
-    public void modifyPark(String name, Map<String, Object> map) {
+    public synchronized void modifyPark(String name, Map<String, Object> map) {
         removePark(name);
         addPark(name, map);
     }
 
-    public void addPark(String name, Map<String, Object> map) {
+    public synchronized void addPark(String name, Map<String, Object> map) {
         LatLng location = new LatLng((double) map.get("lat"), (double) map.get("lng"));
         Occupation occupation = Occupation.valueOf((String) map.get("occupation"));
         double pricePerHour = (double) map.get("pricePerHour");
         boolean coverage = (boolean) map.get("coverage");
-        int places = (int) map.get("places");
+        long places = (long) map.get("places");
         Park park = new Park(name,
                 location,
                 occupation,
                 pricePerHour,
                 coverage,
-                places);
+                (int) places);
         parks.add(park);
         listSize++;
     }
 
     public void setParksCatalog() {
+
+        parks.clear();
 
         try {
             new AsyncTask<Void, Void, QuerySnapshot>() {
@@ -128,6 +131,7 @@ public class ParkCatalog implements Iterable<Park>{
                     super.onPostExecute(querySnapshot);
                     // Iterar sobre os documentos retornados
                     for (QueryDocumentSnapshot document : querySnapshot) {
+
                         Map<String, Object> map = document.getData();
 
                         LatLng location = new LatLng((double) map.get("lat"), (double) map.get("lng"));
@@ -142,9 +146,13 @@ public class ParkCatalog implements Iterable<Park>{
                                 coverage,
                                 (int) places);
                         parks.add(park);
-                        Log.d("oi", parks.toString());
+                        listSize++;
+                        Log.d("oi", park.getName());
                     }
                     Log.d("oi", "acabou");
+                    Log.d("oi", parks.toString());
+                    printParks();
+                    mapsFragment.setParkMarkers();
                 }
             }.execute().get();
         } catch (ExecutionException e) {
@@ -237,4 +245,11 @@ public class ParkCatalog implements Iterable<Park>{
         Location.distanceBetween(p1.latitude, p1.longitude, p2.latitude, p2.longitude, res);
         return res[0];
     }
+
+    public void printParks() {
+        for (Park park : this.getParks()) {
+            Log.d("oit", park.getName());
+        }
+    }
+
 }

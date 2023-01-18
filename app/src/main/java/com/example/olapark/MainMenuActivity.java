@@ -190,10 +190,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            MapsFragment newFragment = new MapsFragment();
-            ft.replace(R.id.map, newFragment);
-            ft.commit();
             requestRecognitionPermission();
         } else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);

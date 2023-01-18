@@ -88,8 +88,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         // Initialize parks
-        parks = ParkCatalog.getInstance(this);
-        parks.setParksCatalog();
+
 
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
@@ -163,17 +162,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         checkRaining();
 
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                parks.setParksCatalog();
-                Log.d("allParks", parks.toString());
-                setParkMarkers();
-            }
-        });
-
-
         mMap.setOnMarkerClickListener(marker -> {
             if (marker == null) {
                 return true;
@@ -182,6 +170,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             openInfoDialog(parks.findParkByLocation(marker.getPosition()));
             return false;
         });
+
+        parks = ParkCatalog.getInstance(this);
+        parks.setParksCatalog();
     }
 
     private void marker() {
@@ -232,11 +223,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void setParkMarkers() {
-        Log.d("oi", "Inicio setParkMarkers");
-        Log.d("oi", parks.toString());
         for (Park park : parks.getParks()) {
-            Log.d("oi", "entrou");
-            Log.d("parques", mMap.toString());
+            Log.d("parques", park.getName());
             mMap.addMarker(new MarkerOptions()
                     .position(park.getLocation())
                     .title(park.getName())
