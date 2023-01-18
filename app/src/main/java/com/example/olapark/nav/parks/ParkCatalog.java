@@ -143,7 +143,7 @@ public class ParkCatalog implements Iterable<Park>{
                         long places = (long) map.get("places");
                         Park park = new Park(document.getId(),
                                 location,
-                                Occupation.HIGH,
+                                occupation,
                                 pricePerHour,
                                 coverage,
                                 (int) places);
@@ -195,7 +195,7 @@ public class ParkCatalog implements Iterable<Park>{
 
         int y = (int) Math.round(avg);
 
-        Log.d("calculate", String.valueOf(y));
+        Log.d("calculate", "y == " + String.valueOf(y));
 
         if (y == 1) {
             return Occupation.LOW;

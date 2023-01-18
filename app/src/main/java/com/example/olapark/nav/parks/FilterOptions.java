@@ -4,7 +4,6 @@ public class FilterOptions {
 
     public float range;
     public Enum<Occupation> occupation;
-
     public boolean coverage;
 
     public FilterOptions(float range, Enum<Occupation> occupation, boolean coverage) {
