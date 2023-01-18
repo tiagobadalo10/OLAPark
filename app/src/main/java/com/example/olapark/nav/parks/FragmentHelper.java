@@ -5,6 +5,17 @@ public class FragmentHelper {
     private static FragmentHelper instance;
     private MapsFragment fragment;
 
+
+    public interface OnFragmentReadyListener {
+        void onFragmentReady();
+    }
+
+    public void setOnFragmentReadyListener(OnFragmentReadyListener listener) {
+        this.listener = listener;
+    }
+
+    private OnFragmentReadyListener listener;
+
     private FragmentHelper(){}
 
     public static FragmentHelper getInstance(){
@@ -16,6 +27,9 @@ public class FragmentHelper {
 
     public void setFragment(MapsFragment fragment){
         this.fragment = fragment;
+        if (listener != null && fragment != null) {
+            listener.onFragmentReady();
+        }
     }
 
     public MapsFragment getFragment(){

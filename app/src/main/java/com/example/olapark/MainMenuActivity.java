@@ -2,6 +2,7 @@ package com.example.olapark;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.olapark.databinding.ActivityMainMenuBinding;
+import com.example.olapark.nav.parks.FragmentHelper;
 import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.material.navigation.NavigationView;
@@ -98,9 +101,27 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
         }
 
-
         loadProfilePicture();
 
+        SharedPreferences sh = getSharedPreferences("service", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sh.edit();
+
+        if (sh.getBoolean("clickNotification", false)) {
+            FragmentHelper.getInstance().setOnFragmentReadyListener(new FragmentHelper.OnFragmentReadyListener() {
+                @Override
+                public void onFragmentReady() {
+                    if (sh.getBoolean("clickNotification", false)) {
+                        FragmentHelper.getInstance().getFragment().openOccupationDialog();
+                        Toast.makeText(getApplicationContext(), "ola adeus", Toast.LENGTH_SHORT).show();
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.cancel(1001);
+                        stopService(new Intent(getApplicationContext(), ActivityRecognitionService.class));
+                        editor.remove("clickNotification");
+                        editor.apply();
+                    }
+                }
+            });
+        }
 
         changeToProfile(navigationView);
 
@@ -110,6 +131,7 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         requestLocationPermission();
 
     }
+
 
     private void setSettings(String username) {
 
@@ -212,6 +234,7 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
     @Override
     protected void onResume() {
+
         super.onResume();
 
         Sensor lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -233,6 +256,7 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
     @Override
     protected void onStart() {
+
         super.onStart();
     }
 

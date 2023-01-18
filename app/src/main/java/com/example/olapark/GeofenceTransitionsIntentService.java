@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GeofenceTransitionsIntentService extends IntentService {
 
-    private ActivityRecognitionService service;
+    private ActivityRecognitionService service = null;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -50,6 +50,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             return;
         }
 
+        while(service == null) {}
 
         // Obtenha o tipo de transição (entrar ou sair)
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
@@ -58,7 +59,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             // processa as informações sobre as geofences acionadas aqui
             Toast.makeText(getApplicationContext(), "entrou", Toast.LENGTH_SHORT).show();
             service.sendNotificationTransitions("Entrou na fence");
-            service.enterInFence();
+            service.enterInFence(triggeringGeofences.get(0).getLongitude(), triggeringGeofences.get(0).getLatitude());
         }
     }
 }

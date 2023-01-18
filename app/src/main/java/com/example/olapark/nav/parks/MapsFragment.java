@@ -291,11 +291,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     public void openOccupationDialog() {
         OccupationParkDialog dialog = OccupationParkDialog.newInstance("Occupation");
-        dialog.setMap(mMap);
-        dialog.setMapFragment(this);
-
-        updateCurrentPosition();
-        dialog.setCurrentPosition(currPosition);
 
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }

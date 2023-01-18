@@ -46,6 +46,7 @@ public class OccupationParkDialog extends DialogFragment {
         view = inflater.inflate(R.layout.layout_occupation_park_dialog, container, false);
 
         submit();
+        cancel();
 
         return view;
     }
@@ -53,6 +54,14 @@ public class OccupationParkDialog extends DialogFragment {
     private void submit() {
 
         Button report = view.findViewById(R.id.submit_button);
+        report.setOnClickListener(v -> {
+            dismiss();
+        });
+    }
+
+    private void cancel() {
+
+        Button report = view.findViewById(R.id.cancel_button);
         report.setOnClickListener(v -> {
             dismiss();
         });
