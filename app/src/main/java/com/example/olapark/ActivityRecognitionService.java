@@ -305,6 +305,8 @@ public class ActivityRecognitionService extends Service {
     }
 
     public void parkingDetected() {
+        this.isDriving = false;
+        this.enterInFence = false;
         this.sendNotificationTransitions("OK");
         if (mapsFragmentIsVisible()) {
             MapsFragment maps = FragmentHelper.getInstance().getFragment();
