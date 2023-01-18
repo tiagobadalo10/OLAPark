@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ReservationFragment extends DialogFragment {
@@ -55,58 +56,36 @@ public class ReservationFragment extends DialogFragment {
 
     private void submitReservation() {
 
-        Calendar calendar = Calendar.getInstance();
-
         EditText entry_date_day_value = v.findViewById(R.id.entry_date_day_value);
         entry_date_day_value.setOnClickListener(view -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                new DatePickerDialog(getContext(),
-                        (view1, year, month, dayOfMonth) -> {
-                            entry_date_day_value.setText(dayOfMonth + "/" + month + "/" + year);
-                            calculatePrice();
-                        },
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH));
-            }
+
+            DialogFragment dateFragment = new SelectDateFragment(entry_date_day_value, park, v);
+            dateFragment.show(getFragmentManager(), "Early Date Picker");
+
         });
 
         EditText entry_date_hour_value = v.findViewById(R.id.entry_date_hour_value);
         entry_date_hour_value.setOnClickListener(view -> {
-            new TimePickerDialog(getContext(),
-                    (view1, hourOfDay, minute) -> {
-                        entry_date_hour_value.setText(hourOfDay + ":" + minute);
-                        calculatePrice();
-                    },
-                    calendar.get(Calendar.HOUR),
-                    calendar.get(Calendar.MINUTE),
-                    true);
+
+            DialogFragment dateFragment = new SelectHourFragment(entry_date_hour_value, park, v);
+            dateFragment.show(getFragmentManager(), "Early Hour Picker");
+
         });
 
         EditText departure_date_day_value = v.findViewById(R.id.departure_date_day_value);
         departure_date_day_value.setOnClickListener(view -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                new DatePickerDialog(getContext(),
-                        (view1, year, month, dayOfMonth) -> {
-                            departure_date_day_value.setText(dayOfMonth + "/" + month + "/" + year);
-                            calculatePrice();
-                        },
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH));
-            }
+
+            DialogFragment dateFragment = new SelectDateFragment(departure_date_day_value, park, v);
+            dateFragment.show(getFragmentManager(), "Departure Date Picker");
+
         });
 
         EditText departure_date_hour_value = v.findViewById(R.id.departure_date_hour_value);
         departure_date_hour_value.setOnClickListener(view -> {
-            new TimePickerDialog(getContext(),
-                    (view1, hourOfDay, minute) -> {
-                        departure_date_hour_value.setText(hourOfDay + ":" + minute);
-                        calculatePrice();
-                    },
-                    calendar.get(Calendar.HOUR),
-                    calendar.get(Calendar.MINUTE),
-                    true);
+
+            DialogFragment dateFragment = new SelectHourFragment(departure_date_hour_value, park, v);
+            dateFragment.show(getFragmentManager(), "Departure Hour Picker");
+
         });
 
         TextView reservation_price_value = v.findViewById(R.id.reservation_price_value);
@@ -116,15 +95,20 @@ public class ReservationFragment extends DialogFragment {
 
             float balance = sp.getFloat("balance", 0);
 
-            float total_price = Float.parseFloat(reservation_price_value.getText().toString());
+            String price = (String) reservation_price_value.getText();
 
-            if(calculatePrice() && balance >= total_price){
+            if(price != ""){
 
-                addToPayments(park.getName(), String.valueOf(total_price));
-                updateBalance(balance - total_price);
-                increaseCoins();
+                float total_price = Float.parseFloat(price.split("€")[0]);
+
+                if(balance >= total_price){
+                    addToPayments(park.getName(), String.valueOf(total_price));
+                    updateBalance(balance - total_price);
+                    increaseCoins();
+
+                    dismiss();
+                }
             }
-
         });
     }
 
@@ -165,8 +149,7 @@ public class ReservationFragment extends DialogFragment {
 
                         DocumentSnapshot document = task.getResult();
 
-                        // Get all payments
-                        Map<Integer, ArrayList<String>> payments = (Map<Integer, ArrayList<String>>) document.get("payments");
+                        Map<String, String> payments = (Map<String, String>) document.get("payments");
 
                         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
 
@@ -179,7 +162,7 @@ public class ReservationFragment extends DialogFragment {
 
                             else {
 
-                                number = payments.size();
+                                number = payments.size() + 1;
                             }
 
                             String now = LocalDateTime.now().toString();
@@ -189,12 +172,7 @@ public class ReservationFragment extends DialogFragment {
 
                             String date = fst + " " + snd;
 
-                            ArrayList<String> payment = new ArrayList<>();
-                            payment.add(date);
-                            payment.add(name);
-                            payment.add(value);
-
-                            payments.put(number, payment);
+                            payments.put(String.valueOf(number), date + "%" + name + "%" + value);
 
                             db.collection("users").document(username).update("payments", payments);
 
@@ -205,74 +183,6 @@ public class ReservationFragment extends DialogFragment {
         );
 
     }
-
-
-    private boolean calculatePrice(){
-
-        EditText entry_date_day = v.findViewById(R.id.entry_date_day_value);
-        EditText entry_date_hour = v.findViewById(R.id.entry_date_hour_value);
-        EditText departure_date_day = v.findViewById(R.id.departure_date_day_value);
-        EditText departure_date_hour = v.findViewById(R.id.departure_date_hour_value);
-
-        String entry_date_day_value = entry_date_day.getText().toString();
-        String entry_date_hour_value = entry_date_hour.getText().toString();
-        String departure_date_day_value = departure_date_day.getText().toString();
-        String departure_date_hour_value = departure_date_hour.getText().toString();
-
-        if(!"".equals(entry_date_day_value) && !"".equals(entry_date_hour_value) &&
-            !"".equals(departure_date_day_value) && !"".equals(departure_date_hour_value)){
-
-            double price = park.getPricePerHour();
-
-            String[] aux = entry_date_day_value.split("/");
-            int day_entry = Integer.parseInt(aux[0]);
-            int month_entry = Integer.parseInt(aux[1]);
-            int year_entry = Integer.parseInt(aux[2]);
-
-            aux = entry_date_hour_value.split(":");
-            int hour_entry = Integer.parseInt(aux[0]);
-            int minute_entry = Integer.parseInt(aux[1]);
-
-            aux = departure_date_day_value.split("/");
-            int day_departure = Integer.parseInt(aux[0]);
-            int month_departure = Integer.parseInt(aux[1]);
-            int year_departure = Integer.parseInt(aux[2]);
-
-            aux = departure_date_hour_value.split(":");
-            int hour_departure = Integer.parseInt(aux[0]);
-            int minute_departure = Integer.parseInt(aux[1]);
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                LocalDateTime start = LocalDateTime.of(year_entry,
-                        month_entry,
-                        day_entry,
-                        hour_entry,
-                        minute_entry);
-
-                LocalDateTime end = LocalDateTime.of(year_departure,
-                        month_departure,
-                        day_departure,
-                        hour_departure,
-                        minute_departure);
-
-                Duration duration = Duration.between(start, end);
-                long hours = duration.toHours();
-
-                float totalPrice = (float) (hours * price);
-
-                TextView reservation_price_value = v.findViewById(R.id.reservation_price_value);
-                reservation_price_value.setText(String.valueOf(totalPrice));
-
-                return true;
-            }
-
-            return false;
-
-        }
-
-        return false;
-    }
-
     public void setPark(Park park) {
 
         this.park = park;

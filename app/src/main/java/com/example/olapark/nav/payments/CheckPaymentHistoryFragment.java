@@ -26,6 +26,7 @@ import com.google.firestore.v1.Document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,14 +63,16 @@ public class CheckPaymentHistoryFragment extends Fragment {
 
                         DocumentSnapshot document = task.getResult();
 
-                        Map<Integer, ArrayList<String>> payments = (Map<Integer, ArrayList<String>>) document.get("payments");
+                        Map<String, String> payments = (Map<String, String>) document.get("payments");
 
                         TableLayout table = v.findViewById(R.id.table_payments);
 
-                        for(Map.Entry<Integer, ArrayList<String>> payment: payments.entrySet()){
+                        for(Map.Entry<String, String> payment: payments.entrySet()){
 
-                            int number = payment.getKey();
-                            ArrayList<String> values = payment.getValue();
+                            String number = payment.getKey();
+                            String values = payment.getValue();
+
+                            String[] aux = values.split("%");
 
                             TableRow row = new TableRow(getContext());
                             TableRow.LayoutParams paramsExample = new TableRow.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT,0.4f);
@@ -80,17 +83,17 @@ public class CheckPaymentHistoryFragment extends Fragment {
                             numberView.setLayoutParams(paramsExample);
 
                             TextView dateView = new TextView(getContext());
-                            numberView.setText(values.get(0));
+                            numberView.setText(aux[0]);
                             numberView.setTextSize(16);
                             numberView.setLayoutParams(paramsExample);
 
                             TextView parkView = new TextView(getContext());
-                            numberView.setText(values.get(1));
+                            numberView.setText(aux[1]);
                             numberView.setTextSize(16);
                             numberView.setLayoutParams(paramsExample);
 
                             TextView valueView = new TextView(getContext());
-                            numberView.setText(values.get(2));
+                            numberView.setText(aux[2]);
                             numberView.setTextSize(16);
                             numberView.setLayoutParams(paramsExample);
 
