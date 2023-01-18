@@ -92,10 +92,10 @@ public class FilterDialog extends DialogFragment {
             FilterOptions filterOptions;
 
             if(coverage){
-                filterOptions = new FilterOptions(slider.getValue(), occupation, Coverage.COVERED);
+                filterOptions = new FilterOptions(slider.getValue(), occupation, true);
             }
             else{
-                filterOptions = new FilterOptions(slider.getValue(), occupation, Coverage.NON_COVERED);
+                filterOptions = new FilterOptions(slider.getValue(), occupation, false);
             }
 
             // Save filters

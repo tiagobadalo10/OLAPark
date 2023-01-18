@@ -5,12 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.olapark.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.protobuf.Enum;
 
 public class OccupationParkDialog extends DialogFragment {
 
@@ -49,6 +55,16 @@ public class OccupationParkDialog extends DialogFragment {
 
         Button report = view.findViewById(R.id.submit_button);
         report.setOnClickListener(v -> {
+
+            RadioGroup myRadioGroup = view.findViewById(R.id.occupation_group);
+            int selectedId = myRadioGroup.getCheckedRadioButtonId();
+            RadioButton selectedRadioButton = (RadioButton) view.findViewById(selectedId);
+
+            String selectedText = selectedRadioButton.getText().toString();
+            Occupation occupation = Occupation.valueOf(selectedText);
+
+            //TODO inserir occupation na db
+
             dismiss();
         });
     }

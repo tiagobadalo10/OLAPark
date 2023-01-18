@@ -9,13 +9,12 @@ public class Park {
     private final LatLng location;
     private final Occupation occupation;
     private final double pricePerHour;
-
-    private final Coverage coverage;
+    private final boolean coverage;
 
     private final int places;
 
-    public Park(LatLng location, String name, Occupation occupation, double pricePerHour, Coverage coverage,
-            int places) {
+    public Park(String name, LatLng location, Occupation occupation, double pricePerHour,
+                boolean coverage, int places) {
         this.location = location;
         this.name = name;
         this.occupation = occupation;
@@ -56,8 +55,11 @@ public class Park {
         return hour * pricePerHour;
     }
 
-    public Coverage getCoverage(){ return coverage;  }
+    public boolean getCoverage(){ return coverage;  }
 
     public int getNumberPlaces(){ return places; }
 }
 
+enum Occupation{
+    UNKNOWN, LOW, MEDIUM, HIGH
+}

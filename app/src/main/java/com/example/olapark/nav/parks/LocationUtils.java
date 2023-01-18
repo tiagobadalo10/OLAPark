@@ -52,11 +52,12 @@ public class LocationUtils {
 
 
     public static boolean isCloseToTheNearestPark(LatLng currLocation, double minDistanceInMeters){
-        ParkCatalog parks = new ParkCatalog();
-        parks.setParksCatalog();
-        double closestDistance= getClosestDistance(parks.getAllLocations(), currLocation);
-        Log.d("closestDistance", String.valueOf(closestDistance));
-        return closestDistance <= minDistanceInMeters;
+        //ParkCatalog parks = new ParkCatalog();
+        //parks.setParksCatalog();
+        //double closestDistance= getClosestDistance(parks.getAllLocations(), currLocation);
+        //Log.d("closestDistance", String.valueOf(closestDistance));
+        //return closestDistance <= minDistanceInMeters;
+        return false;
     }
 
 

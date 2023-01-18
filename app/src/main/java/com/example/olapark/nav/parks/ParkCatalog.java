@@ -1,41 +1,159 @@
 package com.example.olapark.nav.parks;
 
 import android.location.Location;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class ParkCatalog implements Iterable<Park>{
 
+    private static ParkCatalog instance;
     private final List<Park> parks;
     private int listSize;
+    private FirebaseFirestore db;
+    private MapsFragment mapsFragment;
 
-    public ParkCatalog() {
+    public static ParkCatalog getInstance(MapsFragment mapsFragment) {
+        if (instance == null) {
+            instance = new ParkCatalog(mapsFragment);
+        }
+        return instance;
+    }
+
+    public ParkCatalog(MapsFragment mapsFragment) {
+        this.mapsFragment = mapsFragment;
         parks = new ArrayList<>();
         listSize = 0;
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("collectionName")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("error", "listen:error", e);
+                            return;
+                        }
+
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    addPark(dc.getDocument().getId(), dc.getDocument().getData());
+                                    break;
+                                case MODIFIED:
+                                    modifyPark(dc.getDocument().getId(), dc.getDocument().getData());
+                                    break;
+                                case REMOVED:
+                                    removePark(dc.getDocument().getId());
+                                    break;
+                            }
+                        }
+                    }
+                });
     }
 
-    public void setParksCatalog(){
-
-        this.addPark(new Park(new LatLng(38.69770840269444, -9.2930477191839),
-                "Parque de estacionamento da quinta das amendoeiras", Occupation.LOW,
-                2.0, Coverage.NON_COVERED, 30));
-        this.addPark(new Park(new LatLng(38.75073524758464, -9.154801959985548),
-                "Estacionamento Cidade Universitária - EMEL", Occupation.HIGH,
-                3.0, Coverage.NON_COVERED, 70));
-        this.addPark(new Park(new LatLng(38.75762912547855, -9.155196744003156),
-                "Estacionamento Campo Grande - EMEL", Occupation.HIGH,
-                0.40, Coverage.NON_COVERED, 50));
-        this.addPark(new Park(new LatLng(38.76234930369637, -9.161149889720422),
-                "Estacionamento Alvalade XXI Entrada Norte", Occupation.MEDIUM,
-                0.89, Coverage.COVERED, 200));
+    public void removePark(String name) {
+        for (Park park : parks) {
+            if (park.getName().equals(name)){
+                parks.remove(park);
+            }
+        }
+        listSize--;
     }
 
-    public void addPark(Park park) {
+    public void modifyPark(String name, Map<String, Object> map) {
+        removePark(name);
+        addPark(name, map);
+    }
+
+    public void addPark(String name, Map<String, Object> map) {
+        LatLng location = new LatLng((double) map.get("lat"), (double) map.get("lng"));
+        Occupation occupation = Occupation.valueOf((String) map.get("occupation"));
+        double pricePerHour = (double) map.get("pricePerHour");
+        boolean coverage = (boolean) map.get("coverage");
+        int places = (int) map.get("places");
+        Park park = new Park(name,
+                location,
+                occupation,
+                pricePerHour,
+                coverage,
+                places);
         parks.add(park);
         listSize++;
     }
+
+    public void setParksCatalog() {
+
+        try {
+            new AsyncTask<Void, Void, QuerySnapshot>() {
+                @Override
+                protected QuerySnapshot doInBackground(Void... voids) {
+                    // Obter a referência da coleção
+                    CollectionReference collectionRef = db.collection("parks");
+                    // Executar a consulta síncrona
+                    QuerySnapshot querySnapshot = null;
+                    try {
+                        querySnapshot = Tasks.await(collectionRef.get());
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return querySnapshot;
+                }
+
+                @Override
+                protected void onPostExecute(QuerySnapshot querySnapshot) {
+                    super.onPostExecute(querySnapshot);
+                    // Iterar sobre os documentos retornados
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        Map<String, Object> map = document.getData();
+
+                        LatLng location = new LatLng((double) map.get("lat"), (double) map.get("lng"));
+                        Occupation occupation = Occupation.valueOf((String) map.get("occupation"));
+                        double pricePerHour = (double) map.get("pricePerHour");
+                        boolean coverage = (boolean) map.get("coverage");
+                        long places = (long) map.get("places");
+                        Park park = new Park(document.getId(),
+                                location,
+                                occupation,
+                                pricePerHour,
+                                coverage,
+                                (int) places);
+                        parks.add(park);
+                        Log.d("oi", parks.toString());
+                    }
+                    Log.d("oi", "acabou");
+                }
+            }.execute().get();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public Park findParkByName(String name) {
         for (Park park : parks) {
@@ -103,6 +221,16 @@ public class ParkCatalog implements Iterable<Park>{
         return locations;
     }
 
+    @Override
+    public String toString() {
+        return "ParkCatalog{" +
+                "parks=" + parks +
+                '}';
+    }
+
+    public List<Park> getParks() {
+        return this.parks;
+    }
 
     private float distance(LatLng p1, LatLng p2) {
         float[] res = new float[1];

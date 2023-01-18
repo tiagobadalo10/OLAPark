@@ -25,7 +25,7 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
     private final ArrayList<String> listItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
-    private ParkCatalog parks = new ParkCatalog();
+    private ParkCatalog parks;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,6 +36,8 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
 
         FragmentManager fm = getChildFragmentManager();
         mapsFragment = (MapsFragment) fm.findFragmentById(R.id.fragmentContainerView);
+
+        parks = ParkCatalog.getInstance(mapsFragment);
 
         listView = binding.getRoot().findViewById(R.id.list_view);
         SearchView searchView = binding.getRoot().findViewById(R.id.searchView);
