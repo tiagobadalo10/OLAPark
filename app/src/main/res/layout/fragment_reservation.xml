@@ -12,135 +12,144 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="52dp"
         android:text="@string/entry_date"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/entry_date_hour_value"
+        android:id="@+id/departure_date_hour_value"
         android:layout_width="117dp"
         android:layout_height="41dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="72dp"
         android:ems="10"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entry_date_hour" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/departure_date_day_value"
+        app:layout_constraintTop_toBottomOf="@+id/departure_date_hour" />
 
     <TextView
         android:id="@+id/reservation_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="68dp"
         android:text="@string/total_price"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/departure_date_day_value" />
 
     <TextView
-        android:id="@+id/reservation_price_value"
-        android:layout_width="87dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginEnd="160dp"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/departure_date_hour_value" />
-
-    <EditText
-        android:id="@+id/entry_date_day_value"
-        android:layout_width="117dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entry_date_day" />
-
-    <TextView
-        android:id="@+id/departure_date_hour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="166dp"
-        android:layout_marginTop="48dp"
-        android:text="@string/hour_date"
-        app:layout_constraintStart_toEndOf="@+id/departure_date_day"
-        app:layout_constraintTop_toBottomOf="@+id/departure_data" />
-
-    <TextView
         android:id="@+id/departure_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="72dp"
         android:text="@string/departure_date"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/entry_date_day_value" />
 
-    <EditText
-        android:id="@+id/departure_date_hour_value"
-        android:layout_width="117dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="52dp"
-        android:ems="10"
-        android:inputType="date"
+    <TextView
+        android:id="@+id/reservation_price_value"
+        android:layout_width="87dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="100dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/departure_date_hour" />
-
-    <EditText
-        android:id="@+id/departure_date_day_value"
-        android:layout_width="117dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/departure_date_day" />
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toEndOf="@+id/reservation_price"
+        app:layout_constraintTop_toBottomOf="@+id/departure_date_hour_value" />
 
     <TextView
-        android:id="@+id/departure_date_day"
+        android:id="@+id/departure_date_hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="48dp"
-        android:text="@string/day_date"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/hour_date"
+        app:layout_constraintStart_toEndOf="@+id/departure_date_day"
         app:layout_constraintTop_toBottomOf="@+id/departure_data" />
 
     <TextView
         android:id="@+id/entry_date_hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="166dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="44dp"
         android:text="@string/hour_date"
         app:layout_constraintStart_toEndOf="@+id/entry_date_day"
         app:layout_constraintTop_toBottomOf="@+id/entry_date" />
+
+    <EditText
+        android:id="@+id/entry_date_day_value"
+        android:layout_width="117dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entry_date_day" />
+
+    <EditText
+        android:id="@+id/departure_date_day_value"
+        android:layout_width="117dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departure_date_day" />
+
+    <Button
+        android:id="@+id/reservation_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reservation_price" />
+
+    <TextView
+        android:id="@+id/departure_date_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/day_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departure_data" />
 
     <TextView
         android:id="@+id/entry_date_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="44dp"
         android:text="@string/day_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/entry_date" />
 
-    <Button
-        android:id="@+id/reservation_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:text="@string/submit"
+    <EditText
+        android:id="@+id/entry_date_hour_value"
+        android:layout_width="117dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="72dp"
+        android:ems="10"
+        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reservation_price" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/entry_date_day_value"
+        app:layout_constraintTop_toBottomOf="@+id/entry_date_hour" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
