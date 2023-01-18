@@ -63,4 +63,3 @@ public class Park {
 enum Occupation{
     UNKNOWN, LOW, MEDIUM, HIGH
 }
-

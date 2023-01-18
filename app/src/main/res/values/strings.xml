@@ -93,4 +93,6 @@
     <string name="second_reward"> 50% discount in next payment </string>
     <string name="third_reward"> Free parking </string>
 
+    <string name="raining_message"> It looks like it\'s raining! Just want to see indoor parks? </string>
+
 </resources>

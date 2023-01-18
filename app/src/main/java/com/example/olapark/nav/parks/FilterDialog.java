@@ -1,5 +1,7 @@
 package com.example.olapark.nav.parks;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,8 @@ public class FilterDialog extends DialogFragment {
     private View view;
     private MyDialogListener listener;
 
+    private SharedPreferences sp;
+
     public static FilterDialog newInstance(String title) {
         FilterDialog yourDialogFragment = new FilterDialog();
 
@@ -34,6 +38,8 @@ public class FilterDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.layout_filter_dialog, container, false);
+
+        sp = getActivity().getSharedPreferences("filters", Context.MODE_PRIVATE);
 
         configureImageButton();
 
@@ -51,6 +57,26 @@ public class FilterDialog extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);
 
+        Switch switch_coverage = view.findViewById(R.id.coverage_switch);
+
+
+        // If isn't empty, change filters
+        if(!sp.getAll().isEmpty()){
+            float range = sp.getFloat("range", 0);
+            String occupation = sp.getString("occupation", "");
+            boolean coverage = sp.getBoolean("coverage", false);
+
+            slider.setValue(range);
+
+            int spinnerPos = adapter.getPosition(occupation);
+            spinner.setSelection(spinnerPos);
+
+            switch_coverage.setChecked(coverage);
+
+
+        }
+
+
         btn_apply.setOnClickListener(v -> {
             String spinnerValue = spinner.getSelectedItem().toString().toUpperCase();
             Occupation occupation = null;
@@ -59,7 +85,7 @@ public class FilterDialog extends DialogFragment {
                 occupation = Occupation.valueOf(spinnerValue);
             }
 
-            Switch privacy_switch = view.findViewById(R.id.privacy_switch);
+            Switch privacy_switch = view.findViewById(R.id.coverage_switch);
 
             boolean coverage = privacy_switch.isChecked();
 
@@ -71,6 +97,15 @@ public class FilterDialog extends DialogFragment {
             else{
                 filterOptions = new FilterOptions(slider.getValue(), occupation, false);
             }
+
+            // Save filters
+
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("range", slider.getValue());
+            editor.putString("occupation", spinner.getSelectedItem().toString());
+            editor.putBoolean("coverage", coverage);
+
+            editor.commit();
 
             listener.setFilter(filterOptions);
             dismiss();

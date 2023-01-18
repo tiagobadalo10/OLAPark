@@ -8,17 +8,13 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +25,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 
-import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -51,9 +45,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.maps.PlacesApi;
-import com.google.maps.model.Geometry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,17 +57,14 @@ import java.util.List;
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    LocationManager locationManager;
     Context mContext;
-    private final ArrayList<LatLng> latLngList = new ArrayList<>();
     private GoogleMapOptions options;
-    private FilterOptions filterOptions;
     private ParkCatalog parks;
     private FusedLocationProviderClient fusedLocationClient;
-    private LocationCallback locationCallback;
     private LatLng currPosition;
     private Polyline polyline = null;
 
+    private View v;
     private final String url = "https://api.openweathermap.org/data/2.5/weather";
     private final String appid = "8ff90c2810d99aea0486ad49724d792a";
 
@@ -86,7 +74,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        v = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        return v;
     }
 
     @Override
@@ -121,28 +111,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void isLocationEnabled() {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-            alertDialog.setTitle("Enable Location");
-            alertDialog.setMessage("Your locations setting is not enabled. Please enabled it in settings menu.");
-            alertDialog.setPositiveButton("Location Settings", (dialog, which) -> {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            });
-            alertDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-            AlertDialog alert = alertDialog.create();
-            alert.show();
-        }
+        SharedPreferences sp = getActivity().getSharedPreferences("filters", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.commit();
     }
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -201,8 +178,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             if (marker == null) {
                 return true;
             }
-            String markerName = marker.getTitle();
-            Toast.makeText(getContext(), "Clicked location is " + marker.getPosition(), Toast.LENGTH_SHORT).show();
+
             openInfoDialog(parks.findParkByLocation(marker.getPosition()));
             return false;
         });
@@ -221,13 +197,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> currPosition = new LatLng(location.getLatitude(), location.getLongitude()));
     }
-
-    public LatLng getCurrPosition() {
-        updateCurrentPosition();
-        return currPosition;
-    }
-
-
     private void checkRaining() {
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -245,7 +214,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             String main = jsonObjectWeather.getString("main");
                             // It's raining
                             if ("Rain".equals(main)) {
-
+                                RainingFragment dialog = RainingFragment.newInstance("Raining");
+                                dialog.show(getFragmentManager().beginTransaction(), "dialog");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -276,7 +246,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void setParksMarkersWithFilter(FilterOptions filterOptions) {
-        Toast.makeText(getContext(), "mapsFragement", Toast.LENGTH_SHORT).show();
 
         mMap.clear();
 
@@ -295,7 +264,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
     private void openInfoDialog(Park park) {
         InfoParkDialog dialog = InfoParkDialog.newInstance("Info");
         dialog.setPark(park);
@@ -337,8 +305,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 .appendQueryParameter("mode", "driving")
                 .appendQueryParameter("key", "AIzaSyBWzhZkDZHP1UF4ufvLhZ0y50NYK2ROJMY")
                 .toString();
-
-        Log.d("coo", url);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
