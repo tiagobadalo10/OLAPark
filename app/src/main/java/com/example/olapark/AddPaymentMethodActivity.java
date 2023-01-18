@@ -49,6 +49,8 @@ public class AddPaymentMethodActivity extends AppCompatActivity {
 
             if(number != "" && name != "" && date != "" && cvv != ""){
 
+                hideNumbers(number);
+
                 String username = sp.getString("username", "");
 
                 Map<String, Object> paymentMethod = new HashMap<>();
@@ -68,6 +70,18 @@ public class AddPaymentMethodActivity extends AppCompatActivity {
 
             finish();
         });
+
+    }
+
+    private String hideNumbers(String number) {
+
+        char [] numbers = number.toCharArray();
+        for(int i = 0; i < numbers.length - 4; i++){
+            numbers[i] = '*';
+        }
+
+        return String.valueOf(numbers);
+
 
     }
 }

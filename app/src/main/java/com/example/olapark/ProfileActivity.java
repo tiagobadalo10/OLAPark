@@ -100,27 +100,39 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private void deletePaymentMethod() {
 
-        // verificar se o texto é diferente de ""
+        TextView card_view = findViewById(R.id.card);
 
+        String card = (String) card_view.getText();
 
+        if(card != ""){
 
+            card_view.setText("");
+
+            SharedPreferences.Editor editor = sh.edit();
+            editor.remove("card");
+            editor.commit();
+
+        }
 
     }
 
     private void addPaymentMethod() {
 
-        // verificar se o text é igual a ""
+        TextView card_view = findViewById(R.id.card);
 
-        Button add_payment_method = findViewById(R.id.add_payment_method);
+        String card = (String) card_view.getText();
 
-        add_payment_method.setOnClickListener(view -> {
+        if(card == ""){
 
-            Intent i = new Intent(this, AddPaymentMethodActivity.class);
-            startActivity(i);
+            Button add_payment_method = findViewById(R.id.add_payment_method);
 
-        });
+            add_payment_method.setOnClickListener(view -> {
 
+                Intent i = new Intent(this, AddPaymentMethodActivity.class);
+                startActivity(i);
 
+            });
+        }
 
     }
 
@@ -206,7 +218,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
             card_view.setText(card);
         }
-        
+
     }
 
     private void editProfile(){
