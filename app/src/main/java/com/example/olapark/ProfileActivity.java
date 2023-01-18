@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
@@ -59,7 +60,11 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private Date date;
     private String username;
     private String email;
+
+    private String card;
     private Long phone_number;
+
+    private TextView card_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         loadingImage = getString(R.string.modal_add_card_loading_image);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         progressBar = findViewById(R.id.progressBarCar);
+        card_view = findViewById(R.id.card);
         date = new Date();
         df = new SimpleDateFormat("MM/dd/");
         df.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
@@ -100,26 +106,32 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private void deletePaymentMethod() {
 
-        // verificar se o texto é diferente de ""
+        ImageView delete_payment_method = findViewById(R.id.delete_button);
+        delete_payment_method.setOnClickListener(v -> {
 
+            card_view.setText("");
 
+            db.collection("users").document(username).update("payment-method", new HashMap<>());
 
+        });
 
     }
 
     private void addPaymentMethod() {
 
-        // verificar se o text é igual a ""
-
         Button add_payment_method = findViewById(R.id.add_payment_method);
 
         add_payment_method.setOnClickListener(view -> {
 
-            Intent i = new Intent(this, AddPaymentMethodActivity.class);
-            startActivity(i);
+            String card = (String) card_view.getText();
+
+            if(card.equals("")) {
+
+                Intent i = new Intent(this, AddPaymentMethodActivity.class);
+                startActivity(i);
+            }
 
         });
-
 
 
     }
@@ -179,19 +191,32 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                         email = documentSnapshot.getString("email");
                         phone_number = documentSnapshot.getLong("phone-number");
 
+                        Map<String, Object> paymentMethod = (Map<String, Object>) documentSnapshot.get("payment-method");
+
+                        if(paymentMethod != null){
+
+                            String number = (String) paymentMethod.get("number");
+
+                            if(number != null){
+                                card_view.setText(hideNumbers(number));
+                            }
+                        }
+
                         usernameTextView.setText(username);
                         emailTextView.setText(email);
                         phoneNumberTextView.setText(String.valueOf(phone_number));
                     }
                 });
+    }
 
-        String card = sh.getString("card", "");
-        if(card != null){
-            TextView card_view = findViewById(R.id.card);
+    private String hideNumbers(String number) {
 
-            card_view.setText(card);
+        char [] numbers = number.toCharArray();
+        for(int i = 0; i < numbers.length - 4; i++){
+            numbers[i] = '*';
         }
 
+        return String.valueOf(numbers);
 
 
     }
@@ -200,13 +225,23 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     public void onResume() {
         super.onResume();
 
-        String card = sh.getString("card", "");
-        if(card != null){
-            TextView card_view = findViewById(R.id.card);
+        db.collection("users").document(username).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
 
-            card_view.setText(card);
-        }
-        
+                        Map<String, Object> paymentMethod = (Map<String, Object>) documentSnapshot.get("payment-method");
+
+                        if(paymentMethod != null){
+
+                            String number = (String) paymentMethod.get("number");
+
+                            if(number != null){
+                                card_view.setText(hideNumbers(number));
+                            }
+                        }
+
+                    }
+                });
     }
 
     private void editProfile(){

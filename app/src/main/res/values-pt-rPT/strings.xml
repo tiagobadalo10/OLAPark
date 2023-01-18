@@ -95,5 +95,13 @@
 
     <string name="raining_message"> Parece que está chovendo! Deseja apenas ver parques cobertos? </string>
 
+    <string name="entry_date"> Data de entrada </string>
+    <string name="departure_date"> Data de saída </string>
+    <string name="day_date"> Dia </string>
+    <string name="hour_date"> Hora </string>
+    <string name="total_price"> Preço total - </string>
+    <string name="submit"> Submeter </string>
+
+
 
 </resources>

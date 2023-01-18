@@ -143,7 +143,7 @@ public class ParkCatalog implements Iterable<Park>{
                         long places = (long) map.get("places");
                         Park park = new Park(document.getId(),
                                 location,
-                                occupation,
+                                Occupation.HIGH,
                                 pricePerHour,
                                 coverage,
                                 (int) places);
