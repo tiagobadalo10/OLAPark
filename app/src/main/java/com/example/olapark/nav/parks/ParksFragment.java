@@ -105,6 +105,7 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
+    //Listener Filters
     @Override
     public void setFilter(FilterOptions filterOptions) {
 

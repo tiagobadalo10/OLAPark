@@ -257,9 +257,14 @@ public class ParkCatalog implements Iterable<Park>{
         ArrayList<Park> res = new ArrayList<>();
 
         for (Park park : parks) {
-            if (park.getOccupation() == filterOptions.occupation ) {
+            if (park.getOccupation() == filterOptions.occupation || filterOptions.occupation == null) {
                 if ((distance(park.getLocation(), currLocation) / 1000) <= filterOptions.range || filterOptions.range == 0) {
-                    if(park.getCoverage() == filterOptions.coverage){
+                    if(filterOptions.coverage) {
+                        if(park.getCoverage() == filterOptions.coverage) {
+                            res.add(park);
+                        }
+                    }
+                    else {
                         res.add(park);
                     }
                 }

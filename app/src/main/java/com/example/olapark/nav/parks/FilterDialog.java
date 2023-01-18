@@ -3,6 +3,7 @@ package com.example.olapark.nav.parks;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +73,6 @@ public class FilterDialog extends DialogFragment {
             spinner.setSelection(spinnerPos);
 
             switch_coverage.setChecked(coverage);
-
-
         }
 
 
@@ -111,7 +110,20 @@ public class FilterDialog extends DialogFragment {
             dismiss();
         });
 
-        btn_clear.setOnClickListener(v -> dismiss());
+        btn_clear.setOnClickListener(v -> {
+
+            FilterOptions filterOptions = new FilterOptions(0, null, false);
+
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("range", 0);
+            editor.putString("occupation", "");
+            editor.putBoolean("coverage", false);
+            editor.commit();
+
+            listener.setFilter(filterOptions);
+
+            dismiss();
+        });
     }
 
     public void setListener(MyDialogListener listener) {
