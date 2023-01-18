@@ -52,7 +52,6 @@ public class CheckPaymentHistoryFragment extends Fragment {
         return v;
     }
 
-    // data, park, valor
     private void addPayments(String username) {
 
         db.collection("users")

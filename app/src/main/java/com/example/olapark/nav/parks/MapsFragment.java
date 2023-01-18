@@ -63,11 +63,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng currPosition;
     private Polyline polyline = null;
-
     private View v;
     private final String url = "https://api.openweathermap.org/data/2.5/weather";
     private final String appid = "8ff90c2810d99aea0486ad49724d792a";
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -86,9 +84,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
             return;
         }
-
-        // Initialize parks
-
 
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
