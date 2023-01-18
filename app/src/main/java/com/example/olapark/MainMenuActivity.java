@@ -53,9 +53,7 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseStorage fs;
-
     private FirebaseFirestore db;
-
     private SharedPreferences sp;
     private StorageReference profileRef;
     private SensorManager sensorManager;
