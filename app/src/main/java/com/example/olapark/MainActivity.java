@@ -29,20 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        //Bundle extras = getIntent().getExtras();
-
         new Handler().postDelayed(() -> {
             Intent i;
             sp = getSharedPreferences("auto-login", MODE_PRIVATE);
             // Verify if there is an logged account
             if (sp.contains("username")) {
                 i = new Intent(MainActivity.this, MainMenuActivity.class);
-                //if (extras != null) {
-                //    boolean openOccupationDialog = extras.getBoolean("openOccupationDialog");
-                //    i.putExtra("openOccupationDialog", true);
-                //    Toast.makeText(getApplicationContext(), "MainActivity", Toast.LENGTH_SHORT).show();
-                //    getIntent().removeExtra("openOccupationDialog");
-                //}
+
             }
             // If there isn't, change to login activity
             else {

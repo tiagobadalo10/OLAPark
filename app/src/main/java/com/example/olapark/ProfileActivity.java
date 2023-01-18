@@ -29,6 +29,8 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
@@ -45,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String choose, cancel, camera, gallery, loadingImage;
     private SharedPreferences sharedPreferences;
+    private SharedPreferences sh;
     private final String SHARED_PREF_NAME = "user_pref";
     private TextView usernameTextView;
     private TextView emailTextView;
@@ -63,7 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        SharedPreferences sh = getSharedPreferences("auto-login", MODE_PRIVATE);
+        sh = getSharedPreferences("auto-login", MODE_PRIVATE);
 
         username = sh.getString("username", null);
         db = FirebaseFirestore.getInstance();
@@ -88,7 +91,37 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
         createTableCars();
 
+        addPaymentMethod();
+
+        deletePaymentMethod();
+
         editProfile();
+    }
+
+    private void deletePaymentMethod() {
+
+        // verificar se o texto é diferente de ""
+
+
+
+
+    }
+
+    private void addPaymentMethod() {
+
+        // verificar se o text é igual a ""
+
+        Button add_payment_method = findViewById(R.id.add_payment_method);
+
+        add_payment_method.setOnClickListener(view -> {
+
+            Intent i = new Intent(this, AddPaymentMethodActivity.class);
+            startActivity(i);
+
+        });
+
+
+
     }
 
     PickSetup setup = new PickSetup()
@@ -152,6 +185,28 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                     }
                 });
 
+        String card = sh.getString("card", "");
+        if(card != null){
+            TextView card_view = findViewById(R.id.card);
+
+            card_view.setText(card);
+        }
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        String card = sh.getString("card", "");
+        if(card != null){
+            TextView card_view = findViewById(R.id.card);
+
+            card_view.setText(card);
+        }
+        
     }
 
     private void editProfile(){

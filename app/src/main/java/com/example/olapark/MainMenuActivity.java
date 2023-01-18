@@ -161,7 +161,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
     public void startActivityRecognitionService() {
         Intent serviceIntent = new Intent(this, ActivityRecognitionService.class);
-        //serviceIntent.putExtra("activity", this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent);
         }
@@ -216,13 +215,14 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
             }
 
             window.setAttributes(layoutParams);
+
         } else if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
 
             if (x > 3 || x < -3 || y > 10 || y < -10 || z > 3 || z < -3) {
-
+                System.out.println("Shaking");
             }
         }
     }
