@@ -99,7 +99,7 @@ public class InfoParkDialog extends DialogFragment {
         name.setText(park.getName());
         occupation.setText(park.getOccupation().toString());
         pricePerHour.setText(park.getPricePerHour() + "€");
-        coverage.setText(park.getCoverage().toString());
+        coverage.setText(String.valueOf(park.getCoverage()));
 
     }
 

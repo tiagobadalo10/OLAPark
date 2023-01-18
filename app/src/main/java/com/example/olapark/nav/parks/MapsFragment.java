@@ -98,10 +98,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         // Initialize parks
-        parks = new ParkCatalog();
+        parks = ParkCatalog.getInstance(this);
         parks.setParksCatalog();
-
-        //this.subscribeListener();
 
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
@@ -148,6 +146,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        Log.d("mmap", mMap.toString());
 
         options.mapType(GoogleMap.MAP_TYPE_NORMAL)
                 .compassEnabled(false)
@@ -187,7 +186,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         checkRaining();
 
-        setParkMarkers(parks);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                parks.setParksCatalog();
+                Log.d("allParks", parks.toString());
+                setParkMarkers();
+            }
+        });
+
 
         mMap.setOnMarkerClickListener(marker -> {
             if (marker == null) {
@@ -199,6 +207,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             return false;
         });
     }
+
+    private void marker() {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(38.76234930369637, -9.161149889720422))
+                .title("ola"));
+    }
+
 
     private void updateCurrentPosition() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -246,8 +261,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void setParkMarkers(ParkCatalog parks) {
-        for (Park park : parks) {
+    public void setParkMarkers() {
+        Log.d("oi", "Inicio setParkMarkers");
+        Log.d("oi", parks.toString());
+        for (Park park : parks.getParks()) {
+            Log.d("oi", "entrou");
+            Log.d("parques", mMap.toString());
             mMap.addMarker(new MarkerOptions()
                     .position(park.getLocation())
                     .title(park.getName())

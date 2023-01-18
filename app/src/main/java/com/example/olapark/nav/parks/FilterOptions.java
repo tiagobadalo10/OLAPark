@@ -5,9 +5,9 @@ public class FilterOptions {
     public float range;
     public Enum<Occupation> occupation;
 
-    public Enum<Coverage> coverage;
+    public boolean coverage;
 
-    public FilterOptions(float range, Enum<Occupation> occupation, Enum<Coverage> coverage) {
+    public FilterOptions(float range, Enum<Occupation> occupation, boolean coverage) {
         this.range = range;
         this.occupation = occupation;
         this.coverage = coverage;
