@@ -86,11 +86,12 @@ public class ParkCatalog implements Iterable<Park>{
         for (Park park : parks) {
             if (park.getOccupation() == filterOptions.occupation || filterOptions.occupation == null ) {
                 if ((distance(park.getLocation(), currLocation) / 1000) <= filterOptions.range || filterOptions.range == 0) {
-                    res.add(park);
+                    if(park.getCoverage() == filterOptions.coverage){
+                        res.add(park);
+                    }
                 }
             }
         }
-
         return res;
     }
 

@@ -1,6 +1,5 @@
 package com.example.olapark.nav.parks;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.olapark.R;
-import com.example.olapark.ReportActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -55,9 +53,10 @@ public class InfoParkDialog extends DialogFragment {
 
         Button report = view.findViewById(R.id.report_button);
         report.setOnClickListener(v -> {
+            dismiss();
+            ReportFragment dialog = ReportFragment.newInstance("Report");
+            dialog.show(getFragmentManager().beginTransaction(), "dialog");
 
-            Intent i = new Intent(getActivity(), ReportActivity.class);
-            startActivity(i);
         });
     }
 
