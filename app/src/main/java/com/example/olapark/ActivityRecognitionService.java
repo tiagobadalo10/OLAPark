@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import com.example.olapark.nav.parks.FragmentHelper;
 import com.example.olapark.nav.parks.MapsFragment;
+import com.example.olapark.nav.parks.Park;
+import com.example.olapark.nav.parks.ParkCatalog;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionRequest;
@@ -30,6 +32,7 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -38,6 +41,7 @@ import java.util.List;
 
 public class ActivityRecognitionService extends Service {
 
+    private static final int GEOFENCE_READIUS = 2000;
     private static final int NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "Activity Recognition Service ID";
 
@@ -61,6 +65,8 @@ public class ActivityRecognitionService extends Service {
     private boolean isDriving = false;
     private boolean sendNotification = false;
 
+    private ParkCatalog parks;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -68,7 +74,7 @@ public class ActivityRecognitionService extends Service {
     }
 
     public class LocalBinder extends Binder {
-        ActivityRecognitionService getService() {
+        public ActivityRecognitionService getService() {
             return ActivityRecognitionService.this;
         }
     }
@@ -132,46 +138,9 @@ public class ActivityRecognitionService extends Service {
                         // TODO: Register the BroadcastReceiver to listen for activity transitions.
                         registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
 
-
-                        GeofencingClient geofencingClient = LocationServices.getGeofencingClient(getApplicationContext());
-                        List<Geofence> geofenceList = new ArrayList<>();
-                        geofenceList.add(new Geofence.Builder()
-                                .setRequestId("area1")
-                                .setCircularRegion(38.69770840269444, -9.2930477191839, 2000)
-                                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                                .build());
-
-                        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
-                                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                                .addGeofences(geofenceList)
-                                .build();
-
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
-                        }
-
-                        geofencingClient.addGeofences(geofencingRequest, getGeofencePendingIntent())
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("Service", "Geofencing Api was successfully registered.");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
-                                    }
-                                });
-
+                        MapsFragment maps = FragmentHelper.getInstance().getFragment();
+                        parks = ParkCatalog.getInstance(maps);
+                        parks.connectService(getApplicationContext());
 
                         //ciclo while
                         while (true) {
@@ -379,6 +348,47 @@ public class ActivityRecognitionService extends Service {
             sendNotification = true;
             startForeground(NOTIF_ID, notification.build());
         }
+    }
+
+    public void setGeofence() {
+
+        GeofencingClient geofencingClient = LocationServices.getGeofencingClient(getApplicationContext());
+        List<Geofence> geofenceList = new ArrayList<>();
+
+        for(Park park : parks.getParks()) {
+            Log.d("service", "park");
+            LatLng location = park.getLocation();
+            geofenceList.add(new Geofence.Builder()
+                    .setRequestId(park.getName())
+                    .setCircularRegion(location.latitude, location.longitude
+                            , GEOFENCE_READIUS)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                    .build());
+        }
+
+        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .addGeofences(geofenceList)
+                .build();
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        geofencingClient.addGeofences(geofencingRequest, getGeofencePendingIntent())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Service", "Geofencing Api was successfully registered.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
+                    }
+                });
     }
 
     @Override

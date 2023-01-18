@@ -1,13 +1,19 @@
 package com.example.olapark.nav.parks;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.olapark.ActivityRecognitionService;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,6 +44,19 @@ public class ParkCatalog implements Iterable<Park>{
     private int listSize;
     private FirebaseFirestore db;
     private MapsFragment mapsFragment;
+    private ActivityRecognitionService service = null;
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            ActivityRecognitionService.LocalBinder binder = (ActivityRecognitionService.LocalBinder) iBinder;
+            service = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+        }
+    };
 
     public static ParkCatalog getInstance(MapsFragment mapsFragment) {
         if (instance == null) {
@@ -108,6 +127,7 @@ public class ParkCatalog implements Iterable<Park>{
     public void setParksCatalog() {
 
         parks.clear();
+        listSize = 0;
 
         try {
             new AsyncTask<Void, Void, QuerySnapshot>() {
@@ -155,6 +175,11 @@ public class ParkCatalog implements Iterable<Park>{
                     Log.d("oi", parks.toString());
                     printParks();
                     mapsFragment.setParkMarkers();
+
+                    if (service != null) {
+                        service.setGeofence();
+                        Log.d("SERVICE", "setGeofence()");
+                    }
                 }
             }.execute().get();
         } catch (ExecutionException e) {
@@ -186,16 +211,9 @@ public class ParkCatalog implements Iterable<Park>{
             return Occupation.UNKNOWN;
         }
 
-        Log.d("calculate", String.valueOf(res));
-        Log.d("calculate", String.valueOf(counter));
-
         double avg = (double) res/counter;
 
-        Log.d("calculate", String.valueOf(avg));
-
         int y = (int) Math.round(avg);
-
-        Log.d("calculate", "y == " + String.valueOf(y));
 
         if (y == 1) {
             return Occupation.LOW;
@@ -302,6 +320,13 @@ public class ParkCatalog implements Iterable<Park>{
         for (Park park : this.getParks()) {
             Log.d("oit", park.getName());
         }
+    }
+
+    public void connectService(Context context) {
+        Intent serviceIntent = new Intent(context, ActivityRecognitionService.class);
+        context.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        while (service ==null) {} //espera até o serviço estar connectado
+        setParksCatalog();
     }
 
 }
