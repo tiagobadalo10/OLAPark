@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:id="@+id/fragment_payments"
     tools:context=".nav.payments.PaymentsFragment">
-
     <ImageView
         android:id="@+id/raise_money_form"
         android:layout_width="108dp"
@@ -16,7 +15,6 @@
         app:layout_constraintEnd_toStartOf="@+id/check_payment_history_form"
         app:layout_constraintStart_toEndOf="@+id/deposit_money_form"
         app:layout_constraintTop_toBottomOf="@+id/balance_form" />
-
     <ImageView
         android:id="@+id/balance_form"
         android:layout_width="307dp"
@@ -29,7 +27,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/check_payment_history_form"
         android:layout_width="108dp"
@@ -39,7 +36,6 @@
         android:src="@drawable/payments_features_style"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/balance_form" />
-
     <ImageView
         android:id="@+id/history_symbol"
         android:layout_width="37dp"
@@ -50,7 +46,6 @@
         app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="@+id/check_payment_history_form"
         app:layout_constraintTop_toTopOf="@+id/check_payment_history_form" />
-
     <TextView
         android:id="@+id/payment_history"
         android:layout_width="92dp"
@@ -63,7 +58,6 @@
         app:layout_constraintEnd_toEndOf="@+id/check_payment_history_form"
         app:layout_constraintStart_toStartOf="@+id/check_payment_history_form"
         app:layout_constraintTop_toBottomOf="@+id/history_symbol" />
-
     <ImageView
         android:id="@+id/deposit_money_form"
         android:layout_width="108dp"
@@ -73,7 +67,6 @@
         android:src="@drawable/payments_features_style"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/balance_form" />
-
     <TextView
         android:id="@+id/euros"
         android:layout_width="95dp"
@@ -86,7 +79,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/balance_form"
         app:layout_constraintTop_toBottomOf="@+id/balance" />
-
     <TextView
         android:id="@+id/balance_amount"
         android:layout_width="142dp"
@@ -95,12 +87,10 @@
         android:layout_marginTop="48dp"
         android:gravity="right"
         android:textColor="?colorOnSecondary"
-
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/balance_form"
         app:layout_constraintTop_toBottomOf="@+id/balance" />
-
     <TextView
         android:id="@+id/balance"
         android:layout_width="wrap_content"
@@ -114,7 +104,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/balance_form" />
-
     <TextView
         android:id="@+id/add_money"
         android:layout_width="85dp"
@@ -127,7 +116,6 @@
         app:layout_constraintEnd_toEndOf="@+id/deposit_money_form"
         app:layout_constraintStart_toStartOf="@+id/deposit_money_form"
         app:layout_constraintTop_toBottomOf="@+id/cash_deposit_symbol" />
-
     <ImageView
         android:id="@+id/cash_deposit_symbol"
         android:layout_width="53dp"
@@ -138,7 +126,6 @@
         app:layout_constraintHorizontal_bias="0.525"
         app:layout_constraintStart_toStartOf="@+id/deposit_money_form"
         app:layout_constraintTop_toTopOf="@+id/deposit_money_form" />
-
     <ImageView
         android:id="@+id/cash_raise_symbol"
         android:layout_width="51dp"
@@ -149,7 +136,6 @@
         app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="@+id/raise_money_form"
         app:layout_constraintTop_toTopOf="@+id/raise_money_form" />
-
     <TextView
         android:id="@+id/raise_money"
         android:layout_width="81dp"
@@ -162,5 +148,4 @@
         app:layout_constraintEnd_toEndOf="@+id/raise_money_form"
         app:layout_constraintStart_toStartOf="@+id/raise_money_form"
         app:layout_constraintTop_toBottomOf="@+id/cash_raise_symbol" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

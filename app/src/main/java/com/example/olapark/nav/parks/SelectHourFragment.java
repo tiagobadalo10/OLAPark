@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,19 +13,21 @@ import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.example.olapark.ActivityRecognitionService;
 import com.example.olapark.R;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class SelectHourFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    private EditText hour;
+    private Button hour;
     private Park park;
     private View v;
 
-    public SelectHourFragment(EditText hour, Park park, View v) {
+    public SelectHourFragment(Button hour, Park park, View v) {
         this.hour = hour;
         this.park = park;
         this.v = v;
@@ -32,8 +35,8 @@ public class SelectHourFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR);
+        final Calendar calendar = Calendar.getInstance(Locale.UK);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         return new TimePickerDialog(getActivity(), this, hour, min, true);
     }
@@ -59,18 +62,18 @@ public class SelectHourFragment extends DialogFragment implements TimePickerDial
 
     private void calculatePrice(){
 
-        EditText entry_date_day = v.findViewById(R.id.entry_date_day_value);
-        EditText entry_date_hour = v.findViewById(R.id.entry_date_hour_value);
-        EditText departure_date_day = v.findViewById(R.id.departure_date_day_value);
-        EditText departure_date_hour = v.findViewById(R.id.departure_date_hour_value);
+        Button entry_date_day = v.findViewById(R.id.entry_date_day_value);
+        Button entry_date_hour = v.findViewById(R.id.entry_date_hour_value);
+        Button departure_date_day = v.findViewById(R.id.departure_date_day_value);
+        Button departure_date_hour = v.findViewById(R.id.departure_date_hour_value);
 
         String entry_date_day_value = entry_date_day.getText().toString();
         String entry_date_hour_value = entry_date_hour.getText().toString();
         String departure_date_day_value = departure_date_day.getText().toString();
         String departure_date_hour_value = departure_date_hour.getText().toString();
 
-        if(!"".equals(entry_date_day_value) && !"".equals(entry_date_hour_value) &&
-                !"".equals(departure_date_day_value) && !"".equals(departure_date_hour_value)){
+        if(!"Select date".equals(entry_date_day_value) && !"Select hour".equals(entry_date_hour_value) &&
+                !"Select date".equals(departure_date_day_value) && !"Select hour".equals(departure_date_hour_value)){
 
             double price = park.getPricePerHour();
 

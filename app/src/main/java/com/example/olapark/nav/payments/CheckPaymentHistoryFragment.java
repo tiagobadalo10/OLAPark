@@ -60,6 +60,8 @@ public class CheckPaymentHistoryFragment extends Fragment {
         return v;
     }
 
+
+
     private void addPayments(String username) {
 
         db.collection("users")

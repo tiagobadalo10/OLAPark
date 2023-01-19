@@ -56,7 +56,7 @@ public class ReservationFragment extends DialogFragment {
 
     private void submitReservation() {
 
-        EditText entry_date_day_value = v.findViewById(R.id.entry_date_day_value);
+        Button entry_date_day_value = v.findViewById(R.id.entry_date_day_value);
         entry_date_day_value.setOnClickListener(view -> {
 
             DialogFragment dateFragment = new SelectDateFragment(entry_date_day_value, park, v);
@@ -64,7 +64,7 @@ public class ReservationFragment extends DialogFragment {
 
         });
 
-        EditText entry_date_hour_value = v.findViewById(R.id.entry_date_hour_value);
+        Button entry_date_hour_value = v.findViewById(R.id.entry_date_hour_value);
         entry_date_hour_value.setOnClickListener(view -> {
 
             DialogFragment dateFragment = new SelectHourFragment(entry_date_hour_value, park, v);
@@ -72,7 +72,7 @@ public class ReservationFragment extends DialogFragment {
 
         });
 
-        EditText departure_date_day_value = v.findViewById(R.id.departure_date_day_value);
+        Button departure_date_day_value = v.findViewById(R.id.departure_date_day_value);
         departure_date_day_value.setOnClickListener(view -> {
 
             DialogFragment dateFragment = new SelectDateFragment(departure_date_day_value, park, v);
@@ -80,7 +80,7 @@ public class ReservationFragment extends DialogFragment {
 
         });
 
-        EditText departure_date_hour_value = v.findViewById(R.id.departure_date_hour_value);
+        Button departure_date_hour_value = v.findViewById(R.id.departure_date_hour_value);
         departure_date_hour_value.setOnClickListener(view -> {
 
             DialogFragment dateFragment = new SelectHourFragment(departure_date_hour_value, park, v);

@@ -99,7 +99,7 @@
     <string name="departure_date"> Date de départ </string>
     <string name="day_date"> Journée </string>
     <string name="hour_date"> Heure </string>
-    <string name="total_price"> Prix total - </string>
+    <string name="total_price"> Prix total: </string>
     <string name="submit"> Soumettre </string>
 
 
