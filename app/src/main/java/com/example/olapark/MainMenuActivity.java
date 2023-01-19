@@ -112,13 +112,13 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
                 @Override
                 public void onFragmentReady() {
                     if (sh.getBoolean("clickNotification", false)) {
+                        editor.remove("clickNotification");
+                        editor.commit();
                         FragmentHelper.getInstance().getFragment().openOccupationDialog();
                         Toast.makeText(getApplicationContext(), "ola adeus", Toast.LENGTH_SHORT).show();
                         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(1001);
                         stopService(new Intent(getApplicationContext(), ActivityRecognitionService.class));
-                        editor.remove("clickNotification");
-                        editor.apply();
                     }
                 }
             });
