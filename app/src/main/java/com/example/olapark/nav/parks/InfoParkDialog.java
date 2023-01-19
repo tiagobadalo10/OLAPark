@@ -109,9 +109,16 @@ public class InfoParkDialog extends DialogFragment {
         TextView coverage = view.findViewById(R.id.coverage);
 
         name.setText(park.getName());
-        occupation.setText(park.getOccupation().toString());
+        occupation.setText(park.getOccupation().toString().substring(0,1).toUpperCase() + park.getOccupation().toString().substring(1).toLowerCase());
         pricePerHour.setText(park.getPricePerHour() + "€");
-        coverage.setText(String.valueOf(park.getCoverage()));
+        if(park.getCoverage()){
+            coverage.setText("Covered");
+        }
+        else{
+            coverage.setText("Non-covered");
+        }
+
+
 
     }
 

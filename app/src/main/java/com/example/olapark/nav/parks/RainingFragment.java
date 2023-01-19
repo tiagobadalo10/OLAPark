@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,13 @@ public class RainingFragment extends DialogFragment {
 
     private View v;
 
+    private static MapsFragment maps;
     private SharedPreferences sp;
 
-    public static RainingFragment newInstance(String title){
+    public static RainingFragment newInstance(String title, MapsFragment mapsFragment){
         RainingFragment yourDialogFragment = new RainingFragment();
+
+        maps = mapsFragment;
 
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -55,9 +57,15 @@ public class RainingFragment extends DialogFragment {
 
             editor.commit();
 
+            maps.setParksMarkersWithFilter(new FilterOptions(0, Occupation.UNKNOWN, true));
+
+            dismiss();
+
         });
 
 
         return v;
     }
+
+
 }
