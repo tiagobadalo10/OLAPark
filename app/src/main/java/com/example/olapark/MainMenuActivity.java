@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,12 +27,14 @@ import com.example.olapark.nav.parks.FragmentHelper;
 import com.example.olapark.nav.parks.MapsFragment;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.collect.Maps;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -58,6 +61,8 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
     final long MEGA_BYTE = 1024 * 1024;
     private static final int REQUEST_ACTIVITY_RECOGNITION = 45;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+
+    private boolean locationPermission = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,9 +126,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
 
         changeToProfile(navigationView);
 
-        if(!foregroundServiceRunning()){
-            startActivityRecognitionService();
-        }
         requestLocationPermission();
 
     }
@@ -165,10 +167,14 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
     public void requestRecognitionPermission() {
         String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            // Permissão já concedida
+            if(!foregroundServiceRunning()){
+                startActivityRecognitionService();
+            }
+            Log.d("permissao_recognition", "tem permissao");
         } else {
             EasyPermissions.requestPermissions(this, "A permissão é necessária para rastrear sua atividade física",
                     REQUEST_ACTIVITY_RECOGNITION, perms);
+            Log.d("permissao_recognition", "nao tem permissao");
         }
     }
 
@@ -176,18 +182,37 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        Log.d("permissao", "entrou no onRequestPermission");
+
+        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            if(!foregroundServiceRunning()){
+                startActivityRecognitionService();
+            }
+            Log.d("permissao_recognition", "tem permissao");
+        }
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
     public void requestLocationPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
+            Log.d("permissao_location", "tem permissao");
+            if (!locationPermission){
+                MapsFragment newInstanceOfFragment = new MapsFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentContainerView, newInstanceOfFragment);
+                fragmentTransaction.commit();
+            }
             requestRecognitionPermission();
         } else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
+            Log.d("permissao_location", "nao tem permissao");
+            locationPermission = false;
             requestRecognitionPermission();
         }
     }

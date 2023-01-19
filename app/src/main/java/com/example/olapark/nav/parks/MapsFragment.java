@@ -127,6 +127,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("MapsFragment", "nao tem permissoes");
             return;
         }
         mMap.setMyLocationEnabled(true);
@@ -167,14 +168,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
         parks = ParkCatalog.getInstance(this);
+        parks.setParksFragment(this);
         parks.setParksCatalog();
 
-    }
-
-    private void marker() {
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(38.76234930369637, -9.161149889720422))
-                .title("ola"));
     }
 
 
@@ -190,6 +186,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+
+            if(location == null)
+                return;
 
             String tempUrl = url + "?lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&appid=" + appid;
             StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl,
@@ -219,6 +218,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void setParkMarkers() {
+        if (mMap == null) {
+            return;
+        }
         for (Park park : parks.getParks()) {
             mMap.addMarker(new MarkerOptions()
                     .position(park.getLocation())

@@ -65,6 +65,10 @@ public class ParkCatalog implements Iterable<Park>{
         return instance;
     }
 
+    public void setParksFragment(MapsFragment maps) {
+        mapsFragment = maps;
+    }
+
     public ParkCatalog(MapsFragment mapsFragment) {
         this.mapsFragment = mapsFragment;
         parks = new ArrayList<>();
@@ -128,6 +132,10 @@ public class ParkCatalog implements Iterable<Park>{
 
         parks.clear();
         listSize = 0;
+
+        if (mapsFragment == null){
+            return;
+        }
 
         try {
             new AsyncTask<Void, Void, QuerySnapshot>() {

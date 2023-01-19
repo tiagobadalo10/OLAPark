@@ -139,6 +139,7 @@ public class ActivityRecognitionService extends Service {
                         registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
 
                         MapsFragment maps = FragmentHelper.getInstance().getFragment();
+
                         parks = ParkCatalog.getInstance(maps);
                         parks.connectService(getApplicationContext());
 
@@ -318,6 +319,8 @@ public class ActivityRecognitionService extends Service {
 
     private boolean mapsFragmentIsVisible() {
         MapsFragment maps = FragmentHelper.getInstance().getFragment();
+        if (maps == null)
+            return false;
         return maps.isAdded() && maps.isResumed();
     }
 
