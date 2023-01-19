@@ -104,7 +104,7 @@ public class PaymentParkDialog extends DialogFragment {
 
             TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
             String priceValue = textViewPriceValue.getText().toString();
-            double price = Double.parseDouble(priceValue.split(" ")[0]);
+            double price = Double.parseDouble(priceValue.split(" ")[0].replace(",", "."));
 
             float balance = sp.getFloat("balance", 0);
 
