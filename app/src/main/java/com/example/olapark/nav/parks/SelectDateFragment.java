@@ -25,7 +25,7 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
     private View v;
     private SharedPreferences sp;
     private FirebaseFirestore db;
-    public SelectDateFragment(EditText day, Park park, View v, SharedPreferences sp) {
+    public SelectDateFragment(Button day, Park park, View v, SharedPreferences sp) {
         this.day = day;
         this.park = park;
         this.v = v;

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -17,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Locale;
+
 public class SelectHourFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private Button hour;
@@ -27,7 +30,7 @@ public class SelectHourFragment extends DialogFragment implements TimePickerDial
 
     private FirebaseFirestore db;
 
-    public SelectHourFragment(EditText hour, Park park, View v, SharedPreferences sp) {
+    public SelectHourFragment(Button hour, Park park, View v, SharedPreferences sp) {
         this.hour = hour;
         this.park = park;
         this.v = v;
