@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
@@ -262,6 +263,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void openOccupationDialog() {
+
         OccupationParkDialog dialog = OccupationParkDialog.newInstance("Occupation");
 
         SharedPreferences sh = getActivity().getSharedPreferences("service", Context.MODE_PRIVATE);
@@ -276,6 +278,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         Park park = parks.findParkByLocation(new LatLng(lat, lng));
         Log.d("park", new LatLng(lat, lng).toString());
+        dialog.setPark(park);
+
+        openPaymentDialog(park);
+
+        dialog.show(getFragmentManager().beginTransaction(), "dialog");
+
+    }
+
+    private void openPaymentDialog(Park park) {
+        PaymentParkDialog dialog = PaymentParkDialog.newInstance("Info");
+
         dialog.setPark(park);
 
         dialog.show(getFragmentManager().beginTransaction(), "dialog");
