@@ -2,7 +2,6 @@ package com.example.olapark.nav.parks;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +9,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.fragment.app.DialogFragment;
+
 import com.example.olapark.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -25,7 +27,8 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
     private View v;
     private SharedPreferences sp;
     private FirebaseFirestore db;
-    public SelectDateFragment(EditText day, Park park, View v, SharedPreferences sp) {
+
+    public SelectDateFragment(Button day, Park park, View v, SharedPreferences sp) {
         this.day = day;
         this.park = park;
         this.v = v;
@@ -50,11 +53,11 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
         String month = String.valueOf(mm);
         String d = String.valueOf(dd);
 
-        if(mm < 10){
+        if (mm < 10) {
             month = "0" + mm;
         }
 
-        if(dd < 10){
+        if (dd < 10) {
             d = "0" + d;
         }
 
@@ -63,7 +66,7 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
         calculatePrice();
     }
 
-    private void calculatePrice(){
+    private void calculatePrice() {
 
         Button entry_date_day = v.findViewById(R.id.entry_date_day_value);
         Button entry_date_hour = v.findViewById(R.id.entry_date_hour_value);
@@ -77,8 +80,8 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
 
         System.out.println(entry_date_hour_value);
 
-        if(!"Select date".equals(entry_date_day_value) && !"Select hour".equals(entry_date_hour_value) &&
-                !"Select date".equals(departure_date_day_value) && !"Select hour".equals(departure_date_hour_value)){
+        if (!"Select date".equals(entry_date_day_value) && !"Select hour".equals(entry_date_hour_value) &&
+                !"Select date".equals(departure_date_day_value) && !"Select hour".equals(departure_date_hour_value)) {
 
             double price = park.getPricePerHour();
 
@@ -116,18 +119,18 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
                 Duration duration = Duration.between(start, end);
                 long hours = duration.toHours();
 
-                if(hours == 0 || (minute_departure > minute_entry && hour_entry == hour_departure)){
+                if (hours == 0 || (minute_departure > minute_entry && hour_entry == hour_departure)) {
                     hours += 1;
                 }
 
-                if(hours > 0){
+                if (hours > 0) {
                     float totalPrice = (float) (hours * price);
 
                     String username = sp.getString("username", "");
 
                     db.collection("users").document(username).get().addOnCompleteListener(task -> {
 
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
                             DocumentSnapshot document = task.getResult();
 
@@ -140,11 +143,11 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
                         }
 
                     });
-                }
 
+                }
             }
         }
+
+
     }
-
-
 }

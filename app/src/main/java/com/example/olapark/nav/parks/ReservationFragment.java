@@ -121,7 +121,7 @@ public class ReservationFragment extends DialogFragment {
 
         String username = sp.getString("username", "");
 
-        long coins = sp.getLong("coins", 0) + 1;
+        long coins = (long) sp.getInt("coins", 0) + 1;
 
         SharedPreferences.Editor editor = sp.edit();
         editor.putLong("coins", coins);
