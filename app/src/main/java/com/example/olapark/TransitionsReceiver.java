@@ -39,18 +39,12 @@ public class TransitionsReceiver extends BroadcastReceiver {
     private final ActivityRecognitionService service;
     private boolean isDriving = false;
     private boolean isParked = false;
-
-    private FusedLocationProviderClient fusedLocationClient;
-    private Location currentLocation;
-    private Context context;
-
-    public TransitionsReceiver(ActivityRecognitionService service) {
+        public TransitionsReceiver(ActivityRecognitionService service) {
         this.service = service;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.context = context;
 
         if (ActivityTransitionResult.hasResult(intent)) {
 

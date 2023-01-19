@@ -59,7 +59,7 @@ public class ReservationFragment extends DialogFragment {
         Button entry_date_day_value = v.findViewById(R.id.entry_date_day_value);
         entry_date_day_value.setOnClickListener(view -> {
 
-            DialogFragment dateFragment = new SelectDateFragment(entry_date_day_value, park, v);
+            DialogFragment dateFragment = new SelectDateFragment(entry_date_day_value, park, v, sp);
             dateFragment.show(getFragmentManager(), "Early Date Picker");
 
         });
@@ -67,7 +67,7 @@ public class ReservationFragment extends DialogFragment {
         Button entry_date_hour_value = v.findViewById(R.id.entry_date_hour_value);
         entry_date_hour_value.setOnClickListener(view -> {
 
-            DialogFragment dateFragment = new SelectHourFragment(entry_date_hour_value, park, v);
+            DialogFragment dateFragment = new SelectHourFragment(entry_date_hour_value, park, v, sp);
             dateFragment.show(getFragmentManager(), "Early Hour Picker");
 
         });
@@ -75,7 +75,7 @@ public class ReservationFragment extends DialogFragment {
         Button departure_date_day_value = v.findViewById(R.id.departure_date_day_value);
         departure_date_day_value.setOnClickListener(view -> {
 
-            DialogFragment dateFragment = new SelectDateFragment(departure_date_day_value, park, v);
+            DialogFragment dateFragment = new SelectDateFragment(departure_date_day_value, park, v, sp);
             dateFragment.show(getFragmentManager(), "Departure Date Picker");
 
         });
@@ -83,7 +83,7 @@ public class ReservationFragment extends DialogFragment {
         Button departure_date_hour_value = v.findViewById(R.id.departure_date_hour_value);
         departure_date_hour_value.setOnClickListener(view -> {
 
-            DialogFragment dateFragment = new SelectHourFragment(departure_date_hour_value, park, v);
+            DialogFragment dateFragment = new SelectHourFragment(departure_date_hour_value, park, v, sp);
             dateFragment.show(getFragmentManager(), "Departure Hour Picker");
 
         });
@@ -102,9 +102,14 @@ public class ReservationFragment extends DialogFragment {
                 float total_price = Float.parseFloat(price.split("€")[0]);
 
                 if(balance >= total_price){
+
+                    String username = sp.getString("username", "");
+
                     addToPayments(park.getName(), String.valueOf(total_price));
                     updateBalance(balance - total_price);
                     increaseCoins();
+
+                    db.collection("users").document(username).update("reward", 0);
 
                     dismiss();
                 }
@@ -116,10 +121,10 @@ public class ReservationFragment extends DialogFragment {
 
         String username = sp.getString("username", "");
 
-        int coins = sp.getInt("coins", 0) + 1;
+        long coins = sp.getLong("coins", 0) + 1;
 
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("coins", coins);
+        editor.putLong("coins", coins);
         editor.apply();
 
         db.collection("users").document(username).update("coins", coins);

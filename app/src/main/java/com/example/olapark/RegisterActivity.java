@@ -78,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("phone-number", phoneNumber);
         user.put("balance", 0.0);
         user.put("coins", 0);
+        user.put("reward", 0);
 
         Map<String, Boolean> settings = new HashMap<>();
         settings.put("auto-payment", false);

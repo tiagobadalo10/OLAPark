@@ -2,17 +2,18 @@ package com.example.olapark.nav.parks;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.fragment.app.DialogFragment;
-
 import com.example.olapark.R;
-
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -22,11 +23,15 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
     private Button day;
     private Park park;
     private View v;
-
-    public SelectDateFragment(Button day, Park park, View v) {
+    private SharedPreferences sp;
+    private FirebaseFirestore db;
+    public SelectDateFragment(EditText day, Park park, View v, SharedPreferences sp) {
         this.day = day;
         this.park = park;
         this.v = v;
+
+        this.sp = sp;
+        this.db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -110,13 +115,31 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
 
                 Duration duration = Duration.between(start, end);
                 long hours = duration.toHours();
-                hours += 1;
+
+                if(hours == 0 || (minute_departure > minute_entry && hour_entry == hour_departure)){
+                    hours += 1;
+                }
 
                 if(hours > 0){
                     float totalPrice = (float) (hours * price);
 
-                    TextView reservation_price_value = v.findViewById(R.id.reservation_price_value);
-                    reservation_price_value.setText(totalPrice + "€");
+                    String username = sp.getString("username", "");
+
+                    db.collection("users").document(username).get().addOnCompleteListener(task -> {
+
+                        if(task.isSuccessful()){
+
+                            DocumentSnapshot document = task.getResult();
+
+                            long reward = (long) document.get("reward");
+
+                            TextView reservation_price_value = v.findViewById(R.id.reservation_price_value);
+
+                            reservation_price_value.setText(totalPrice - totalPrice * reward / 100 + "€");
+
+                        }
+
+                    });
                 }
 
             }

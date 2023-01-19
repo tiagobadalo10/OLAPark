@@ -36,7 +36,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/logo"
         app:layout_constraintStart_toEndOf="@+id/coins5"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/third_reward" />
 
     <TextView
         android:id="@+id/coins5"
@@ -49,7 +49,7 @@
         android:text="15"
         android:textColor="?colorOnPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/third_reward"
         tools:text="15" />
 
     <ImageView
@@ -59,7 +59,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/logo"
         app:layout_constraintStart_toEndOf="@+id/coins4"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/second_reward" />
 
     <TextView
         android:id="@+id/coins4"
@@ -72,7 +72,7 @@
         android:text="10"
         android:textColor="?colorOnPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/second_reward"
         tools:text="10" />
 
     <TextView
@@ -86,7 +86,7 @@
         android:text="5"
         android:textColor="?colorOnPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/first_reward"
         tools:text="5" />
 
     <ImageView
@@ -96,7 +96,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/logo"
         app:layout_constraintStart_toEndOf="@+id/coins2"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/first_reward" />
 
     <TextView
         android:id="@+id/coins"
@@ -119,7 +119,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/first_reward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -129,24 +129,24 @@
         app:layout_constraintTop_toBottomOf="@+id/coins" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/second_reward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="84dp"
         android:text="@string/claim"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/first_reward" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/third_reward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="84dp"
         android:text="@string/claim"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/second_reward" />
 
     <TextView
         android:id="@+id/first_reward_description"
