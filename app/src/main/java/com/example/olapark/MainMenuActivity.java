@@ -21,18 +21,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.example.olapark.nav.parks.FragmentHelper;
 import com.example.olapark.nav.parks.MapsFragment;
-import com.google.android.gms.location.ActivityTransition;
 import com.google.android.material.navigation.NavigationView;
-import com.google.common.collect.Maps;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,10 +38,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
-import java.util.List;
-
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -182,14 +175,11 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Log.d("permissao", "entrou no onRequestPermission");
-
         String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             if(!foregroundServiceRunning()){
                 startActivityRecognitionService();
             }
-            Log.d("permissao_recognition", "tem permissao");
         }
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);

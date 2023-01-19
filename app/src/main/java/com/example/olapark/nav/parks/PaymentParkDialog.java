@@ -31,11 +31,8 @@ public class PaymentParkDialog extends DialogFragment {
 
     private View view;
     private Park park;
-
     private SharedPreferences sp;
-
     private FirebaseFirestore db;
-
     private EditText editTextHours;
     private TextView textViewPrice;
 
@@ -102,17 +99,37 @@ public class PaymentParkDialog extends DialogFragment {
 
         confirm.setOnClickListener(v -> {
 
-            TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
-            String priceValue = textViewPriceValue.getText().toString();
-            double price = Double.parseDouble(priceValue.split(" ")[0]);
+            String username = sp.getString("username", "");
 
-            float balance = sp.getFloat("balance", 0);
+            db.collection("users").document(username).get().addOnCompleteListener(task -> {
 
-            addToPayments(park.getName(), String.valueOf(price));
-            updateBalance((float) (balance - price));
-            increaseCoins();
+                if(task.isSuccessful()){
 
-            dismiss();
+                    DocumentSnapshot document = task.getResult();
+
+                    long reward = (long) document.get("reward");
+
+                    TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
+                    String priceValue = textViewPriceValue.getText().toString();
+                    double price = Double.parseDouble(priceValue.split(" ")[0]);
+
+                    price = price - price * reward / 100;
+
+                    float balance = sp.getFloat("balance", 0);
+
+                    addToPayments(park.getName(), String.valueOf(price));
+                    updateBalance((float) (balance - price));
+                    increaseCoins();
+
+                    db.collection("users").document(username).update("reward", 0);
+
+                    dismiss();
+
+                }
+
+            });
+
+
         });
 
     }
