@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CheckPaymentHistoryFragment extends Fragment {
@@ -37,11 +40,15 @@ public class CheckPaymentHistoryFragment extends Fragment {
     private SharedPreferences sp;
 
     private FirebaseFirestore db;
+
+    private RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_check_payment_history, container, false);
+
+        recyclerView = v.findViewById(R.id.recyclerview);
 
         sp = getActivity().getSharedPreferences("auto-login", MODE_PRIVATE);
         db = FirebaseFirestore.getInstance();
@@ -63,48 +70,22 @@ public class CheckPaymentHistoryFragment extends Fragment {
 
                         DocumentSnapshot document = task.getResult();
 
+                        List<Payment> p = new ArrayList<>();
+
                         Map<String, String> payments = (Map<String, String>) document.get("payments");
-
-                        TableLayout table = v.findViewById(R.id.table_payments);
-
                         for(Map.Entry<String, String> payment: payments.entrySet()){
 
-                            String number = payment.getKey();
                             String values = payment.getValue();
 
                             String[] aux = values.split("%");
 
-                            TableRow row = new TableRow(getContext());
-                            TableRow.LayoutParams paramsExample = new TableRow.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT,0.4f);
-
-                            TextView numberView = new TextView(getContext());
-                            numberView.setText(number);
-                            numberView.setTextSize(16);
-                            numberView.setLayoutParams(paramsExample);
-
-                            TextView dateView = new TextView(getContext());
-                            numberView.setText(aux[0]);
-                            numberView.setTextSize(16);
-                            numberView.setLayoutParams(paramsExample);
-
-                            TextView parkView = new TextView(getContext());
-                            numberView.setText(aux[1]);
-                            numberView.setTextSize(16);
-                            numberView.setLayoutParams(paramsExample);
-
-                            TextView valueView = new TextView(getContext());
-                            numberView.setText(aux[2]);
-                            numberView.setTextSize(16);
-                            numberView.setLayoutParams(paramsExample);
-
-                            row.addView(numberView);
-                            row.addView(dateView);
-                            row.addView(parkView);
-                            row.addView(valueView);
-
-                            table.addView(row);
+                            p.add(new Payment(payment.getKey(), aux[0], aux[1], aux[2]));
 
                         }
+
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerView.setAdapter(new MyAdapter(getActivity(), p));
+
                     }
                 });
 

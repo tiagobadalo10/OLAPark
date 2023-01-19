@@ -120,6 +120,7 @@ public class ReservationFragment extends DialogFragment {
 
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("coins", coins);
+        editor.apply();
 
         db.collection("users").document(username).update("coins", coins);
 
