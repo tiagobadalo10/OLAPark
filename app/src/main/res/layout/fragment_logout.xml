@@ -12,6 +12,7 @@
         android:layout_height="28dp"
         android:layout_marginTop="268dp"
         android:text="@string/logout_question"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.558"
         app:layout_constraintStart_toStartOf="parent"
