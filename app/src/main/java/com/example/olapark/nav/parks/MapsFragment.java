@@ -137,7 +137,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setSmallestDisplacement(5);
+        locationRequest.setSmallestDisplacement(10);
         locationRequest.setInterval(10);
         locationRequest.setFastestInterval(1000);
 

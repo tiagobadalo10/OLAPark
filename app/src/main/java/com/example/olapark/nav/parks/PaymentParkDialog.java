@@ -95,9 +95,9 @@ public class PaymentParkDialog extends DialogFragment {
 
         confirm.setOnClickListener(v -> {
 
-            TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
-            String priceValue = textViewPriceValue.getText().toString();
-            double price = Double.parseDouble(priceValue.split(" ")[0]);
+            //TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
+            //String priceValue = textViewPriceValue.getText().toString();
+            //double price = Double.parseDouble(priceValue.split(" ")[0]);
 
             //TODO descontar na wallet
 

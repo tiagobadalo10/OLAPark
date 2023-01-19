@@ -338,7 +338,7 @@ public class ActivityRecognitionService extends Service {
             SharedPreferences sh = getSharedPreferences("service", MODE_PRIVATE);
             SharedPreferences.Editor editor = sh.edit();
             editor.putBoolean("clickNotification", true);
-            editor.apply();
+            editor.commit();
 
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                     notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
