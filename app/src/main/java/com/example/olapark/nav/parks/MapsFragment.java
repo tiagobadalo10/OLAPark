@@ -171,6 +171,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         parks = ParkCatalog.getInstance(this);
         parks.setParksFragment(this);
         parks.setParksCatalog();
+
     }
 
 
@@ -200,7 +201,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             String main = jsonObjectWeather.getString("main");
                             // It's raining
                             if ("Rain".equals(main)) {
-                                RainingFragment dialog = RainingFragment.newInstance("Raining");
+                                RainingFragment dialog = RainingFragment.newInstance("Raining", this);
                                 dialog.show(getFragmentManager().beginTransaction(), "dialog");
                             }
                         } catch (JSONException e) {
@@ -222,11 +223,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
         for (Park park : parks.getParks()) {
-            Log.d("parques", park.getName());
             mMap.addMarker(new MarkerOptions()
                     .position(park.getLocation())
                     .title(park.getName())
-                    .snippet("Occupation level: " + park.getOccupation())
+                    .snippet("Occupation level: " + park.getOccupation().toString().substring(0,1).toUpperCase() + park.getOccupation().toString().substring(1).toLowerCase())
                     .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
         }
     }
@@ -245,7 +245,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 mMap.addMarker(new MarkerOptions()
                         .position(park.getLocation())
                         .title(park.getName())
-                        .snippet("Occupation level: " + park.getOccupation())
+                        .snippet("Occupation level: " + park.getOccupation().toString().substring(0,1).toUpperCase() + park.getOccupation().toString().substring(1).toLowerCase())
                         .icon(BitmapDescriptorFactory.defaultMarker(park.getMarkerColor())));
             }
         });

@@ -8,22 +8,33 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="129dp"
+        android:layout_width="133dp"
         android:layout_height="40dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="28dp"
         android:gravity="center|left"
         android:text="Price per hour:"
-        app:layout_constraintEnd_toStartOf="@+id/pricePerHour"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/occupation" />
+
+    <Button
+        android:id="@+id/report_button"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_marginTop="36dp"
+        android:background="@android:color/transparent"
+        android:text="Report"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/directions_button"
+        app:layout_constraintTop_toBottomOf="@+id/coverage" />
 
     <Button
         android:id="@+id/directions_button"
         android:layout_width="129dp"
         android:layout_height="46dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="36dp"
         android:background="@android:color/transparent"
         android:text="Directions"
         android:textColor="?attr/colorPrimary"
@@ -36,7 +47,7 @@
         android:id="@+id/reserve_button"
         android:layout_width="110dp"
         android:layout_height="46dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="36dp"
         android:background="@android:color/transparent"
         android:text="Reserve"
         android:textColor="?attr/colorPrimary"
@@ -49,19 +60,17 @@
         android:id="@+id/coverage"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="68dp"
         android:gravity="center|left"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
         app:layout_constraintStart_toEndOf="@+id/coverage_text"
         app:layout_constraintTop_toBottomOf="@+id/pricePerHour" />
 
     <TextView
         android:id="@+id/coverage_text"
-        android:layout_width="130dp"
-        android:layout_height="39dp"
+        android:layout_width="133dp"
+        android:layout_height="40dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="32dp"
         android:gravity="center|left"
@@ -69,28 +78,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <Button
-        android:id="@+id/report_button"
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
-        android:layout_marginTop="3dp"
-        android:background="@android:color/transparent"
-        android:text="Report"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/directions_button"
-        app:layout_constraintTop_toBottomOf="@+id/coverage" />
-
     <TextView
         android:id="@+id/pricePerHour"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="28dp"
         android:gravity="center|left"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/occupation" />
 
@@ -98,12 +93,10 @@
         android:id="@+id/textView2"
         android:layout_width="133dp"
         android:layout_height="40dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="28dp"
         android:gravity="center|left"
         android:text="Occupation level:"
-        app:layout_constraintEnd_toStartOf="@+id/occupation"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -111,11 +104,10 @@
         android:id="@+id/occupation"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="28dp"
         android:gravity="center|left"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -123,13 +115,12 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="72dp"
         android:gravity="center"
         android:text="Info Park"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
