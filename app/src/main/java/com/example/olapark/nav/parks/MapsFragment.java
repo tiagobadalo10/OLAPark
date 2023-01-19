@@ -156,8 +156,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
-        checkRaining();
-
         mMap.setOnMarkerClickListener(marker -> {
             if (marker == null) {
                 return true;
@@ -170,6 +168,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         parks = ParkCatalog.getInstance(this);
         parks.setParksFragment(this);
         parks.setParksCatalog();
+
+        checkRaining();
 
     }
 
