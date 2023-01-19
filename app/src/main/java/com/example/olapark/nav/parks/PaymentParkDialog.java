@@ -1,5 +1,7 @@
 package com.example.olapark.nav.parks;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,19 +20,21 @@ import androidx.fragment.app.DialogFragment;
 import com.example.olapark.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Map;
 
 public class PaymentParkDialog extends DialogFragment {
 
     private View view;
     private Park park;
-    private GoogleMap map;
-    private LatLng currentPosition;
 
-    private final String url = "https://roads.googleapis.com/v1/snapToRoads?interpolate=true&path=";
-    private final String key = "AIzaSyBx64LbDqZGT7otVA_QFu_QHJAHeA7A8kQ";
-    private MapsFragment mapFragment;
+    private SharedPreferences sp;
+
+    private FirebaseFirestore db;
 
     private EditText editTextHours;
     private TextView textViewPrice;
@@ -49,6 +53,9 @@ public class PaymentParkDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.layout_payment_park_dialog, container, false);
+
+        sp = getActivity().getSharedPreferences("auto-login", Context.MODE_PRIVATE);
+        db = FirebaseFirestore.getInstance();
 
         confirm();
         cancel();
@@ -95,14 +102,91 @@ public class PaymentParkDialog extends DialogFragment {
 
         confirm.setOnClickListener(v -> {
 
-            //TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
-            //String priceValue = textViewPriceValue.getText().toString();
-            //double price = Double.parseDouble(priceValue.split(" ")[0]);
+            TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
+            String priceValue = textViewPriceValue.getText().toString();
+            double price = Double.parseDouble(priceValue.split(" ")[0]);
 
-            //TODO descontar na wallet
+            float balance = sp.getFloat("balance", 0);
+
+            addToPayments(park.getName(), String.valueOf(price));
+            updateBalance((float) (balance - price));
+            increaseCoins();
 
             dismiss();
         });
+
+    }
+
+    private void updateBalance(float new_balance) {
+
+        SharedPreferences.Editor editor = sp.edit();
+
+        String username = sp.getString("username", "");
+
+        editor.putFloat("balance", new_balance);
+
+        editor.apply();
+
+        db.collection("users").document(username).update("balance", new_balance);
+
+    }
+
+    private void increaseCoins() {
+
+        String username = sp.getString("username", "");
+
+        int coins = sp.getInt("coins", 0) + 1;
+
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("coins", coins);
+        editor.apply();
+
+        db.collection("users").document(username).update("coins", coins);
+
+    }
+
+    private void addToPayments(String name, String value) {
+
+        String username = sp.getString("username", "");
+
+        db.collection("users").document(username).get().addOnCompleteListener(
+                task -> {
+                    if(task.isSuccessful()){
+
+                        DocumentSnapshot document = task.getResult();
+
+                        Map<String, String> payments = (Map<String, String>) document.get("payments");
+
+                        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+
+                            int number;
+
+                            if (payments.isEmpty()) {
+
+                                number = 1;
+                            }
+
+                            else {
+
+                                number = payments.size() + 1;
+                            }
+
+                            String now = LocalDateTime.now().toString();
+
+                            String fst = now.split("T")[0];
+                            String snd = now.split("T")[1].split(":")[0] + ":" +  now.split("T")[1].split(":")[1];
+
+                            String date = fst + " " + snd;
+
+                            payments.put(String.valueOf(number), date + "%" + name + "%" + value);
+
+                            db.collection("users").document(username).update("payments", payments);
+
+                        }
+
+                    }
+                }
+        );
 
     }
 
@@ -123,15 +207,5 @@ public class PaymentParkDialog extends DialogFragment {
         this.park = park;
     }
 
-    public void setMap(GoogleMap mMap) {
-        this.map = mMap;
-    }
 
-    public void setMapFragment(MapsFragment fragment) {this.mapFragment = fragment;}
-
-    public void setCurrentPosition(LatLng currentPosition) {
-
-        this.currentPosition = currentPosition;
-
-    }
 }
