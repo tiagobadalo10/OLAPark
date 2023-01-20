@@ -20,11 +20,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+
 import com.example.olapark.nav.parks.FragmentHelper;
 import com.example.olapark.nav.parks.MapsFragment;
 import com.example.olapark.nav.parks.Park;
 import com.example.olapark.nav.parks.ParkCatalog;
 import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionRequest;
 import com.google.android.gms.location.DetectedActivity;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,11 +56,15 @@ public class ActivityRecognitionService extends Service {
     private List<ActivityTransition> activityTransitionList;
 
     private PendingIntent mActivityTransitionsPendingIntent;
+    private PendingIntent mActivityRecognitionsPendingIntent;
     private TransitionsReceiver mTransitionsReceiver;
+    private RecognitionReceiver mRecognitionsReceiver;
     private static final int REQUEST_ACTIVITY_RECOGNITION = 45;
     private final int REQUEST_LOCATION_PERMISSION = 1;
     private final String TRANSITIONS_RECEIVER_ACTION =
             BuildConfig.APPLICATION_ID + "TRANSITIONS_RECEIVER_ACTION";
+    private final String ACTIVITY_RECOGNITION_UPDATE =
+            BuildConfig.APPLICATION_ID + "ACTIVITY_RECOGNITION_UPDATE";
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -84,10 +91,16 @@ public class ActivityRecognitionService extends Service {
 
         ActivityRecognitionService service = this;
 
-            Thread thread = new Thread(
+        Thread thread = new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
+
+                        MapsFragment maps = FragmentHelper.getInstance().getFragment();
+
+                        parks = ParkCatalog.getInstance(maps);
+                        parks.connectService(getApplicationContext());
+
                         activityTrackingEnabled = false;
 
                         // List of activity transitions to track.
@@ -124,24 +137,27 @@ public class ActivityRecognitionService extends Service {
                         mActivityTransitionsPendingIntent =
                                 PendingIntent.getBroadcast(getApplicationContext(), 0, intent1
                                         , 0);
+                        Intent intent2 = new Intent(ACTIVITY_RECOGNITION_UPDATE);
+                        mActivityRecognitionsPendingIntent =
+                                PendingIntent.getBroadcast(getApplicationContext(), 0, intent2
+                                        , 0);
 
                         // TODO: Create a BroadcastReceiver to listen for activity transitions.
                         // The receiver listens for the PendingIntent above that is triggered by the system when an
                         // activity transition occurs.
                         mTransitionsReceiver = new TransitionsReceiver(service);
+                        mRecognitionsReceiver = new RecognitionReceiver(service);
 
                         // TODO: Enable/Disable activity tracking and ask for permissions if needed.
                         if (activityRecognitionPermissionApproved()) {
                             enableActivityTransitions();
+                            enableActivityRecognitions();
                         }
 
                         // TODO: Register the BroadcastReceiver to listen for activity transitions.
                         registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
-
-                        MapsFragment maps = FragmentHelper.getInstance().getFragment();
-
-                        parks = ParkCatalog.getInstance(maps);
-                        parks.connectService(getApplicationContext());
+                        IntentFilter filter = new IntentFilter("com.example.activity_recognition.ACTIVITY_RECOGNITION_UPDATE");
+                        registerReceiver(mRecognitionsReceiver, new IntentFilter(ACTIVITY_RECOGNITION_UPDATE));
 
                         //ciclo while
                         while (true) {
@@ -165,7 +181,7 @@ public class ActivityRecognitionService extends Service {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_LOW
+                    CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_LOW
             );
             getSystemService(NotificationManager.class).createNotificationChannel(channel);
 
@@ -248,6 +264,40 @@ public class ActivityRecognitionService extends Service {
         task.addOnFailureListener(
                 e -> Toast.makeText(getApplicationContext(),
                         "Transitions Api could NOT be registered."
+                        , Toast.LENGTH_SHORT).show());
+    }
+
+    private void enableActivityRecognitions() {
+        // Create a new ActivityRecognitionClient
+        ActivityRecognitionClient activityRecognitionClient = ActivityRecognition.getClient(getApplicationContext());
+
+        // Create a PendingIntent that will receive the activity updates
+        //Intent intent = new Intent(getApplicationContext(), RecognitionReceiver.class);
+        //PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Request activity updates for the IN_VEHICLE activity type
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Task<Void> task = activityRecognitionClient.requestActivityUpdates(3000, mActivityRecognitionsPendingIntent);
+
+        task.addOnSuccessListener(
+                result -> {
+                    Toast.makeText(getApplicationContext(), "Recognition Api was successfully registered."
+                            , Toast.LENGTH_SHORT).show();
+                    Log.d("Service", "Recognition Api was successfully registered.");
+                });
+
+        task.addOnFailureListener(
+                e -> Toast.makeText(getApplicationContext(),
+                        "Recognition Api could NOT be registered."
                         , Toast.LENGTH_SHORT).show());
     }
 

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.example.olapark.nav.parks.LocationUtils;
+import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionResult;
@@ -39,7 +40,8 @@ public class TransitionsReceiver extends BroadcastReceiver {
     private final ActivityRecognitionService service;
     private boolean isDriving = false;
     private boolean isParked = false;
-        public TransitionsReceiver(ActivityRecognitionService service) {
+
+    public TransitionsReceiver(ActivityRecognitionService service) {
         this.service = service;
     }
 
