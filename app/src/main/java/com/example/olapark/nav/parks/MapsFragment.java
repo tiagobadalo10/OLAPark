@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -118,7 +116,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d("mmap", mMap.toString());
 
         options.mapType(GoogleMap.MAP_TYPE_NORMAL)
                 .compassEnabled(false)
@@ -128,7 +125,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("MapsFragment", "nao tem permissoes");
             return;
         }
         mMap.setMyLocationEnabled(true);
@@ -277,7 +273,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         double lng = Double.valueOf(location.split(" ")[1]);
 
         Park park = parks.findParkByLocation(new LatLng(lat, lng));
-        Log.d("park", new LatLng(lat, lng).toString());
         dialog.setPark(park);
 
         openPaymentDialog(park);

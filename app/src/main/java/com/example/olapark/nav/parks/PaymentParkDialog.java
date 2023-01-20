@@ -18,8 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.olapark.R;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -76,8 +74,22 @@ public class PaymentParkDialog extends DialogFragment {
                         editTextHours.setText("");
                         textViewPrice.setText("0,00 Є");
                     } else {
-                        double price = hours * park.getPricePerHour();
-                        textViewPrice.setText(String.format(Locale.getDefault(), "%.2f Є", price));
+
+                        String username = sp.getString("username", "");
+
+                        db.collection("users").document(username).get().addOnCompleteListener(task -> {
+
+                            if(task.isSuccessful()) {
+
+                                DocumentSnapshot document = task.getResult();
+
+                                long reward = (long) document.get("reward");
+
+                                double price = hours * park.getPricePerHour();
+                                textViewPrice.setText(String.format(Locale.UK, "%.2f €", price - price * reward / 100));
+                            }
+                        });
+
                     }
                 } else {
                     textViewPrice.setText("0,00 Є");
@@ -101,34 +113,20 @@ public class PaymentParkDialog extends DialogFragment {
 
             String username = sp.getString("username", "");
 
-            db.collection("users").document(username).get().addOnCompleteListener(task -> {
+            TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
+            String priceValue = textViewPriceValue.getText().toString();
 
-                if(task.isSuccessful()){
+            double price = Double.parseDouble(priceValue.split(" ")[0].replace(",", "."));
 
-                    DocumentSnapshot document = task.getResult();
+            float balance = sp.getFloat("balance", 0);
 
-                    long reward = (long) document.get("reward");
+            addToPayments(park.getName(), String.valueOf(price));
+            updateBalance((float) (balance - price));
+            increaseCoins();
 
-                    TextView textViewPriceValue = view.findViewById(R.id.textView_price_value);
-                    String priceValue = textViewPriceValue.getText().toString();
-                    double price = Double.parseDouble(priceValue.split(" ")[0].replace(",", "."));
+            db.collection("users").document(username).update("reward", 0);
 
-                    price = price - price * reward / 100;
-
-                    float balance = sp.getFloat("balance", 0);
-
-                    addToPayments(park.getName(), String.valueOf(price));
-                    updateBalance((float) (balance - price));
-                    increaseCoins();
-
-                    db.collection("users").document(username).update("reward", 0);
-
-                    dismiss();
-
-                }
-
-            });
-
+            dismiss();
 
         });
 
@@ -152,10 +150,10 @@ public class PaymentParkDialog extends DialogFragment {
 
         String username = sp.getString("username", "");
 
-        int coins = sp.getInt("coins", 0) + 1;
+        long coins = sp.getLong("coins", 0) + 1;
 
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("coins", coins);
+        editor.putLong("coins", coins);
         editor.apply();
 
         db.collection("users").document(username).update("coins", coins);

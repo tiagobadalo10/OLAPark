@@ -1,26 +1,19 @@
 package com.example.olapark.nav.parks;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import com.example.olapark.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import java.time.Duration;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ReservationFragment extends DialogFragment {
@@ -97,7 +90,7 @@ public class ReservationFragment extends DialogFragment {
 
             String price = (String) reservation_price_value.getText();
 
-            if(price != ""){
+            if(!price.equals("")){
 
                 float total_price = Float.parseFloat(price.split("€")[0]);
 
@@ -121,7 +114,7 @@ public class ReservationFragment extends DialogFragment {
 
         String username = sp.getString("username", "");
 
-        long coins = (long) sp.getInt("coins", 0) + 1;
+        long coins = sp.getLong("coins", 0) + 1;
 
         SharedPreferences.Editor editor = sp.edit();
         editor.putLong("coins", coins);

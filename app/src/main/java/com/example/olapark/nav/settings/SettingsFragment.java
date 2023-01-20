@@ -19,10 +19,8 @@ import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentSettingsBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 

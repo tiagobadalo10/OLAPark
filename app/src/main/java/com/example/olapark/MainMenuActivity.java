@@ -163,11 +163,9 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
             if(!foregroundServiceRunning()){
                 startActivityRecognitionService();
             }
-            Log.d("permissao_recognition", "tem permissao");
         } else {
             EasyPermissions.requestPermissions(this, "A permissão é necessária para rastrear sua atividade física",
                     REQUEST_ACTIVITY_RECOGNITION, perms);
-            Log.d("permissao_recognition", "nao tem permissao");
         }
     }
 
@@ -190,7 +188,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
-            Log.d("permissao_location", "tem permissao");
             if (!locationPermission){
                 MapsFragment newInstanceOfFragment = new MapsFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -201,7 +198,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
             requestRecognitionPermission();
         } else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
-            Log.d("permissao_location", "nao tem permissao");
             locationPermission = false;
             requestRecognitionPermission();
         }

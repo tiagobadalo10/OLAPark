@@ -7,7 +7,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -41,7 +40,7 @@ import java.util.List;
 
 public class ActivityRecognitionService extends Service {
 
-    private static final int GEOFENCE_READIUS = 2000;
+    private static final int GEOFENCE_READIUS = 20000;
     private static final int NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "Activity Recognition Service ID";
 
@@ -242,7 +241,6 @@ public class ActivityRecognitionService extends Service {
                     activityTrackingEnabled = true;
                     Toast.makeText(getApplicationContext(), "Transitions Api was successfully registered."
                             , Toast.LENGTH_SHORT).show();
-                    Log.d("Service", "Transitions Api was successfully registered.");
                 });
 
         task.addOnFailureListener(
@@ -286,7 +284,6 @@ public class ActivityRecognitionService extends Service {
 
     public void enterInFence(double lat, double lng){
         this.enterInFence = true;
-        Log.d("location", lat + " " + lng);
 
         SharedPreferences sh = getSharedPreferences("service", MODE_PRIVATE);
         SharedPreferences.Editor editor = sh.edit();
@@ -361,7 +358,6 @@ public class ActivityRecognitionService extends Service {
         List<Geofence> geofenceList = new ArrayList<>();
 
         for(Park park : parks.getParks()) {
-            Log.d("service", "park");
             LatLng location = park.getLocation();
             geofenceList.add(new Geofence.Builder()
                     .setRequestId(park.getName())
@@ -385,13 +381,11 @@ public class ActivityRecognitionService extends Service {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("Service", "Geofencing Api was successfully registered.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
                     }
                 });
     }
