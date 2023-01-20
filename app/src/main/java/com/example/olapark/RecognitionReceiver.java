@@ -18,10 +18,6 @@ import java.util.List;
 public class RecognitionReceiver extends BroadcastReceiver {
 
     private ActivityRecognitionService service = null;
-    private ParkCatalog parks;
-
-    private boolean isDriving = false;
-    private boolean isParked = false;
 
 
     public RecognitionReceiver() {
@@ -48,6 +44,10 @@ public class RecognitionReceiver extends BroadcastReceiver {
                 case DetectedActivity.IN_VEHICLE: {
                     Toast.makeText(context, "Esta de carro", Toast.LENGTH_LONG);
                     Log.d("RecognitionReceiver", "Esta de carro");
+                    if (activity.getConfidence() > 75) {
+                        if (service != null)
+                            service.isDriving();
+                    }
                     break;
                 }
                 case DetectedActivity.WALKING: {
@@ -59,6 +59,9 @@ public class RecognitionReceiver extends BroadcastReceiver {
                     Log.d("RecognitionReceiver", "Esta parado");
                     if (service != null)
                         service.sendNotificationTransitions("Esta parado");
+                    if (activity.getConfidence() > 75) {
+                        Log.d("RecognitionReceiver", "funciona");
+                    }
                     break;
                 }
             }

@@ -47,7 +47,7 @@ public class TransitionsReceiver extends BroadcastReceiver {
 
                 if (isDriving) {
                     isDriving = false;
-                    service.isDriving();
+                    //service.isDriving();
                 }
             }
         }
