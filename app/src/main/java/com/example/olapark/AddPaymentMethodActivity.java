@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -47,7 +46,7 @@ public class AddPaymentMethodActivity extends AppCompatActivity {
             String date = card_date.getText().toString();
             String cvv = card_cvv.getText().toString();
 
-            if(number.length() == 16 && name != "" && date.split("/").length == 2 && cvv.length() == 3){
+            if(number.length() == 16 && !name.equals("") && date.split("/").length == 2 && cvv.length() == 3){
 
                 String username = sp.getString("username", "");
 

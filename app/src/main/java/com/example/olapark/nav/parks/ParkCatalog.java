@@ -10,13 +10,10 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.olapark.ActivityRecognitionService;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
@@ -27,11 +24,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -177,16 +171,11 @@ public class ParkCatalog implements Iterable<Park>{
                                 (int) places);
                         parks.add(park);
                         listSize++;
-                        Log.d("oi", park.getName());
                     }
-                    Log.d("oi", "acabou");
-                    Log.d("oi", parks.toString());
-                    printParks();
                     mapsFragment.setParkMarkers();
 
                     if (service != null) {
                         service.setGeofence();
-                        Log.d("SERVICE", "setGeofence()");
                     }
                 }
             }.execute().get();
@@ -323,13 +312,6 @@ public class ParkCatalog implements Iterable<Park>{
         Location.distanceBetween(p1.latitude, p1.longitude, p2.latitude, p2.longitude, res);
         return res[0];
     }
-
-    public void printParks() {
-        for (Park park : this.getParks()) {
-            Log.d("oit", park.getName());
-        }
-    }
-
     public void connectService(Context context) {
         Intent serviceIntent = new Intent(context, ActivityRecognitionService.class);
         context.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);

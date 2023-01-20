@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.olapark.R;
 import com.example.olapark.databinding.FragmentRewardsBinding;
@@ -77,6 +78,8 @@ public class RewardsFragment extends Fragment {
 
                             updateCoins();
 
+                            Toast.makeText(getActivity(), "Recompensa reivindicada", Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 }
@@ -122,6 +125,8 @@ public class RewardsFragment extends Fragment {
 
                             updateCoins();
 
+                            Toast.makeText(getActivity(), "Recompensa reivindicada", Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 }
@@ -165,6 +170,8 @@ public class RewardsFragment extends Fragment {
                             db.collection("users").document(username).update("reward", 100);
 
                             updateCoins();
+
+                            Toast.makeText(getActivity(), "Recompensa reivindicada", Toast.LENGTH_SHORT).show();
 
                         }
                     }

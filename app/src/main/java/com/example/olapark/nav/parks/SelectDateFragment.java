@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
@@ -76,8 +75,6 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
         String entry_date_hour_value = entry_date_hour.getText().toString();
         String departure_date_day_value = departure_date_day.getText().toString();
         String departure_date_hour_value = departure_date_hour.getText().toString();
-
-        System.out.println(entry_date_hour_value);
 
         if (!"Select date".equals(entry_date_day_value) && !"Select hour".equals(entry_date_hour_value) &&
                 !"Select date".equals(departure_date_day_value) && !"Select hour".equals(departure_date_hour_value)) {

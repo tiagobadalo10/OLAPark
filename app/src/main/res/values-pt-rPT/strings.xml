@@ -50,7 +50,7 @@
     <string name="modal_add_card_gallery">Galeria</string>
 
     <string-array name="report_options">
-        <item>Estacionamento Ruim</item>
+        <item>Mau Estacionamento</item>
         <item>Roubo</item>
         <item>Acidente</item>
         <item>Mendigos</item>

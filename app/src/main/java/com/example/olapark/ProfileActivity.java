@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -30,7 +29,6 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,7 +58,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private Date date;
     private String username;
     private String email;
-
     private String card;
     private Long phone_number;
 

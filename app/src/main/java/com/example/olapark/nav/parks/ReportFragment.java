@@ -3,7 +3,6 @@ package com.example.olapark.nav.parks;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.olapark.R;
 
@@ -49,6 +49,8 @@ public class ReportFragment extends DialogFragment {
         ImageView submit_report = v.findViewById(R.id.report_submit);
 
         submit_report.setOnClickListener(view -> {
+
+            Toast.makeText(getContext(), "Reporte concluído", Toast.LENGTH_SHORT).show();
 
             dismiss();
 

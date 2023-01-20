@@ -7,7 +7,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -15,8 +14,6 @@ import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -207,30 +204,6 @@ public class ActivityRecognitionService extends Service {
         return PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void disableActivityTransitions() {
-        // TODO: Stop listening for activity changes.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        ActivityRecognition.getClient(this).removeActivityTransitionUpdates(mActivityTransitionsPendingIntent)
-                .addOnSuccessListener(aVoid -> {
-                    activityTrackingEnabled = false;
-                    Toast.makeText(getApplicationContext(),
-                            "Transitions successfully unregistered.",
-                            Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),
-                        "Transitions could not be unregistered.",
-                        Toast.LENGTH_LONG).show());
-    }
-
     /**
      * Registers callbacks for {@link ActivityTransition} events via a custom
      * {@link BroadcastReceiver}
@@ -256,15 +229,9 @@ public class ActivityRecognitionService extends Service {
         task.addOnSuccessListener(
                 result -> {
                     activityTrackingEnabled = true;
-                    Toast.makeText(getApplicationContext(), "Transitions Api was successfully registered."
-                            , Toast.LENGTH_SHORT).show();
-                    Log.d("Service", "Transitions Api was successfully registered.");
+
                 });
 
-        task.addOnFailureListener(
-                e -> Toast.makeText(getApplicationContext(),
-                        "Transitions Api could NOT be registered."
-                        , Toast.LENGTH_SHORT).show());
     }
 
     private void enableActivityRecognitions() {
@@ -336,7 +303,6 @@ public class ActivityRecognitionService extends Service {
 
     public void enterInFence(double lat, double lng){
         this.enterInFence = true;
-        Log.d("location", lat + " " + lng);
 
         SharedPreferences sh = getSharedPreferences("service", MODE_PRIVATE);
         SharedPreferences.Editor editor = sh.edit();
@@ -411,7 +377,6 @@ public class ActivityRecognitionService extends Service {
         List<Geofence> geofenceList = new ArrayList<>();
 
         for(Park park : parks.getParks()) {
-            Log.d("service", "park");
             LatLng location = park.getLocation();
             geofenceList.add(new Geofence.Builder()
                     .setRequestId(park.getName())
@@ -435,13 +400,11 @@ public class ActivityRecognitionService extends Service {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("Service", "Geofencing Api was successfully registered.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("Service", "Geofencing Api was unsuccessfully registered." + e);
                     }
                 });
     }
