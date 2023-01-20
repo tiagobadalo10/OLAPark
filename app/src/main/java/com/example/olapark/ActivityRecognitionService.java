@@ -43,25 +43,17 @@ import java.util.List;
 
 public class ActivityRecognitionService extends Service {
 
-    private static final int GEOFENCE_READIUS = 2000;
+    private static final int GEOFENCE_READIUS = 100;
     private static final int NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "Activity Recognition Service ID";
 
     private final boolean runningQOrLater =
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
 
-    private boolean activityTrackingEnabled;
+    private boolean activityRecognitionEnabled;
 
-    private List<ActivityTransition> activityTransitionList;
-
-    private PendingIntent mActivityTransitionsPendingIntent;
     private PendingIntent mActivityRecognitionsPendingIntent;
-    private TransitionsReceiver mTransitionsReceiver;
     private RecognitionReceiver mRecognitionsReceiver;
-    private static final int REQUEST_ACTIVITY_RECOGNITION = 45;
-    private final int REQUEST_LOCATION_PERMISSION = 1;
-    private final String TRANSITIONS_RECEIVER_ACTION =
-            BuildConfig.APPLICATION_ID + "TRANSITIONS_RECEIVER_ACTION";
     private final String ACTIVITY_RECOGNITION_UPDATE =
             BuildConfig.APPLICATION_ID + "ACTIVITY_RECOGNITION_UPDATE";
 
@@ -100,62 +92,21 @@ public class ActivityRecognitionService extends Service {
                         parks = ParkCatalog.getInstance(maps);
                         parks.connectService(getApplicationContext());
 
-                        activityTrackingEnabled = false;
+                        activityRecognitionEnabled = false;
 
-                        // List of activity transitions to track.
-                        activityTransitionList = new ArrayList<>();
-
-                        // TODO: Add activity transitions to track.
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.IN_VEHICLE)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.IN_VEHICLE)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.WALKING)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.WALKING)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.STILL)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                                .build());
-                        activityTransitionList.add(new ActivityTransition.Builder()
-                                .setActivityType(DetectedActivity.STILL)
-                                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                                .build());
-
-                        // TODO: Initialize PendingIntent that will be triggered when a activity transition occurs.
-                        Intent intent1 = new Intent(TRANSITIONS_RECEIVER_ACTION);
-                        mActivityTransitionsPendingIntent =
-                                PendingIntent.getBroadcast(getApplicationContext(), 0, intent1
-                                        , 0);
                         Intent intent2 = new Intent(ACTIVITY_RECOGNITION_UPDATE);
                         mActivityRecognitionsPendingIntent =
                                 PendingIntent.getBroadcast(getApplicationContext(), 0, intent2
                                         , 0);
 
-                        // TODO: Create a BroadcastReceiver to listen for activity transitions.
-                        // The receiver listens for the PendingIntent above that is triggered by the system when an
-                        // activity transition occurs.
-                        mTransitionsReceiver = new TransitionsReceiver(service);
                         mRecognitionsReceiver = new RecognitionReceiver(service);
 
                         // TODO: Enable/Disable activity tracking and ask for permissions if needed.
                         if (activityRecognitionPermissionApproved()) {
-                            enableActivityTransitions();
                             enableActivityRecognitions();
                         }
 
                         // TODO: Register the BroadcastReceiver to listen for activity transitions.
-                        registerReceiver(mTransitionsReceiver, new IntentFilter(TRANSITIONS_RECEIVER_ACTION));
-                        IntentFilter filter = new IntentFilter("com.example.activity_recognition.ACTIVITY_RECOGNITION_UPDATE");
                         registerReceiver(mRecognitionsReceiver, new IntentFilter(ACTIVITY_RECOGNITION_UPDATE));
 
                         //ciclo while
@@ -206,36 +157,6 @@ public class ActivityRecognitionService extends Service {
         return PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     * Registers callbacks for {@link ActivityTransition} events via a custom
-     * {@link BroadcastReceiver}
-     */
-    private void enableActivityTransitions() {
-        // TODO: Create request and listen for activity changes.
-        ActivityTransitionRequest request = new ActivityTransitionRequest(activityTransitionList);
-
-        // Register for Transitions Updates.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Task<Void> task = ActivityRecognition.getClient(this)
-                .requestActivityTransitionUpdates(request, mActivityTransitionsPendingIntent);
-
-        task.addOnSuccessListener(
-                result -> {
-                    activityTrackingEnabled = true;
-
-                });
-
-    }
-
     private void enableActivityRecognitions() {
         // Create a new ActivityRecognitionClient
         ActivityRecognitionClient activityRecognitionClient = ActivityRecognition.getClient(getApplicationContext());
@@ -262,6 +183,7 @@ public class ActivityRecognitionService extends Service {
                     Toast.makeText(getApplicationContext(), "Recognition Api was successfully registered."
                             , Toast.LENGTH_SHORT).show();
                     Log.d("Service", "Recognition Api was successfully registered.");
+                    activityRecognitionEnabled = true;
                 });
 
         task.addOnFailureListener(

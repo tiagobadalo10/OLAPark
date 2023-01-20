@@ -45,23 +45,15 @@ public class RecognitionReceiver extends BroadcastReceiver {
                     Toast.makeText(context, "Esta de carro", Toast.LENGTH_LONG);
                     Log.d("RecognitionReceiver", "Esta de carro");
                     if (activity.getConfidence() > 75) {
+                        Toast.makeText(context, "O utilizador está a conduzir"
+                                , Toast.LENGTH_SHORT).show();
                         if (service != null)
                             service.isDriving();
                     }
                     break;
                 }
-                case DetectedActivity.WALKING: {
-                    Toast.makeText(context, "Esta a pe", Toast.LENGTH_LONG);
-                    break;
-                }
+                case DetectedActivity.WALKING:
                 case DetectedActivity.STILL: {
-                    Toast.makeText(context, "Esta parado", Toast.LENGTH_LONG);
-                    Log.d("RecognitionReceiver", "Esta parado");
-                    if (service != null)
-                        service.sendNotificationTransitions("Esta parado");
-                    if (activity.getConfidence() > 75) {
-                        Log.d("RecognitionReceiver", "funciona");
-                    }
                     break;
                 }
             }
