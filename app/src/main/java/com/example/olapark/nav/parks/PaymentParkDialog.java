@@ -126,6 +126,8 @@ public class PaymentParkDialog extends DialogFragment {
 
             db.collection("users").document(username).update("reward", 0);
 
+            Toast.makeText(getContext(), "Pagamento concluído", Toast.LENGTH_SHORT).show();
+
             dismiss();
 
         });

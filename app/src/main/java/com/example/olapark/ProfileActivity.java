@@ -58,7 +58,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private Date date;
     private String username;
     private String email;
-
     private String card;
     private Long phone_number;
 

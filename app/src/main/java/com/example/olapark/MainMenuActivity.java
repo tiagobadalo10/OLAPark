@@ -14,13 +14,11 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.olapark.databinding.ActivityMainMenuBinding;
 import com.example.olapark.nav.parks.FragmentHelper;
 import com.example.olapark.nav.parks.MapsFragment;
@@ -108,7 +106,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
                         editor.remove("clickNotification");
                         editor.commit();
                         FragmentHelper.getInstance().getFragment().openOccupationDialog();
-                        Toast.makeText(getApplicationContext(), "ola adeus", Toast.LENGTH_SHORT).show();
                         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(1001);
                         stopService(new Intent(getApplicationContext(), ActivityRecognitionService.class));
@@ -187,7 +184,6 @@ public class MainMenuActivity extends AppCompatActivity implements SensorEventLi
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
             if (!locationPermission){
                 MapsFragment newInstanceOfFragment = new MapsFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();

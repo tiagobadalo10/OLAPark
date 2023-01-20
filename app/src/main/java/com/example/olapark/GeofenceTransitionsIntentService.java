@@ -57,7 +57,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
             // processa as informações sobre as geofences acionadas aqui
-            Toast.makeText(getApplicationContext(), "entrou", Toast.LENGTH_SHORT).show();
             service.sendNotificationTransitions("Entrou na fence");
             service.enterInFence(triggeringGeofences.get(0).getLatitude(), triggeringGeofences.get(0).getLongitude());
         }

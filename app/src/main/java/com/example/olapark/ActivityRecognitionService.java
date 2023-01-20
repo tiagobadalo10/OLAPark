@@ -14,8 +14,6 @@ import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -190,30 +188,6 @@ public class ActivityRecognitionService extends Service {
         return PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void disableActivityTransitions() {
-        // TODO: Stop listening for activity changes.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        ActivityRecognition.getClient(this).removeActivityTransitionUpdates(mActivityTransitionsPendingIntent)
-                .addOnSuccessListener(aVoid -> {
-                    activityTrackingEnabled = false;
-                    Toast.makeText(getApplicationContext(),
-                            "Transitions successfully unregistered.",
-                            Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),
-                        "Transitions could not be unregistered.",
-                        Toast.LENGTH_LONG).show());
-    }
-
     /**
      * Registers callbacks for {@link ActivityTransition} events via a custom
      * {@link BroadcastReceiver}
@@ -239,14 +213,9 @@ public class ActivityRecognitionService extends Service {
         task.addOnSuccessListener(
                 result -> {
                     activityTrackingEnabled = true;
-                    Toast.makeText(getApplicationContext(), "Transitions Api was successfully registered."
-                            , Toast.LENGTH_SHORT).show();
+
                 });
 
-        task.addOnFailureListener(
-                e -> Toast.makeText(getApplicationContext(),
-                        "Transitions Api could NOT be registered."
-                        , Toast.LENGTH_SHORT).show());
     }
 
     private boolean activityRecognitionPermissionApproved() {

@@ -3,14 +3,10 @@ package com.example.olapark;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionEvent;
 import com.google.android.gms.location.ActivityTransitionResult;
 import com.google.android.gms.location.DetectedActivity;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -38,7 +34,6 @@ public class TransitionsReceiver extends BroadcastReceiver {
                         new SimpleDateFormat("HH:mm:ss", Locale.US).format(new Date());
 
                 service.sendNotificationTransitions(info);
-                Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
 
                 //TODO detetar que esta a conduzir e que esta parado num parque proximo
 
@@ -46,7 +41,6 @@ public class TransitionsReceiver extends BroadcastReceiver {
                     if (event.getActivityType() == DetectedActivity.WALKING || //TODO mudar para driving
                             event.getActivityType() == DetectedActivity.UNKNOWN) {
                         isDriving = true;
-                        Toast.makeText(context, "isDriving", Toast.LENGTH_SHORT).show();
                     }
                 }
 

@@ -106,6 +106,8 @@ public class ReservationFragment extends DialogFragment {
 
                     db.collection("users").document(username).update("reward", 0);
 
+                    Toast.makeText(getContext(), "Reserva concluída", Toast.LENGTH_SHORT).show();
+
                     dismiss();
                 }
                 else {

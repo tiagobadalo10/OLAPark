@@ -78,7 +78,7 @@ public class RewardsFragment extends Fragment {
 
                             updateCoins();
 
-                            Toast.makeText(getActivity(), "Claimed recompense", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Recompensa reivindicada", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -125,7 +125,7 @@ public class RewardsFragment extends Fragment {
 
                             updateCoins();
 
-                            Toast.makeText(getActivity(), "Claimed recompense", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Recompensa reivindicada", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -171,7 +171,7 @@ public class RewardsFragment extends Fragment {
 
                             updateCoins();
 
-                            Toast.makeText(getActivity(), "Claimed recompense", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Recompensa reivindicada", Toast.LENGTH_SHORT).show();
 
                         }
                     }
