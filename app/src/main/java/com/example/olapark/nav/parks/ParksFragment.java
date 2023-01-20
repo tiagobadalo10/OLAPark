@@ -55,8 +55,10 @@ public class ParksFragment extends Fragment implements FilterDialog.MyDialogList
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                listView.setVisibility(View.VISIBLE);
                 addItems(newText);
+                if (!listItems.isEmpty()) {
+                    listView.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });
