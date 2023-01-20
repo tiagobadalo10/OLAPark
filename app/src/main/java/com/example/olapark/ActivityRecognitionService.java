@@ -38,7 +38,7 @@ import java.util.List;
 
 public class ActivityRecognitionService extends Service {
 
-    private static final int GEOFENCE_READIUS = 20000;
+    private static final int GEOFENCE_READIUS = 2000;
     private static final int NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "Activity Recognition Service ID";
 
