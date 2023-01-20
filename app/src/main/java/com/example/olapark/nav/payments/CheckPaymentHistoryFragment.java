@@ -3,6 +3,7 @@ package com.example.olapark.nav.payments;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +75,15 @@ public class CheckPaymentHistoryFragment extends Fragment {
 
                             p.add(new Payment(payment.getKey(), aux[0], aux[1], aux[2]));
 
+                        }
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            p.sort(new Comparator<Payment>() {
+                                @Override
+                                public int compare(Payment p1, Payment p2) {
+                                    return Integer.compare(Integer.parseInt(p1.getNumber()), Integer.parseInt(p2.getNumber()));
+                                }
+                            });
                         }
 
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
